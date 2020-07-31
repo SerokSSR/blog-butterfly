@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://snow.js.org/dp-noip-tg/</loc>
-    <lastmod>2020-07-30</lastmod>
+    <loc>https://snow.js.org/tree-seg-scan/</loc>
+    <lastmod>2020-07-31</lastmod>
   </url>
   <url>
-    <loc>https://snow.js.org/dp-knapsack-problem/</loc>
-    <lastmod>2020-07-29</lastmod>
+    <loc>https://snow.js.org/dp-knapsack/</loc>
+    <lastmod>2020-07-31</lastmod>
+  </url>
+  <url>
+    <loc>https://snow.js.org/dp-noip-tg/</loc>
+    <lastmod>2020-07-31</lastmod>
   </url>
   <url>
     <loc>https://snow.js.org/hexo-ssh-deploy/</loc>
