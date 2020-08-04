@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://snow.js.org/num-theory/</loc>
+    
+    <lastmod>2020-08-04</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://snow.js.org/hexo-gulp-pwa/</loc>
+    
+    <lastmod>2020-08-04</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://snow.js.org/lete/</loc>
     
     <lastmod>2020-08-03</lastmod>
@@ -235,14 +249,21 @@
   </url>
   
   <url>
-    <loc>https://snow.js.org/tags/SSH/</loc>
+    <loc>https://snow.js.org/tags/Gulp/</loc>
     <lastmod>2020-08-04</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://snow.js.org/tags/GitHub/</loc>
+    <loc>https://snow.js.org/tags/PWA/</loc>
+    <lastmod>2020-08-04</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://snow.js.org/tags/%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F/</loc>
     <lastmod>2020-08-04</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -257,6 +278,20 @@
   
   <url>
     <loc>https://snow.js.org/tags/%E5%8D%9A%E5%AE%A2/</loc>
+    <lastmod>2020-08-04</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://snow.js.org/tags/SSH/</loc>
+    <lastmod>2020-08-04</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://snow.js.org/tags/GitHub/</loc>
     <lastmod>2020-08-04</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -320,6 +355,13 @@
   
   <url>
     <loc>https://snow.js.org/tags/%E5%8D%95%E8%B0%83%E9%98%9F%E5%88%97/</loc>
+    <lastmod>2020-08-04</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://snow.js.org/tags/%E6%95%B0%E8%AE%BA/</loc>
     <lastmod>2020-08-04</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
