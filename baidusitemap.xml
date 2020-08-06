@@ -2,15 +2,19 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://snow.js.org/hexo-gulp-pwa/</loc>
-    <lastmod>2020-08-04</lastmod>
+    <lastmod>2020-08-06</lastmod>
+  </url>
+  <url>
+    <loc>https://snow.js.org/graph-theory/</loc>
+    <lastmod>2020-08-05</lastmod>
   </url>
   <url>
     <loc>https://snow.js.org/num-theory/</loc>
-    <lastmod>2020-08-04</lastmod>
+    <lastmod>2020-08-05</lastmod>
   </url>
   <url>
     <loc>https://snow.js.org/dp-noip-tg/</loc>
-    <lastmod>2020-08-03</lastmod>
+    <lastmod>2020-08-05</lastmod>
   </url>
   <url>
     <loc>https://snow.js.org/mo-shang/</loc>
@@ -69,11 +73,11 @@
     <lastmod>2020-07-18</lastmod>
   </url>
   <url>
-    <loc>https://snow.js.org/network-flow-dijkstra/</loc>
+    <loc>https://snow.js.org/maximum-flow/</loc>
     <lastmod>2020-07-18</lastmod>
   </url>
   <url>
-    <loc>https://snow.js.org/maximum-flow/</loc>
+    <loc>https://snow.js.org/network-flow-dijkstra/</loc>
     <lastmod>2020-07-18</lastmod>
   </url>
   <url>
