@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://snow.js.org/dp-knapsack/</loc>
+    <lastmod>2020-08-06</lastmod>
+  </url>
+  <url>
+    <loc>https://snow.js.org/ruler-method/</loc>
+    <lastmod>2020-08-06</lastmod>
+  </url>
+  <url>
     <loc>https://snow.js.org/hexo-gulp-pwa/</loc>
     <lastmod>2020-08-06</lastmod>
   </url>
@@ -22,10 +30,6 @@
   </url>
   <url>
     <loc>https://snow.js.org/tree-seg-scan/</loc>
-    <lastmod>2020-07-31</lastmod>
-  </url>
-  <url>
-    <loc>https://snow.js.org/dp-knapsack/</loc>
     <lastmod>2020-07-31</lastmod>
   </url>
   <url>
@@ -54,10 +58,6 @@
   </url>
   <url>
     <loc>https://snow.js.org/match-template/</loc>
-    <lastmod>2020-07-18</lastmod>
-  </url>
-  <url>
-    <loc>https://snow.js.org/ruler-method/</loc>
     <lastmod>2020-07-18</lastmod>
   </url>
   <url>
