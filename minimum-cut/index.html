@@ -1,0 +1,404 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>网络流：最小割 | Serok's Blog</title><meta name="description" content="S - T 最小割 &amp; 最大流最小割定理 &amp; 最大权闭合子图 &amp; 无向图全局最小割。"><meta name="keywords" content="网络流，最大流，最小割, 算法"><meta name="author" content="Serok.,3091742436@qq.com"><meta name="copyright" content="Serok."><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/SerokSSR/img/favicon.ico"><link rel="canonical" href="https://snow.js.org/minimum-cut/"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><link rel="preconnect" href="//cdn.jsdelivr.net"><link rel="preconnect" href="//hm.baidu.com"><link rel="preconnect" href="//zz.bdstatic.com"><meta name="baidu-site-verification" content="WVhN9yb1qI"><meta property="og:type" content="article"><meta property="og:title" content="网络流：最小割"><meta property="og:url" content="https://snow.js.org/minimum-cut/"><meta property="og:site_name" content="Serok's Blog"><meta property="og:description" content="S - T 最小割 &amp; 最大流最小割定理 &amp; 最大权闭合子图 &amp; 无向图全局最小割。"><meta property="og:image" content="https://cdn.jsdelivr.net/gh/SerokSSR/img/bx3.jpg"><meta property="article:published_time" content="2020-05-13T16:00:00.000Z"><meta property="article:modified_time" content="2020-08-09T08:14:07.111Z"><meta name="twitter:card" content="summary"><link rel="manifest" href="/manifest.json"><meta name="theme-color" content="#fff"><meta name="msapplication-TileColor" content="#fff"><link rel="apple-touch-icon" sizes="180x180" href="/image/pwa/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/image/pwa/32.ico"><link rel="icon" type="image/png" sizes="16x16" href="/image/pwa/32.ico"><link rel="mask-icon" href="/image/pwa/safari-pinned-tab.svg" color="#5bbad5"><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css"><script>var _hmt=_hmt||[];!function(){var e=document.createElement("script");e.src="https://hm.baidu.com/hm.js?361beab41b2890d7429784b5d0071979";var t=document.getElementsByTagName("script")[0];t.parentNode.insertBefore(e,t)}()</script><link rel="stylesheet" href="https://fonts.dogedoge.com/css2?family=Open+Sans:wght@300;400;600&amp;display=swap"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  hexoversion: '5.1.1',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"prismjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  bookmark: {
+    message_prev: '按',
+    message_next: '键将本页加入书签'
+  },
+  runtime: '天',
+  last_push_date: {"zeroDay":"今天","suffix":"天前"},
+  copyright: undefined,
+  ClickShowText: undefined,
+  medium_zoom: false,
+  fancybox: true,
+  Snackbar: {"bookmark":{"message_prev":"按","message_next":"键将本页加入书签"},"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#121212","position":"top-center"},
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  baiduPush: true,
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+      const now = new Date()
+      const expiryDay = ttl * 86400000
+      const item = {
+        value: value,
+        expiry: now.getTime() + expiryDay,
+      }
+      localStorage.setItem(key, JSON.stringify(item))
+    },
+  
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE={isPost:!0,isHome:!1,isHighlightShrink:!0,isSidebar:!1,postUpdate:"2020-08-09 16:14:07"}</script><noscript><style>#nav{opacity:1}.justified-gallery img{opacity:1}</style></noscript><link href="https://fonts.dogedoge.com/css2?family=Noto+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet"><link rel="preload" href="https://cdn.jsdelivr.net/gh/SerokSSR/cdn/optimize.css" as="style" onload='this.onload=null,this.rel="stylesheet"'><noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SerokSSR/cdn/optimize.css"></noscript><link rel="preload" href="https://cdn.jsdelivr.net/gh/SerokSSR/img/plugin.min.css" as="style" onload='this.onload=null,this.rel="stylesheet"'><noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SerokSSR/img/plugin.min.css"></noscript><style>.app-refresh{position:fixed;top:-2.2rem;left:0;right:0;z-index:99999;padding:0 1rem;font-size:18px;height:2.2rem;transition:all .3s ease}.app-refresh-wrap{display:flex;color:#fff;height:100%;align-items:center;justify-content:center}.app-refresh-wrap a{color:#fff;text-decoration:underline;cursor:pointer}</style><style>::-webkit-scrollbar{width:8px;height:8px}::-webkit-scrollbar-track{background-color:rgba(73,177,245,.2);border-radius:2em}::-webkit-scrollbar-thumb{background-color:#49b1f5;background-image:-webkit-linear-gradient(45deg,rgba(255,255,255,.4) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.4) 50%,rgba(255,255,255,.4) 75%,transparent 75%,transparent);border-radius:2em}::-webkit-scrollbar-corner{background-color:transparent}::-moz-selection{color:#fff;background-color:#49b1f5}</style><style>#pagination .page-number{border-radius:20px}#aside_content .card-info .author-info__name{font-weight:600}#rightside>div>a,#rightside>div>button{width:32px;height:32px;border-radius:20px}h1,h2,h3,h4,h5,h6{color:#2f353c}h1{font-size:2em}h2{font-size:1.6em}h3{font-size:1.35em}h4{font-size:1.2em}h5{font-size:1em}h6{font-size:1em;color:#777}code{font-size:14px}</style><style>.aplayer.aplayer-fixed.aplayer-narrow .aplayer-body{left:-66px!important}.aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover{left:0!important}</style><meta name="generator" content="Hexo 5.1.1"></head><body><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="avatar-img" data-lazy-src="https://q1.qlogo.cn/g?b=qq&amp;nk=1656071287&amp;s=640" onerror='onerror=null,src="https://cdn.jsdelivr.net/gh/SerokSSR/img/friend_404.gif"' alt="avatar"></div><div class="mobile_post_data"><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">27</div></a></div></div><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">34</div></a></div></div><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">6</div></a></div></div></div><hr><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i> <span>Home</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-book-open"></i> <span>Index</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i> <span>Archives</span></a></li><li><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i> <span>Tags</span></a></li><li><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i> <span>Categories</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/friends/"><i class="fa-fw fas fa-link"></i> <span>Friends</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fas fa-comment-dots"></i> <span>Messageboard</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i> <span>About</span></a></div></div></div></div><div id="body-wrap"><header class="post-bg" id="page-header" style="background-image:url(https://cdn.jsdelivr.net/gh/SerokSSR/img/bx3.jpg)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Serok's Blog</a></span><span class="menus"><div id="search_button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i> <span>搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i> <span>Home</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-book-open"></i> <span>Index</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i> <span>Archives</span></a></li><li><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i> <span>Tags</span></a></li><li><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i> <span>Categories</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/friends/"><i class="fa-fw fas fa-link"></i> <span>Friends</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fas fa-comment-dots"></i> <span>Messageboard</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i> <span>About</span></a></div></div><span class="toggle-menu close"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><div id="post-title"><div class="posttitle">网络流：最小割</div></div><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2020-05-13T16:00:00.000Z" title="发表于 2020-05-14 00:00:00">2020-05-14</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2020-08-09T08:14:07.111Z" title="更新于 2020-08-09 16:14:07">2020-08-09</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%AE%97%E6%B3%95/">算法</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">2.7k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>11分钟</span></span></div></div></div></header><main class="layout_post" id="content-inner"><article id="post"><div class="post-content" id="article-container"><h1 id="网络流：最小割"><a href="#网络流：最小割" class="headerlink" title="网络流：最小割"></a>网络流：最小割</h1><p>将图 $G$ 分为 $A$ 和 $B$ 两个点集，$A$ 和 $B$ 之间的边的集合称为无向图的<b>割集</b>。带权图的<b>割 (Cut)</b> 就是割集中的边权之和。</p><h2 id="S-T-最小割"><a href="#S-T-最小割" class="headerlink" title="S - T 最小割"></a>S - T 最小割</h2><p>特别地，对于一个网络，在满足 $源点 s \in 点集{S}, 汇点 t \in 点集{T}(S\cap T= \varnothing)$ 的情况下，<b>从 S 到 T 的边的权值和</b>被称为 <b>S 到 T 的割</b>。</p><p><img src="https://cdn.jsdelivr.net/gh/SerokSSR/img/loading.gif" data-lazy-src="https://cdn.jsdelivr.net/gh/SerokSSR/img/cut1.png" alt="img"></p><p>通俗地说，如果把你家和自来水厂之间的水管网络砍断了一些，那么自来水厂无论怎么放水，水都无法到达你们家，自然就停水了，砍掉的水管就是割。</p><p>砍水管的人自然希望花的力气越小越好。在所有割中，权值和最小的称为<strong>最小割</strong>。对于一个给定的 S - T 网络，如何求出它的最小割呢？</p><h2 id="最大流最小割定理"><a href="#最大流最小割定理" class="headerlink" title="最大流最小割定理"></a>最大流最小割定理</h2><p><b>网络的最大流等于最小割。</b></p><p>这个定理看起来很简单，但是真去思考的话其实是很麻烦的。</p><h3 id="证明-Step-1：任意一个流都小于等于任意一个割"><a href="#证明-Step-1：任意一个流都小于等于任意一个割" class="headerlink" title="证明 Step 1：任意一个流都小于等于任意一个割"></a>证明 Step 1：任意一个流都小于等于任意一个割</h3><p>自来水公司随便给你家通点水，构成一个流，随便砍几刀砍出一个割，那么由于容量限制，每一根的被砍的水管子流出的水流量都小于管子的容量。每一根被砍的水管的水本来都要到你家的，现在流到外面，加起来得到的流量还是等于原来的流。而管子的容量加起来就是割，所以流小于等于割。</p><p>由于上面的流和割都是任意构造的，所以<strong>任意一个流小于任意一个割</strong>，即<br>$$<br>\forall F \leqslant \forall C<br>$$</p><h3 id="Step-2：构造出一个流，使它等于一个割"><a href="#Step-2：构造出一个流，使它等于一个割" class="headerlink" title="Step 2：构造出一个流，使它等于一个割"></a>Step 2：构造出一个流，使它等于一个割</h3><p>当达到最大流时，根据增广路定理，残留网络中 s 到 t 已经没有通路了。因此，若把残余网络中 s 能到的的点的集合设为 S，不能到的点集为 T ，构造出一个割集 $C[点集S,点集T]$，所有由 S 发往 T 的边必然满流。并且，这些满流边的流量和就是当前的流，即<strong>最大流</strong>。把这些满流边作为割，就构造出了一个<strong>和最大流相等的割</strong>。</p><h3 id="Step-3：最大流等于最小割"><a href="#Step-3：最大流等于最小割" class="headerlink" title="Step 3：最大流等于最小割"></a>Step 3：最大流等于最小割</h3><p>设上一步构造出流和割分别为 $F_m$ 和 $C_m$。</p><p>又 $\forall F \leqslant \forall C$</p><p>$\therefore \forall F \leqslant F_m=C_m \leqslant \forall C$。</p><h3 id="网络流等价定理"><a href="#网络流等价定理" class="headerlink" title="网络流等价定理"></a>网络流等价定理</h3><p>（这个名字是我自己想的</p><p>综合最大流最小割定理和增广路定理，可以得到这样的结论：</p><blockquote><p>对于一个网络流图 $G=(V,E)$，其中有源点 $s$ 和汇点 $t$ ，那么下面三个条件是等价的：</p><ol><li><p>流 $f$ 是图 $G$ 的最大流；</p></li><li><p>残留网络 $G$ 不存在增广路；</p></li><li><p>在 $G$ 中必存在一个割 $C[S,T]$，使得 $f=C[S,T]$。</p></li></ol></blockquote><p><del>读者自证不难</del></p><h3 id="证明-1-gt-2（即增广路定理）"><a href="#证明-1-gt-2（即增广路定理）" class="headerlink" title="证明 1 =&gt; 2（即增广路定理）"></a>证明 1 =&gt; 2（即增广路定理）</h3><p>利用反证法，假设流 $f$ 是图 $G$ 的最大流，但是残留网络中还存在有增广路 $p$，其流量为 $f_p$，则有流 $f’=f+f_p&gt;f$。这与 $f$ 是最大流产生矛盾。</p><h3 id="证明-2-gt-3（即最大流最小割定理）"><a href="#证明-2-gt-3（即最大流最小割定理）" class="headerlink" title="证明 2 =&gt; 3（即最大流最小割定理）"></a>证明 2 =&gt; 3（即最大流最小割定理）</h3><p>总结一下上面的证明。</p><p>假设残留网络 $G_f$ 不存在增广路，所以在残留网络 $G_f$ 中不存在路径从 $s$ 到达 $t$。我们定义 $S$ 集合为当前残留网络中 $s$ 能够到达的点，同时定义 $T=V-S$，此时构成一个割 $C(S,T)$。</p><p>且 $u∈S,v∈T$，有 $f(u,v)=c(u,v)$。若 $f(u,v)&lt;c(u,v)$，则有 $G_f(u,v)&gt;0$，$s$ 可以到达 $v$，与 $v \in T$ 矛盾。</p><p>因此有 $f(S,T)= \sum f(u,v)=\sum c(u,v)=C(S,T)$。</p><h3 id="证明-3-gt-1："><a href="#证明-3-gt-1：" class="headerlink" title="证明 3 =&gt; 1："></a>证明 3 =&gt; 1：</h3><p>由于 $f$ 的上界为最小割，当 $f$ 到达割的容量时，显然就已经到达最大值，因此 $f$ 为最大流。</p><p>这样就说明了为什么找不到增广路时，所求得的一定是最大流。</p><h2 id="最大权闭合子图"><a href="#最大权闭合子图" class="headerlink" title="最大权闭合子图"></a>最大权闭合子图</h2><p>在一个图中，我们选取一些点构成集合，记为 V，且集合中的出边（即集合中的点的向外连出的弧），所指向的终点也在 V 中，则我们称 V 为闭合图。在所有闭合图中，集合中点的权值之和最大的 V，称为<strong>最大权闭合子图</strong>。</p><h3 id="栗子"><a href="#栗子" class="headerlink" title="栗子"></a>栗子</h3><p><img src="https://cdn.jsdelivr.net/gh/SerokSSR/img/loading.gif" data-lazy-src="https://cdn.jsdelivr.net/gh/SerokSSR/img/cutt.png" alt="img"></p><p>上图中最大权闭合子图为 {3,4,5}。</p><h2 id="最大权闭合子图权值和"><a href="#最大权闭合子图权值和" class="headerlink" title="最大权闭合子图权值和"></a>最大权闭合子图权值和</h2><h3 id="构图"><a href="#构图" class="headerlink" title="构图"></a>构图</h3><p>构建一个超级源点 s，一个超级汇点 t，所有的点按权值的正负连接到 s 和 t 上，转换成一个边权值有向图，如下图：</p><p><img src="https://cdn.jsdelivr.net/gh/SerokSSR/img/loading.gif" data-lazy-src="https://cdn.jsdelivr.net/gh/SerokSSR/img/cut2.png" alt="img"></p><p>（注：点权为 0 的点可以忽略，对结果没有影响）</p><h3 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h3><ul><li>该带边权有向图的 S - T 最小割，割集中所有的边，都与 s 或 t 相连接。</li></ul><blockquote><p>显然，因为不与 s,t 相连的边，权值都是 INF，最小割不可能割在 INF 的边上。</p></blockquote><ul><li>该图中的每一个简单割产生的两个子图，我们记含有点 s 的是图 S，含有点 t 的是图 T，则图 S 是最大权闭合子图。</li></ul><blockquote><p>简单割内不包含边权为 INF 的边，即不含有连通两个图的边（除了连接在 t 点上的边之外）；即，图 S 中没有边与图 T 连通，那么，所有的边都只能连接在图 S 之内，即为闭合图。</p></blockquote><p>记割集中，所有连接在 s 上的边的权值和为 $x_1$，所有连接在 t 上的边的权值和为 $x_2$，则割集中所有边权值和为 $x=x_1+x_2$。</p><p>记图 S 中所有点的权值和为 $w$，记其中正权值之和为 $w_1$，负权值之和为 $- w_2$，故 $w = w_1 - w_2$。</p><p>因此，<br>$$<br>w+x=w_1-w_2+x_1-x_2<br>$$<br>又 ，<br>$$<br>x_2 = w_2<br>$$<br>因为图 S 中所有负权值的点必然连接到 t 点，而图 S 必然要与 t 分割开，故割集中，<strong>连接在 t 点上的边权值和</strong>就是<strong>图S中所有负权值点的权值之和取负</strong>。因而，<br>$$<br>w+x=w_1+x_1<br>$$<br>显然，$w_1 + x_1$ 是整个图中所有正权值之和，记为 $sum$，则<br>$$<br>w=sum-x<br>$$<br>即，<strong>图 S 中所有点的权值和 = 整个图中所有正权值之和 - 割集中所有边权值和</strong>。因为 $sum$ 为定值，只要我们取最小割，则<strong>图 S 中所有点的权值和</strong>就是最大的，即此时图 S 为最大权闭合子图。</p><h3 id="栗子-1"><a href="#栗子-1" class="headerlink" title="栗子"></a>栗子</h3><p>　　　　　<img src="https://cdn.jsdelivr.net/gh/SerokSSR/img/loading.gif" data-lazy-src="https://cdn.jsdelivr.net/gh/SerokSSR/img/cut3.png" alt="img">　　　　　<img src="https://cdn.jsdelivr.net/gh/SerokSSR/img/loading.gif" data-lazy-src="https://cdn.jsdelivr.net/gh/SerokSSR/img/cut4.png" alt="img"></p><h3 id="解法"><a href="#解法" class="headerlink" title="解法"></a>解法</h3><ul><li><p>先记录整个图中，所有正点权值的和；</p></li><li><p>建立对应流网络，求最大流，最大流在数值上等于最小割，故我们得到了流网络的 s-t 最小割；</p></li><li><p><strong>所有正点权值的和</strong>减去 <strong>s-t 最小割</strong>，即得最大权闭合子图的权值和。</p></li></ul><h2 id="P2762-太空飞行计划问题"><a href="#P2762-太空飞行计划问题" class="headerlink" title="P2762 太空飞行计划问题"></a>P2762 太空飞行计划问题</h2><h3 id="Hint"><a href="#Hint" class="headerlink" title="Hint"></a>Hint</h3><p>这里大概讲一下转换成最大流以后怎么输出。</p><p>一个结论就是假如我们跑的是 Dinic 那么我们最后一次网络流（这一次网络流并没有起任何作用，只是确认了无更多残余流量可以退出了）中，所有被分到层的都一定被选上了。</p><p>没有更多残余流量其实意味着这个图已经被割成了两部分，一个实验如果有层数意味着它没有被割掉（被选上了），一个仪器如果有层数意味着它已经被割掉了（也是被选上了）。</p><p>于是只要在最后输出所有有层数的点就行了。</p><h3 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h3><pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#include &lt;iostream&gt;
+#include &lt;queue&gt;
+using namespace std;
+
+const int N &#x3D; 110, INF &#x3D; 0x3f3f3f3f;
+char tools[10000];
+
+class node &#123;
+    public:
+        int u, v, w, next;
+&#125; e[N * N];
+
+int head[N], cur[N], tot &#x3D; 0;
+
+void add(int u, int v, int w) &#123;
+    e[tot] &#x3D; &#123;u, v, w, head[u]&#125;;
+    head[u] &#x3D; tot++;
+    e[tot] &#x3D; &#123;v, u, 0, head[v]&#125;;
+    head[v] &#x3D; tot++;
+&#125;
+
+int h[N], n, m, s, t;
+bool bfs() &#123;
+    
+    memset(h, 0, sizeof h);
+    memcpy(cur, head, sizeof cur);
+    
+    queue&lt;int&gt; q;
+    q.push(s);
+    h[s] &#x3D; 1;
+    
+    while(!q.empty()) &#123;
+        int u &#x3D; q.front();
+        q.pop();
+        for(int i &#x3D; head[u]; i !&#x3D; -1; i &#x3D; e[i].next) &#123;
+            int v &#x3D; e[i].v;
+            if(e[i].w and h[v] &#x3D;&#x3D; 0) &#123;
+                h[v] &#x3D; h[u] + 1;
+                if(v &#x3D;&#x3D; t) return true;
+                q.push(v);
+            &#125;
+        &#125;
+    &#125;
+    
+    return false;
+&#125;
+
+int dfs(int u, int low) &#123;
+    if(u &#x3D;&#x3D; t) return low;
+    int w &#x3D; low;
+    for(int i &#x3D; cur[u]; i !&#x3D; -1; i &#x3D; e[i].next, cur[u] &#x3D; i) &#123;
+        int v &#x3D; e[i].v;
+        if(e[i].w and h[v] &#x3D;&#x3D; h[u] + 1) &#123;
+            int f &#x3D; dfs(v, min(w, e[i].w));
+            if(f &#x3D;&#x3D; 0) h[v] &#x3D; 0;
+            e[i].w -&#x3D; f;
+            e[i^1].w +&#x3D; f;
+            w -&#x3D; f;
+            if(w &#x3D;&#x3D; 0) break;
+        &#125;
+    &#125;
+    return low - w;
+&#125;
+int maxflow &#x3D; 0, sum &#x3D; 0;
+void dinic() &#123;
+    int flow;
+    while(bfs()) while(flow &#x3D; dfs(s, INF)) maxflow +&#x3D; flow;
+&#125;
+int main() &#123;
+    
+    &#x2F;&#x2F;freopen(&quot;shut2.in&quot;, &quot;r&quot;, stdin);
+    
+    scanf(&quot;%d%d&quot;, &amp;m, &amp;n);
+    
+    memset(head, -1, sizeof head);
+    s &#x3D; 0, t &#x3D; n+m+1;
+    for(int i&#x3D;1, w; i&lt;&#x3D;m; ++i) &#123;
+        
+        scanf(&quot;%d&quot;, &amp;w);
+        add(s, i, w);
+        sum +&#x3D; w;
+        
+        memset(tools, &#39;\0&#39;, sizeof tools); 
+        cin.getline(tools, 10000);
+        int ulen &#x3D; 0, tool;
+        while(sscanf(tools + ulen, &quot;%d&quot;, &amp;tool) &#x3D;&#x3D; 1) &#123;
+            add(i, tool + m, INF);
+            if(tool &#x3D;&#x3D; 0) ulen++;
+            else &#123;
+                while(tool) &#123;
+                    tool &#x2F;&#x3D; 10;
+                    ulen++;
+                &#125;
+            &#125;
+            ulen++;
+        &#125;
+    &#125;
+    
+    for(int i&#x3D;1, w; i&lt;&#x3D;n; ++i) &#123;
+        scanf(&quot;%d&quot;, &amp;w);
+        add(i+m, t, w);
+    &#125;
+    
+    dinic();
+    
+    for(int i&#x3D;1; i&lt;&#x3D;m; ++i) if(h[i]) printf(&quot;%d &quot;, i);
+    printf(&quot;\n&quot;);
+    for(int i&#x3D;1; i&lt;&#x3D;n; ++i) if(h[i+m]) printf(&quot;%d &quot;, i);
+    printf(&quot;\n&quot;);
+    
+    printf(&quot;%d\n&quot;, sum - maxflow);
+    
+    return 0;
+&#125;</code></pre><h2 id="全局最小割"><a href="#全局最小割" class="headerlink" title="全局最小割"></a>全局最小割</h2><p>暂时留坑，可以先参考<a target="_blank" rel="noopener" href="https://blog.csdn.net/ddelphine/article/details/77935670">这篇文章</a>。</p><h3 id="Code-POJ-2914-未优化版"><a href="#Code-POJ-2914-未优化版" class="headerlink" title="Code (POJ 2914, 未优化版)"></a>Code (POJ 2914, 未优化版)</h3><pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#include &lt;iostream&gt;
+using namespace std;
+
+const int N &#x3D; 550;
+
+int g[N][N];
+int dis[N];
+bool flag[N], vis[N];
+int n, m, s, t;
+
+int main() &#123;
+    
+    while(scanf(&quot;%d%d&quot;, &amp;n, &amp;m) !&#x3D; EOF) &#123;
+        
+        memset(g, 0, sizeof g);
+        
+        for(int i&#x3D;1, a, b, c; i&lt;&#x3D;m; ++i) &#123;
+            scanf(&quot;%d%d%d&quot;, &amp;a, &amp;b, &amp;c);
+            ++a, ++b;
+            g[a][b] +&#x3D; c; g[b][a] +&#x3D; c; 
+        &#125;
+        
+        int ans &#x3D; 0x3f3f3f3f;
+        memset(flag, false, sizeof flag);
+        
+        for(int o&#x3D;1; o&lt;n; ++o) &#123;
+            
+            s &#x3D; t &#x3D; 0;
+            
+            memset(vis, false, sizeof vis);
+            memset(dis, 0, sizeof dis); 
+            
+            for(int p&#x3D;1; p&lt;&#x3D;n; ++p) &#123;
+                
+                int v &#x3D; -1;
+                for(int i&#x3D;1; i&lt;&#x3D;n; ++i) 
+                    if(!flag[i] and !vis[i] and (v &#x3D;&#x3D; -1 or dis[v] &lt; dis[i]))
+                        v &#x3D; i;
+                if(v &#x3D;&#x3D; -1) break;
+                
+                vis[v] &#x3D; true;
+                
+                s&#x3D;t, t&#x3D;v;
+                for(int i&#x3D;1; i&lt;&#x3D;n; ++i) 
+                    if(!flag[i] and !vis[i]) 
+                        dis[i] +&#x3D; g[t][i];
+            &#125;
+            
+            flag[t] &#x3D; true;
+            ans &#x3D; min(ans, dis[t]);
+            
+            if(ans &#x3D;&#x3D; 0) break;
+            
+            for(int i&#x3D;1; i&lt;&#x3D;n; ++i) &#123;
+                if(flag[i]) continue;
+                g[s][i] +&#x3D; g[t][i];
+                g[i][s] +&#x3D; g[i][t];
+            &#125;
+                
+        &#125;
+        
+        printf(&quot;%d\n&quot;, ans);
+    &#125; 
+    
+    return 0;
+&#125;
+</code></pre></div><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者:</span> <span class="post-copyright-info"><a href="mailto:3091742436@qq.com">Serok.</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接:</span> <span class="post-copyright-info"><a href="https://snow.js.org/minimum-cut/">https://snow.js.org/minimum-cut/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明:</span> <span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh" target="_blank">CC BY-NC-ND 4.0</a> 许可协议。转载请注明来自 <a href="https://snow.js.org" target="_blank">Serok's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%AE%97%E6%B3%95/">算法</a><a class="post-meta__tags" href="/tags/%E7%BD%91%E7%BB%9C%E6%B5%81/">网络流</a><a class="post-meta__tags" href="/tags/%E6%9C%80%E5%B0%8F%E5%89%B2/">最小割</a></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/gh/SerokSSR/img/bx3.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/maximum-flow/"><img class="prev-cover" data-lazy-src="https://cdn.jsdelivr.net/gh/SerokSSR/img/wave.jpg" onerror='onerror=null,src="/null"'><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">网络流：最大流</div></div></a></div><div class="next-post pull-right"><a href="/cf387d/"><img class="next-cover" data-lazy-src="https://cdn.jsdelivr.net/gh/SerokSSR/img/starwar.jpg" onerror='onerror=null,src="/null"'><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">CF387D</div></div></a></div></nav><div class="relatedPosts"><div class="relatedPosts_headline"><i class="fas fa-thumbs-up fa-fw"></i> <span>相关推荐</span></div><div class="relatedPosts_list"><div class="relatedPosts_item"><a href="/network-flow-dijkstra/" title="网络流：Dijkstra 求费用流"><img class="relatedPosts_cover" data-lazy-src="https://cdn.jsdelivr.net/gh/SerokSSR/img/path.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2020-02-29</div><div class="relatedPosts_title">网络流：Dijkstra 求费用流</div></div></a></div><div class="relatedPosts_item"><a href="/maximum-flow/" title="网络流：最大流"><img class="relatedPosts_cover" data-lazy-src="https://cdn.jsdelivr.net/gh/SerokSSR/img/wave.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2020-05-14</div><div class="relatedPosts_title">网络流：最大流</div></div></a></div><div class="relatedPosts_item"><a href="/network-flow-template/" title="网络流：模板"><img class="relatedPosts_cover" data-lazy-src="https://cdn.jsdelivr.net/gh/SerokSSR/img/qxpath.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2020-04-05</div><div class="relatedPosts_title">网络流：模板</div></div></a></div><div class="relatedPosts_item"><a href="/network-flow-deloop/" title="网络流：消圈算法"><img class="relatedPosts_cover" data-lazy-src="https://cdn.jsdelivr.net/gh/SerokSSR/img/dra.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2020-02-29</div><div class="relatedPosts_title">网络流：消圈算法</div></div></a></div><div class="relatedPosts_item"><a href="/stl-set/" title="C++ STL：SET & MULTISET"><img class="relatedPosts_cover" data-lazy-src="https://cdn.jsdelivr.net/gh/SerokSSR/cdn/4dre.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2020-08-12</div><div class="relatedPosts_title">C++ STL：SET & MULTISET</div></div></a></div><div class="relatedPosts_item"><a href="/about-codestyle/" title="About CODESTYLE"><img class="relatedPosts_cover" data-lazy-src="https://cdn.jsdelivr.net/gh/SerokSSR/img/codecat.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2020-01-21</div><div class="relatedPosts_title">About CODESTYLE</div></div></a></div></div></div><hr><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i> <span>评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></article></main><footer id="footer" data-type="color"><div id="footer-wrap"><div class="footer_custom_text">&copy;2020 SerokSSR.<br>Framework <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a> | Theme <a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a><br>相信辰星 在無邊的曠野</div></div></footer></div><section id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></section><div class="search-dialog" id="local-search"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"></div></div></div><hr><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>由</span> <a target="_blank" rel="noopener" href="https://github.com/wzpan/hexo-generator-search" style="color:#49b1f5">hexo-generator-search</a> <span>提供支持</span></div></div></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module" defer></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js" async></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.spacingElementById('content-inner')
+  else {
+    $.getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js', () => {
+      pangu.spacingElementById('content-inner')
+    })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguFn)</script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    loader: {
+      source: {
+        '[tex]/amsCd': '[tex]/amscd'
+      }
+    },
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        addClass: [200,() => {
+          document.querySelectorAll('mjx-container:not([display=\'true\']').forEach( node => {
+            const target = node.parentNode
+            if (!target.classList.contains('has-jax')) {
+              target.classList.add('mathjax-overflow')
+            }
+          })
+        }, '', false]
+      }
+    }
+  }
+  
+  var script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script>function loadValine () {
+  function initValine () {
+    window.valine = new Valine({
+      el: '#vcomment',
+      appId: '7CcIFFTvT9i2zL1qNJSLEPNb-MdYXbMMI',
+      appKey: 'HY117mqITU3yVTTCAdwfCmMh',
+      placeholder: 'Please leave your footprints',
+      avatar: 'monsterid',
+      meta: 'nick,mail,link'.split(','),
+      pageSize: '10',
+      lang: 'en',
+      recordIP: false,
+      serverURLs: '',
+      emojiCDN: '',
+      emojiMaps: "",
+      enableQQ: true,
+      path: window.location.pathname,
+    });
+    if ('nick,mail') { valine.config.requiredFields= 'nick,mail'.split(',') }
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else $.getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js', initValine)
+}
+
+if ('Valine' === 'Valine' || !true) {
+  if (true) loadComment(document.querySelector('#vcomment'),loadValine)
+  else setTimeout(() => loadValine(), 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script></div><div class="app-refresh" id="app-refresh"><div class="app-refresh-wrap"><label>✨ 網站已更新最新版本 👉</label> <a href="javascript:void(0)" onclick="location.reload()">點擊刷新</a></div></div><script>function showNotification(){if(GLOBAL_CONFIG.Snackbar){var t="light"===document.documentElement.getAttribute("data-theme")?GLOBAL_CONFIG.Snackbar.bgLight:GLOBAL_CONFIG.Snackbar.bgDark,e=GLOBAL_CONFIG.Snackbar.position;Snackbar.show({text:"网站更新啦ヾ(•ω•`)o",backgroundColor:t,duration:5e5,pos:e,actionText:"点击加载",actionTextColor:"#fff",onActionClick:function(t){location.reload()}})}else{var o=`top: 0; background: ${"light"===document.documentElement.getAttribute("data-theme")?"#49b1f5":"#1f1f1f"};`;document.getElementById("app-refresh").style.cssText=o}}"serviceWorker"in navigator&&(navigator.serviceWorker.controller&&navigator.serviceWorker.addEventListener("controllerchange",function(){showNotification()}),window.addEventListener("load",function(){navigator.serviceWorker.register("/sw.js")}));</script><div class="aplayer no-destroy" data-id="2621353166" data-server="netease" data-type="playlist" data-fixed="true" data-mini="true" data-listfolded="true" data-order="random" data-preload="none" data-autoplay="false" muted></div><script src="https://cdn.jsdelivr.net/npm/prismjs/prism.min.js"></script><script src="https://cdn.jsdelivr.net/npm/prismjs/plugins/autoloader/prism-autoloader.min.js"></script><script src="https://cdn.jsdelivr.net/npm/prismjs/plugins/line-numbers/prism-line-numbers.min.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/gh/SerokSSR/cdn/meting.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = [
+  'title',
+  'meta[name=description]',
+  '#config_change',
+  '#body-wrap',
+  '#rightside-config-hide',
+  '#rightside-config-show',
+  '.js-pjax'
+]
+
+if (false) {
+  pjaxSelectors.unshift('meta[property="og:image"]', 'meta[property="og:title"]', 'meta[property="og:url"]')
+}
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:complete', function () {
+  refreshFn()
+
+  $('script[data-pjax]').each(function () {
+    $(this).parent().append($(this).remove())
+  })
+
+  GLOBAL_CONFIG.islazyload && lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  if (typeof gtag === 'function') {
+    gtag('config', '', {'page_path': window.location.pathname});
+  }
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // Analytics
+  if (false) {
+    MtaH5.pgv()
+  }
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+
+document.addEventListener('pjax:send', function () {
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  $(window).off('scroll')
+
+  //reset readmode
+  $('body').hasClass('read-mode') && $('body').removeClass('read-mode')
+
+})</script></div></body></html>

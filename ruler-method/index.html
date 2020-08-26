@@ -1,0 +1,635 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>尺取法 | Serok's Blog</title><meta name="description" content="利用双指针及队列。"><meta name="keywords" content="尺取法，双指针，单调队列, 算法"><meta name="author" content="Serok.,3091742436@qq.com"><meta name="copyright" content="Serok."><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/SerokSSR/img/favicon.ico"><link rel="canonical" href="https://snow.js.org/ruler-method/"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><link rel="preconnect" href="//cdn.jsdelivr.net"><link rel="preconnect" href="//hm.baidu.com"><link rel="preconnect" href="//zz.bdstatic.com"><meta name="baidu-site-verification" content="WVhN9yb1qI"><meta property="og:type" content="article"><meta property="og:title" content="尺取法"><meta property="og:url" content="https://snow.js.org/ruler-method/"><meta property="og:site_name" content="Serok's Blog"><meta property="og:description" content="利用双指针及队列。"><meta property="og:image" content="https://uploads.sxlcdn.com/static/backgrounds/nature/172.jpg"><meta property="article:published_time" content="2020-02-03T16:00:00.000Z"><meta property="article:modified_time" content="2020-08-19T05:08:02.001Z"><meta name="twitter:card" content="summary"><link rel="manifest" href="/manifest.json"><meta name="theme-color" content="#fff"><meta name="msapplication-TileColor" content="#fff"><link rel="apple-touch-icon" sizes="180x180" href="/image/pwa/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/image/pwa/32.ico"><link rel="icon" type="image/png" sizes="16x16" href="/image/pwa/32.ico"><link rel="mask-icon" href="/image/pwa/safari-pinned-tab.svg" color="#5bbad5"><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css"><script>var _hmt=_hmt||[];!function(){var e=document.createElement("script");e.src="https://hm.baidu.com/hm.js?361beab41b2890d7429784b5d0071979";var t=document.getElementsByTagName("script")[0];t.parentNode.insertBefore(e,t)}()</script><link rel="stylesheet" href="https://fonts.dogedoge.com/css2?family=Open+Sans:wght@300;400;600&amp;display=swap"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  hexoversion: '5.1.1',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"prismjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  bookmark: {
+    message_prev: '按',
+    message_next: '键将本页加入书签'
+  },
+  runtime: '天',
+  last_push_date: {"zeroDay":"今天","suffix":"天前"},
+  copyright: undefined,
+  ClickShowText: undefined,
+  medium_zoom: false,
+  fancybox: true,
+  Snackbar: {"bookmark":{"message_prev":"按","message_next":"键将本页加入书签"},"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#121212","position":"top-center"},
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  baiduPush: true,
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+      const now = new Date()
+      const expiryDay = ttl * 86400000
+      const item = {
+        value: value,
+        expiry: now.getTime() + expiryDay,
+      }
+      localStorage.setItem(key, JSON.stringify(item))
+    },
+  
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE={isPost:!0,isHome:!1,isHighlightShrink:!0,isSidebar:!1,postUpdate:"2020-08-19 13:08:02"}</script><noscript><style>#nav{opacity:1}.justified-gallery img{opacity:1}</style></noscript><link href="https://fonts.dogedoge.com/css2?family=Noto+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet"><link rel="preload" href="https://cdn.jsdelivr.net/gh/SerokSSR/cdn/optimize.css" as="style" onload='this.onload=null,this.rel="stylesheet"'><noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SerokSSR/cdn/optimize.css"></noscript><link rel="preload" href="https://cdn.jsdelivr.net/gh/SerokSSR/img/plugin.min.css" as="style" onload='this.onload=null,this.rel="stylesheet"'><noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SerokSSR/img/plugin.min.css"></noscript><style>.app-refresh{position:fixed;top:-2.2rem;left:0;right:0;z-index:99999;padding:0 1rem;font-size:18px;height:2.2rem;transition:all .3s ease}.app-refresh-wrap{display:flex;color:#fff;height:100%;align-items:center;justify-content:center}.app-refresh-wrap a{color:#fff;text-decoration:underline;cursor:pointer}</style><style>::-webkit-scrollbar{width:8px;height:8px}::-webkit-scrollbar-track{background-color:rgba(73,177,245,.2);border-radius:2em}::-webkit-scrollbar-thumb{background-color:#49b1f5;background-image:-webkit-linear-gradient(45deg,rgba(255,255,255,.4) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.4) 50%,rgba(255,255,255,.4) 75%,transparent 75%,transparent);border-radius:2em}::-webkit-scrollbar-corner{background-color:transparent}::-moz-selection{color:#fff;background-color:#49b1f5}</style><style>#pagination .page-number{border-radius:20px}#aside_content .card-info .author-info__name{font-weight:600}#rightside>div>a,#rightside>div>button{width:32px;height:32px;border-radius:20px}h1,h2,h3,h4,h5,h6{color:#2f353c}h1{font-size:2em}h2{font-size:1.6em}h3{font-size:1.35em}h4{font-size:1.2em}h5{font-size:1em}h6{font-size:1em;color:#777}code{font-size:14px}</style><style>.aplayer.aplayer-fixed.aplayer-narrow .aplayer-body{left:-66px!important}.aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover{left:0!important}</style><meta name="generator" content="Hexo 5.1.1"></head><body><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="avatar-img" data-lazy-src="https://q1.qlogo.cn/g?b=qq&amp;nk=1656071287&amp;s=640" onerror='onerror=null,src="https://cdn.jsdelivr.net/gh/SerokSSR/img/friend_404.gif"' alt="avatar"></div><div class="mobile_post_data"><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">27</div></a></div></div><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">34</div></a></div></div><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">6</div></a></div></div></div><hr><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i> <span>Home</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-book-open"></i> <span>Index</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i> <span>Archives</span></a></li><li><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i> <span>Tags</span></a></li><li><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i> <span>Categories</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/friends/"><i class="fa-fw fas fa-link"></i> <span>Friends</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fas fa-comment-dots"></i> <span>Messageboard</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i> <span>About</span></a></div></div></div></div><div id="body-wrap"><header class="post-bg" id="page-header" style="background-image:url(https://uploads.sxlcdn.com/static/backgrounds/nature/172.jpg)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Serok's Blog</a></span><span class="menus"><div id="search_button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i> <span>搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i> <span>Home</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-book-open"></i> <span>Index</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i> <span>Archives</span></a></li><li><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i> <span>Tags</span></a></li><li><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i> <span>Categories</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/friends/"><i class="fa-fw fas fa-link"></i> <span>Friends</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fas fa-comment-dots"></i> <span>Messageboard</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i> <span>About</span></a></div></div><span class="toggle-menu close"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><div id="post-title"><div class="posttitle">尺取法</div></div><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2020-02-03T16:00:00.000Z" title="发表于 2020-02-04 00:00:00">2020-02-04</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2020-08-19T05:08:02.001Z" title="更新于 2020-08-19 13:08:02">2020-08-19</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%AE%97%E6%B3%95/">算法</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">3.6k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>18分钟</span></span></div></div></div></header><main class="layout_post" id="content-inner"><article id="post"><div class="post-content" id="article-container"><h1 id="尺取法"><a href="#尺取法" class="headerlink" title="尺取法"></a>尺取法</h1><p><strong>与单调队列相关</strong></p><p>要求在满足条件的情况下，长度越长，答案越好（下简称具有单调性）.</p><p>利用双指针 $l,r$ 及队列思想，对于同一个 $l$ 让 $r$ 尽可能延伸至最远，得到一个答案区间，$r$ 已到达最远后将与 $l$ 有关的信息弹出，对于多个答案区间找出最优解．</p><h2 id="HDU5178-Pairs"><a href="#HDU5178-Pairs" class="headerlink" title="HDU5178 Pairs"></a>HDU5178 Pairs</h2><h3 id="题面"><a href="#题面" class="headerlink" title="题面"></a>题面</h3><p>有 $n$ 个值 $x_1, x_2, \dots,x_n$，求使得 $|x_b-x_a|\leqslant k,a&lt;b$ 的数对 $(a,b)$ 的个数．</p><h3 id="解"><a href="#解" class="headerlink" title="解"></a>解</h3><p>分析可知 $a&lt;b$ 这一条件只是确保无重复，次序其实对于最终答案没有影响．</p><p>考虑先对 $x$ 排序（因原题目有绝对值，无影响），for​ $l$ 尺取出最远的 $r$， 则 $(l,r]$ 间的每个数均与 $l$ 构成合法数对．</p><h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;algorithm&gt;
+
+const int N &#x3D; 110000;
+typedef long long LL;
+
+int T, n;
+LL k, x[N];
+
+int main() &#123;
+     
+    freopen(&quot;hdu5178.in&quot;, &quot;r&quot;, stdin);
+     
+    scanf(&quot;%d&quot;, &amp;T);
+     
+    while(T--) &#123;
+          
+        scanf(&quot;%d%lld&quot;, &amp;n, &amp;k);
+          
+        for(int i&#x3D;1; i&lt;&#x3D;n; ++i) 
+            scanf(&quot;%lld&quot;, x+i);
+          
+        std::sort(x+1, x+n+1);
+          
+        LL ans &#x3D; 0;
+        for(int l&#x3D;1, r&#x3D;2; l&lt;&#x3D;n; ++l) &#123;
+            for(; r &lt;&#x3D; n and x[r] - x[l] &lt;&#x3D; k; ++r);
+            ans +&#x3D; r - l - 1;
+        &#125;
+         
+        printf(&quot;%lld\n&quot;, ans);
+    &#125;
+     
+    return 0;
+&#125;</code></pre><h2 id="HDU6119-小小粉丝度度熊"><a href="#HDU6119-小小粉丝度度熊" class="headerlink" title="HDU6119 小小粉丝度度熊"></a>HDU6119 小小粉丝度度熊</h2><p><strong>类似 CF1041D Glider</strong></p><h3 id="题面-1"><a href="#题面-1" class="headerlink" title="题面"></a>题面</h3><p>给出 $n$ 个已签到的天数区间，$m$ 张补签卡，求可获得的最大连续签到时长。</p><h3 id="解-1"><a href="#解-1" class="headerlink" title="解"></a>解</h3><p>尺取模板。</p><p>天数区间可重叠，须进行合并。</p><p>需要注意的是，当已确定最长合法区间 $[l,r]$ 后（即下一个区间与 $r$ 的距离大于剩余的补签卡数量，连不上），应把剩余补签卡全部应用到 $r$ 之后的天数上得到更优解。</p><h3 id="代码-1"><a href="#代码-1" class="headerlink" title="代码"></a>代码</h3><p>边界条件较多。</p><p>$R$ 为已加入队列的最后一个区间，判断的是区间 $R+1$ 的合法性。</p><p>特判第一个区间，开始时 $sum$ 直接加上第一个已签到区间的长，使用 $0$ 张补签卡。</p><pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+
+const int N &#x3D; 110000;
+
+struct node &#123;
+    int l, r;
+&#125; a[N], b[N];
+
+bool flag[N];
+bool cmp(node a, node b) &#123; return a.l &lt; b.l; &#125;
+int n, m;
+int max(int a, int b) &#123; return a &gt; b ? a : b; &#125;
+
+int main() &#123;
+     
+    freopen(&quot;hdu6119.in&quot;, &quot;r&quot;, stdin);
+     
+    while(scanf(&quot;%d%d&quot;, &amp;n, &amp;m) !&#x3D; EOF) &#123;
+          
+        for(int i&#x3D;1; i&lt;&#x3D;n; ++i) 
+            scanf(&quot;%d%d&quot;, &amp;b[i].l, &amp;b[i].r),
+            flag[i] &#x3D; false;
+                
+        sort(b+1, b+n+1, cmp);
+          
+        for(int i&#x3D;2; i&lt;&#x3D;n; ++i) &#123;
+            if(b[i-1].r &gt;&#x3D; b[i].l) &#123;
+                b[i].l &#x3D; b[i-1].l;
+                b[i].r &#x3D; max(b[i].r, b[i-1].r);
+                flag[i-1] &#x3D; true;
+            &#125;
+        &#125;
+          
+        int tot &#x3D; 0;
+        for(int i&#x3D;1; i&lt;&#x3D;n; ++i) &#123;
+            if(flag[i]) continue;
+            a[++tot].l &#x3D; b[i].l;
+            a[tot].r &#x3D; b[i].r;
+        &#125;
+         
+        int sum &#x3D; a[1].r - a[1].l + 1, f &#x3D; 0, ans &#x3D; 0;
+        for(int L &#x3D; 1, R &#x3D; 1; L &lt;&#x3D; tot; ++L) &#123;
+            for(; R + 1 &lt;&#x3D; tot and f + a[R+1].l - a[R].r - 1 &lt;&#x3D; m; ++R)
+                sum +&#x3D; a[R+1].r - a[R].r,
+                f +&#x3D; a[R+1].l - a[R].r - 1;
+            ans &#x3D; max(ans, sum + m - f);
+            sum -&#x3D; a[L+1].l - a[L].l;
+            f -&#x3D; a[L+1].l - a[L].r - 1;
+        &#125;
+         
+        printf(&quot;%d\n&quot;, ans);
+    &#125;
+    
+    return 0;
+&#125;</code></pre><h2 id="HDU1937-Finding-Seats"><a href="#HDU1937-Finding-Seats" class="headerlink" title="HDU1937 Finding Seats"></a>HDU1937 Finding Seats</h2><h3 id="题面-2"><a href="#题面-2" class="headerlink" title="题面"></a>题面</h3><p>电影院有 $R$ 行 $C$ 列，用 <code>&#39;.&#39;</code> 表示空座，<code>&#39;X&#39;</code> 表示不可选。</p><p>要求选择至少 $K$ 个空座位 $(x_i, y_i)$，使得<br>$$<br>(\max x_i -\min x_i)\cdot(\max y_i -\min y_i),1\leqslant i \leqslant K<br>$$<br>最小。</p><h3 id="解-2"><a href="#解-2" class="headerlink" title="解"></a>解</h3><p>二维尺取。</p><p>枚举题目所求长方形的上下界，尺取求出左右最短距离。用二维前缀和简化空位查找。</p><h3 id="代码-2"><a href="#代码-2" class="headerlink" title="代码"></a>代码</h3><pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;iostream&gt;
+using namespace std;
+
+const int N &#x3D; 330;
+
+int row, c, k;
+char str[N];
+int s[N][N];
+
+int query(int x1, int y1, int x2, int y2) &#123;
+    return s[x2][y2] - s[x1-1][y2] - s[x2][y1-1] + s[x1-1][y1-1];
+&#125;
+
+int main() &#123;
+     
+    freopen(&quot;hdu1937.in&quot;, &quot;r&quot;, stdin);
+     
+    while(true) &#123;
+         
+        scanf(&quot;%d%d%d&quot;, &amp;row, &amp;c, &amp;k);
+        if(row &#x3D;&#x3D; 0 and c &#x3D;&#x3D; 0 and k &#x3D;&#x3D; 0)
+            break;
+          
+        for(int i&#x3D;1; i&lt;&#x3D;row; ++i) &#123;
+            scanf(&quot;%s&quot;, str+1);
+            int sum &#x3D; 0;
+            for(int j&#x3D;1; j&lt;&#x3D;c; ++j) &#123;
+                sum +&#x3D; (str[j] &#x3D;&#x3D; &#39;.&#39; ? 1 : 0);
+                s[i][j] &#x3D; s[i-1][j] + sum;
+            &#125;
+        &#125; 
+        
+        int ans &#x3D; 0x7fffffff;
+        for(int up &#x3D; 1; up &lt;&#x3D; row; ++up) &#123;
+            for(int down &#x3D; up; down &lt;&#x3D; row; ++down) &#123;
+                for(int l&#x3D;1, r&#x3D;1; l&lt;&#x3D;c; ++l) &#123;
+                    for(; r&lt;&#x3D;c; ++r) &#123;
+                        if(query(up, l, down, r) &gt;&#x3D; k) &#123;
+                            ans &#x3D; min(ans, (down - up + 1) * (r - l + 1));
+                            break; 
+                        &#125;
+                    &#125;
+                &#125;
+            &#125;
+        &#125;
+          
+        printf(&quot;%d\n&quot;, ans);
+    &#125;
+     
+    return 0;
+&#125;</code></pre><h2 id="HDU5358-First-One"><a href="#HDU5358-First-One" class="headerlink" title="HDU5358 First One"></a>HDU5358 First One</h2><h3 id="题面-3"><a href="#题面-3" class="headerlink" title="题面"></a>题面</h3><p>有一数列 $a_1, a_2, \dots, a_n$，求<br>$$<br>\sum_{i=1}^{n} \sum_{j=i}^{n} (i + j)(\lfloor \log_2 \sum_{k=i}^{j} a_k \rfloor + 1)<br>$$<br>的值。特别地，$\log_20=0$。</p><h3 id="解-3"><a href="#解-3" class="headerlink" title="解"></a>解</h3><p>观察上式，对于 $\lfloor\log\rfloor$ 来说，它的一个值可对应很多个真数，考虑分块。</p><p>枚举 $\lfloor \log_2 \sum_{k=i}^{j} a_k \rfloor$ 的每一个值（1~34）。</p><p>令<br>$$<br>v =\lfloor \log_2 \sum_{k=i}^{j} a_k \rfloor<br>$$</p><p>$$<br>sum = \sum_{k=i}^{j}a_k<br>$$</p><p>则<br>$$<br>sum \in [2^{v-1},2^v)<br>$$<br>用尺取求出部分和在此范围的区段 $[i,j]$，求出结果加入计数器。</p><h3 id="代码-3"><a href="#代码-3" class="headerlink" title="代码"></a>代码</h3><pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;iostream&gt;
+using namespace std;
+
+const int N &#x3D; 110000;
+typedef long long LL;
+
+LL cl[40], a[N], s[N];
+int T, n;
+
+int main() &#123;
+     
+    freopen(&quot;hdu5358.in&quot;, &quot;r&quot;, stdin);
+     
+    cl[0] &#x3D; -1, cl[1] &#x3D; 1;
+    for(int i&#x3D;2; i&lt;&#x3D;34; ++i) cl[i] &#x3D; ((cl[i-1] + 1) &lt;&lt; 1LL) - 1;
+     
+    scanf(&quot;%d&quot;, &amp;T);
+    while(T--) &#123;
+        scanf(&quot;%d&quot;, &amp;n);
+        for(int i&#x3D;1; i&lt;&#x3D;n; ++i) scanf(&quot;%lld&quot;, a+i);
+        for(int i&#x3D;1; i&lt;&#x3D;n; ++i) s[i] &#x3D; s[i-1] + a[i];
+         
+        LL ans &#x3D; 0;
+        for(LL k&#x3D;1; k&lt;&#x3D;34; ++k) &#123;
+            LL l &#x3D; 0, r &#x3D; 0;
+            for(LL i&#x3D;1; i&lt;&#x3D;n; ++i) &#123;
+                for(l &#x3D; max(l, i); l &lt;&#x3D; n and s[l] - s[i-1] &lt;&#x3D; cl[k-1]; ++l);
+                for(r &#x3D; max(l, r); r &lt;&#x3D; n and s[r] - s[i-1] &lt;&#x3D; cl[k]; ++r);
+                ans +&#x3D; k * (i * (r-l) + (l+r-1) * (r-l) &#x2F; 2);
+            &#125;
+        &#125;
+        printf(&quot;%lld\n&quot;, ans);
+    &#125;
+     
+    return 0;
+&#125;</code></pre><h2 id="HDU6103-Kirinriki"><a href="#HDU6103-Kirinriki" class="headerlink" title="HDU6103 Kirinriki"></a>HDU6103 Kirinriki</h2><h3 id="题面-4"><a href="#题面-4" class="headerlink" title="题面"></a>题面</h3><p>有两字符串 $A,B$（从 $1$ 编号），长度均为 $n$，定义<br>$$<br>dis(A,B) = \sum_{i=1}^n|A_i-B_{n-i}|<br>$$<br>字符之差定义为其 ASCII 码的差。</p><p>对于一字符串 $S$，找出它的两个不重叠连续子串，他们的 $dis$ 不大于 $m$，求最长合法子串长度。</p><h3 id="解-4"><a href="#解-4" class="headerlink" title="解"></a>解</h3><p>寻找单调性，易得<br>$$<br>\forall S’ \subseteq S,T’\subseteq T:dis(S’,T’)\leqslant dis(S,T)<br>$$<br>因此子串越长越好。</p><p>又$\because$ $\forall$ 两个合法子串，其必关于母串的某一位置（或某两位置之间）对称，考虑枚举这一中心点，分上面的两种情况。</p><p>注意到对于每个子串，其长度越大越好，同时又有约束上界，可对称尺取。</p><h3 id="代码-4"><a href="#代码-4" class="headerlink" title="代码"></a>代码</h3><pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+int abs(int x) &#123;
+    return x &gt; 0 ? x : -x; 
+&#125;
+int max(int a, int b) &#123;
+    return a &gt; b ? a : b;
+&#125;
+int T, n, m;
+char s[22000];
+
+int main() &#123;
+     
+    freopen(&quot;hdu6103.in&quot;, &quot;r&quot;, stdin);
+     
+    scanf(&quot;%d&quot;, &amp;T);
+     
+    while(T--) &#123;
+        scanf(&quot;%d&quot;, &amp;m);
+        scanf(&quot;%s&quot;, s+1);
+        int n &#x3D; strlen(s+1), ans &#x3D; 0;
+          
+        for(int i&#x3D;1; i&lt;&#x3D;n; ++i) &#123;
+            int f &#x3D; 0;
+            for(int l1 &#x3D; i-1, r1 &#x3D; i-1, l2 &#x3D; i+1, r2 &#x3D; i+1; l1 &gt; 0 and l2 &lt;&#x3D; n; --l1, ++l2) &#123;
+                for(; r1 &gt; 0 and r2 &lt;&#x3D; n and f + abs(s[r1] - s[r2]) &lt;&#x3D; m; --r1, ++r2) f +&#x3D; abs(s[r1] - s[r2]);
+                ans &#x3D; max(ans, r2 - l2);
+                f -&#x3D; abs(s[l1] - s[l2]);
+             &#125;
+        &#125;
+          
+        for(int i&#x3D;1; i&lt;&#x3D;n; ++i) &#123;
+            int f &#x3D; 0;
+            for(int l1 &#x3D; i, r1 &#x3D; i, l2 &#x3D; i+1, r2 &#x3D; i+1; l1 &gt; 0 and l2 &lt;&#x3D; n; --l1, ++l2) &#123;
+                for(; r1 &gt; 0 and r2 &lt;&#x3D; n and f + abs(s[r1] - s[r2]) &lt;&#x3D; m; --r1, ++r2) f +&#x3D; abs(s[r1] - s[r2]);
+                ans &#x3D; max(ans, r2 - l2);
+                f -&#x3D; abs(s[l1] - s[l2]);
+            &#125;
+        &#125;
+          
+        printf(&quot;%d\n&quot;, ans);
+    &#125; 
+     
+    return 0;
+&#125;</code></pre><h2 id="POJ2739-Sum-of-Consecutive-Prime-Numbers"><a href="#POJ2739-Sum-of-Consecutive-Prime-Numbers" class="headerlink" title="POJ2739 Sum of Consecutive Prime Numbers"></a>POJ2739 Sum of Consecutive Prime Numbers</h2><p>尺取水题。</p><pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;cmath&gt;
+using namespace std;
+
+bool prime(int x) &#123;
+    if(x &lt; 2) return false;
+    int m &#x3D; int(sqrt(x));
+    
+    for(int i&#x3D;2; i&lt;&#x3D;m; ++i) 
+        if(x % i &#x3D;&#x3D; 0) return false;
+    return true;
+&#125;
+
+int x, p[11000];
+int main() &#123;
+    
+    int tot &#x3D; 0;
+    for(int i&#x3D;1; i&lt;&#x3D;10000; ++i) &#123;
+        if(prime(i)) p[++tot] &#x3D; i;
+    &#125;
+    
+    while(true) &#123;
+        scanf(&quot;%d&quot;, &amp;x);
+        if(x &#x3D;&#x3D; 0) break;
+        int f &#x3D; 0, ans &#x3D; 0;
+        for(int l&#x3D;1, r&#x3D;1; l&lt;&#x3D;tot; ++l) &#123;
+            for(; r &lt;&#x3D; tot and f + p[r] &lt;&#x3D; x; ++r) f +&#x3D; p[r];
+            if(f &#x3D;&#x3D; x) ++ans;
+            f -&#x3D; p[l];
+        &#125;
+        printf(&quot;%d\n&quot;, ans);
+    &#125;
+    
+    return 0;
+&#125;</code></pre><h2 id="CF1198A-MP3"><a href="#CF1198A-MP3" class="headerlink" title="CF1198A MP3"></a>CF1198A MP3</h2><h3 id="题面-5"><a href="#题面-5" class="headerlink" title="题面"></a>题面</h3><p>给出 $n,I$。</p><p>$n$ - 数列 $a_1,a_2,…,a_n$</p><p>选定一个区间 $[l,r]$，并进行操作，使<br>$$<br>v_i =<br>\begin{cases}<br>l&amp;v_i&lt;l\<br>v_i&amp;l\leqslant v_i \leqslant r\<br>r&amp;v_i&gt;r<br>\end{cases}<br>$$<br>要求经过处理后，数列中不同的数的个数 $\leqslant 2^{\lfloor 8I/n\rfloor}$，且使数列中被更改的位置的总数最小，求这个最小值。</p><h3 id="解-5"><a href="#解-5" class="headerlink" title="解"></a>解</h3><p>原题面较长，需耐心看题。</p><p>可先将原数列排序并离散化，记下每种数的出现次数，用前缀和优化求和。因顺序已预先排好，直接尺取 $[l,r]$，使区间内的值最大化，用总数相减得出答案。</p><h3 id="代码-5"><a href="#代码-5" class="headerlink" title="代码"></a>代码</h3><pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp">#include &lt;cstdio&gt;
+#include &lt;cmath&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+const int N &#x3D; 440000;
+ 
+int a[N], b[N], cnt[N], s[N], n, I, t;
+ 
+int power(int x) &#123;
+    int ans &#x3D; 1, base &#x3D; 2;
+    for(; x; x &gt;&gt;&#x3D; 1) &#123;
+        if(x &amp; 1) ans *&#x3D; base;
+        if(ans &gt; t) return ans;
+        base *&#x3D; base;
+    &#125;
+    return ans;
+&#125;
+ 
+int main() &#123;
+    
+    freopen(&quot;cf1198a.in&quot;, &quot;r&quot;, stdin); 
+    
+    scanf(&quot;%d%d&quot;, &amp;n, &amp;I);
+    for(int i&#x3D;1; i&lt;&#x3D;n; ++i) scanf(&quot;%d&quot;, a+i), b[i] &#x3D; a[i];
+    
+    if(8*I &gt; n*((int)log2(n) + 1)) &#123;
+        printf(&quot;0\n&quot;);
+        return 0;
+    &#125;
+    
+    sort(b+1, b+n+1);
+    t &#x3D; unique(b+1, b+n+1) - (b+1);
+    
+    int K &#x3D; power(8*I&#x2F;n);
+    
+    for(int i&#x3D;1; i&lt;&#x3D;n; ++i) &#123;
+        int p &#x3D; lower_bound(b+1, b+t+1, a[i]) - b;
+        ++cnt[p];
+    &#125;
+    
+    for(int i&#x3D;1; i&lt;&#x3D;t; ++i) s[i] &#x3D; s[i-1] + cnt[i];
+    
+    int ans &#x3D; 0x7fffffff;
+    for(int l&#x3D;1, r; l&lt;&#x3D;t; ++l) &#123;
+        r &#x3D; min(l + K - 1, t);
+        ans &#x3D; min(ans, s[t] - (s[r] - s[l-1]));
+    &#125;
+    
+    printf(&quot;%d\n&quot;, ans);
+    
+    return 0;
+&#125;</code></pre><h2 id="CF180E-Cubes"><a href="#CF180E-Cubes" class="headerlink" title="CF180E Cubes"></a>CF180E Cubes</h2><h3 id="题意简述"><a href="#题意简述" class="headerlink" title="题意简述"></a>题意简述</h3><p>现有一数列 $a_1,a_2,…,a_n (1\leqslant a_i \leqslant m)$（更准确地翻译的话，现有一排小方块，第 $i$ 个方块的颜色为 $a_i$），求在最多删去 $k$ 个位置的数后，所能获得的最长连续子段的长度，要求该子段中所有数均相同．</p><h3 id="解释"><a href="#解释" class="headerlink" title="解释"></a>解释</h3><ul><li>可以不删数．</li><li>$1 \leqslant n \leqslant 2 \times 10^5$，$1 \leqslant m \leqslant 10^5$，$0 \leqslant k &lt;n$．</li><li>样例#1：删去 $5th$ 和 $6th$．</li><li>样例#2：删去 $4th$ 和 $7th$．</li><li>样例#3：不变．</li></ul><h3 id="解答"><a href="#解答" class="headerlink" title="解答"></a>解答</h3><p>枚举每种颜色，这样问题就可被简化为对于每种颜色，求出其修改后的最长合法子段，可用尺取法求解。</p><p>尺取法与单调队列有关，应用范围比较小，要求原问题在满足条件的情况下，长度越长，答案越好。利用双指针 $l,r$ 及队列思想，对于同一个 $l$ 让 $r$ 尽可能延伸至最远，得到一个答案区间，$r$ 已到达最远后将与 $l$ 有关的信息弹出，对于多个答案区间找出最优解。</p><p>更详细的解释请看<a href="%5Bhttps://www.baidu.com/s?ie=UTF-8&wd=%E5%B0%BA%E5%8F%96%E6%B3%95%5D(https://www.baidu.com/s?ie=UTF-8&wd=%E5%B0%BA%E5%8F%96%E6%B3%95)">这里</a></p><h3 id="代码-6"><a href="#代码-6" class="headerlink" title="代码"></a>代码</h3><p>将原数列分块，对每种颜色建立链表，枚举时直接访问。</p><p>链表的每个节点存储该颜色块的左右端点。</p><pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp">#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#include &lt;iostream&gt;
+using namespace std;
+
+const int N &#x3D; 220000, M &#x3D; 110000;
+
+struct node &#123;
+    int l, r, next;
+&#125; a[N];
+
+int tmp[M], n, m, k, h[M];
+
+int main() &#123;
+    
+    freopen(&quot;cf180e.in&quot;, &quot;r&quot;, stdin);
+    
+    scanf(&quot;%d%d%d&quot;, &amp;n, &amp;m, &amp;k);
+    
+    int f &#x3D; 0, tot &#x3D; 0, ans &#x3D; 0;
+    for(int i&#x3D;1, c; i&lt;&#x3D;n; ++i) &#123;
+        scanf(&quot;%d&quot;, &amp;c);
+        if(f &#x3D;&#x3D; c) a[tot].r &#x3D; i;
+        else &#123;
+            a[++tot] &#x3D; (node) &#123;i, i, c, 0&#125;;
+            if(h[x]) a[tmp[c]].next &#x3D; tmp[c] &#x3D; tot;
+            else h[x] &#x3D; tmp[x] &#x3D; tot;
+            f &#x3D; c;
+        &#125;
+    &#125;
+    
+    for(int i&#x3D;1; i&lt;&#x3D;m; ++i) &#123;
+        if(h[i] &#x3D;&#x3D; 0) continue; &#x2F;&#x2F; 无该颜色
+        int L &#x3D; h[i], R &#x3D; h[i], f &#x3D; 0, sum &#x3D; a[h[i]].r - a[h[i]].l + 1;
+        for(; L; L &#x3D; a[L].next) &#123;
+            for(; a[R].next and f + a[a[R].next].l - a[R].r - 1 &lt;&#x3D; k; R &#x3D; a[R].next) 
+                f +&#x3D; a[a[R].next].l - a[R].r - 1, 
+                sum +&#x3D; a[a[R].next].r - a[a[R].next].l + 1;    
+            ans &#x3D; max(ans, sum); &#x2F;&#x2F; 统计
+            sum -&#x3D; a[L].r - a[L].l + 1; &#x2F;&#x2F; 弹出
+            f -&#x3D; a[a[L].next].l - a[L].r - 1;
+        &#125;
+    &#125;
+    
+    printf(&quot;%d\n&quot;, ans);
+    
+    return 0;
+&#125; </code></pre><h2 id="CF939E-Maximize"><a href="#CF939E-Maximize" class="headerlink" title="CF939E Maximize!"></a>CF939E Maximize!</h2><h3 id="题面-6"><a href="#题面-6" class="headerlink" title="题面"></a>题面</h3><p>对于一个只包含正整数的 multiset $S$，你需要支持以下 $2$ 种操作：</p><ul><li>$1$<ul><li>找出 $S$ 的一个子集 $s$，使 $max(s)-mean(s)$ 最大，并输出这个最大值。保留十位小数。</li></ul></li><li>$2$ $x$<ul><li>加入一个新数 $x$ 到 $S$ 中，保证加入的数是递增的。</li></ul></li></ul><h3 id="解-6"><a href="#解-6" class="headerlink" title="解"></a>解</h3><p>思维题。</p><p>$max$ 越大越好，$mean$ 越小越好。</p><p>结论一：子集 $s$ 中必包含 $\max S$。</p><p>结论二：$\forall x \in S, x\notin s,mean(s) &gt; x:mean(s) &lt; mean(s\cup{x})$​ 。</p><p>证明略。</p><h3 id="代码-7"><a href="#代码-7" class="headerlink" title="代码"></a>代码</h3><p><del>略丑</del>。</p><p>为防止 WA，特判了较小的情况，维护的也略微麻烦一点。</p><pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp">#include &lt;stdio.h&gt;
+
+const int N &#x3D; 550000;
+typedef double LF;
+
+int Q, s[N];
+
+int main() &#123;
+    
+    freopen(&quot;cf939e.in&quot;, &quot;r&quot;, stdin);
+    
+    int tot &#x3D; 0, f &#x3D; 0;
+    LF sum &#x3D; 0, lastans &#x3D; 0, lasttype &#x3D; 0;
+    
+    scanf(&quot;%d&quot;, &amp;Q);
+    
+    while(Q--) &#123;
+    
+        int type;
+        scanf(&quot;%d&quot;, &amp;type);
+        
+        if(type &#x3D;&#x3D; 1) &#123;
+            scanf(&quot;%d&quot;, &amp;s[++tot]);
+            lasttype &#x3D; type;
+        &#125;
+        else &#123;
+            
+            if(lasttype &#x3D;&#x3D; 2) &#123;
+                printf(&quot;%.10lf\n&quot;, lastans);
+                continue;
+            &#125;
+            
+            if(tot &#x3D;&#x3D; 1) &#123;
+                printf(&quot;%.10lf\n&quot;, (LF)0);
+                lastans &#x3D; 0;
+                lasttype &#x3D; 2;
+                continue;
+            &#125;
+            
+            if(tot &#x3D;&#x3D; 2) &#123;
+                lastans &#x3D; s[2] - (s[1] + s[2]) &#x2F; 2.0;
+                printf(&quot;%.10lf\n&quot;, lastans);
+                lasttype &#x3D; 2;
+                sum &#x3D; s[1], f &#x3D; 1;
+                continue;
+            &#125;
+            
+            for(int i&#x3D;f+1; i&lt;tot; ++i) &#123;
+                if((LF)(sum + s[tot]) &#x2F; i &gt; (LF)s[i]) f &#x3D; i, sum +&#x3D; s[i];
+                else break; 
+            &#125;
+            
+            lastans &#x3D; s[tot] - (sum + s[tot]) &#x2F; (f+1);
+            printf(&quot;%.10lf\n&quot;, lastans);
+            
+            lasttype &#x3D; type;
+        &#125;
+    &#125;
+    
+    return 0;
+&#125;</code></pre></div><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者:</span> <span class="post-copyright-info"><a href="mailto:3091742436@qq.com">Serok.</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接:</span> <span class="post-copyright-info"><a href="https://snow.js.org/ruler-method/">https://snow.js.org/ruler-method/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明:</span> <span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh" target="_blank">CC BY-NC-ND 4.0</a> 许可协议。转载请注明来自 <a href="https://snow.js.org" target="_blank">Serok's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%AE%97%E6%B3%95/">算法</a><a class="post-meta__tags" href="/tags/%E5%8D%95%E8%B0%83%E9%98%9F%E5%88%97/">单调队列</a><a class="post-meta__tags" href="/tags/%E5%B0%BA%E5%8F%96%E6%B3%95/">尺取法</a><a class="post-meta__tags" href="/tags/%E5%8F%8C%E6%8C%87%E9%92%88/">双指针</a></div><div class="post_share"><div class="social-share" data-image="https://uploads.sxlcdn.com/static/backgrounds/nature/172.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/mo-shang/"><img class="prev-cover" data-lazy-src="https://pic-bucket.ws.126.net/photo/0003/2019-05-31/EGH1EP8B3LF60003NOS.jpg" onerror='onerror=null,src="/null"'><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">陌上</div></div></a></div><div class="next-post pull-right"><a href="/monotonous-queue/"><img class="next-cover" data-lazy-src="https://timgsa.baidu.com/timg?image&amp;quality=10086&amp;size=b9999_10000&amp;sec=1581782755290&amp;di=fa5308502034376baeffb2e8b662a56c&amp;imgtype=0&amp;src=http%3A%2F%2Fpic1.win4000.com%2Fwallpaper%2Fe%2F54f6c69988985.jpg" onerror='onerror=null,src="/null"'><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">单调队列</div></div></a></div></nav><div class="relatedPosts"><div class="relatedPosts_headline"><i class="fas fa-thumbs-up fa-fw"></i> <span>相关推荐</span></div><div class="relatedPosts_list"><div class="relatedPosts_item"><a href="/monotonous-queue/" title="单调队列"><img class="relatedPosts_cover" data-lazy-src="https://timgsa.baidu.com/timg?image&quality=10086&size=b9999_10000&sec=1581782755290&di=fa5308502034376baeffb2e8b662a56c&imgtype=0&src=http%3A%2F%2Fpic1.win4000.com%2Fwallpaper%2Fe%2F54f6c69988985.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2020-02-01</div><div class="relatedPosts_title">单调队列</div></div></a></div><div class="relatedPosts_item"><a href="/stl-set/" title="C++ STL：SET & MULTISET"><img class="relatedPosts_cover" data-lazy-src="https://cdn.jsdelivr.net/gh/SerokSSR/cdn/4dre.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2020-08-12</div><div class="relatedPosts_title">C++ STL：SET & MULTISET</div></div></a></div><div class="relatedPosts_item"><a href="/about-codestyle/" title="About CODESTYLE"><img class="relatedPosts_cover" data-lazy-src="https://cdn.jsdelivr.net/gh/SerokSSR/img/codecat.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2020-01-21</div><div class="relatedPosts_title">About CODESTYLE</div></div></a></div><div class="relatedPosts_item"><a href="/cf387d/" title="CF387D"><img class="relatedPosts_cover" data-lazy-src="https://cdn.jsdelivr.net/gh/SerokSSR/img/starwar.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2020-04-25</div><div class="relatedPosts_title">CF387D</div></div></a></div><div class="relatedPosts_item"><a href="/dp-knapsack/" title="动态规划：0-1、完全与多重背包"><img class="relatedPosts_cover" data-lazy-src="https://cdn.jsdelivr.net/gh/SerokSSR/img/pix1.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2020-05-18</div><div class="relatedPosts_title">动态规划：0-1、完全与多重背包</div></div></a></div><div class="relatedPosts_item"><a href="/dp-noip-tg/" title="从 DFS 到 DP：区间、状压与树上"><img class="relatedPosts_cover" data-lazy-src="https://cdn.jsdelivr.net/gh/SerokSSR/cdn/8qv7.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2020-07-29</div><div class="relatedPosts_title">从 DFS 到 DP：区间、状压与树上</div></div></a></div></div></div><hr><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i> <span>评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></article></main><footer id="footer" data-type="color"><div id="footer-wrap"><div class="footer_custom_text">&copy;2020 SerokSSR.<br>Framework <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a> | Theme <a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a><br>相信辰星 在無邊的曠野</div></div></footer></div><section id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></section><div class="search-dialog" id="local-search"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"></div></div></div><hr><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>由</span> <a target="_blank" rel="noopener" href="https://github.com/wzpan/hexo-generator-search" style="color:#49b1f5">hexo-generator-search</a> <span>提供支持</span></div></div></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module" defer></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js" async></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.spacingElementById('content-inner')
+  else {
+    $.getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js', () => {
+      pangu.spacingElementById('content-inner')
+    })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguFn)</script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    loader: {
+      source: {
+        '[tex]/amsCd': '[tex]/amscd'
+      }
+    },
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        addClass: [200,() => {
+          document.querySelectorAll('mjx-container:not([display=\'true\']').forEach( node => {
+            const target = node.parentNode
+            if (!target.classList.contains('has-jax')) {
+              target.classList.add('mathjax-overflow')
+            }
+          })
+        }, '', false]
+      }
+    }
+  }
+  
+  var script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script>function loadValine () {
+  function initValine () {
+    window.valine = new Valine({
+      el: '#vcomment',
+      appId: '7CcIFFTvT9i2zL1qNJSLEPNb-MdYXbMMI',
+      appKey: 'HY117mqITU3yVTTCAdwfCmMh',
+      placeholder: 'Please leave your footprints',
+      avatar: 'monsterid',
+      meta: 'nick,mail,link'.split(','),
+      pageSize: '10',
+      lang: 'en',
+      recordIP: false,
+      serverURLs: '',
+      emojiCDN: '',
+      emojiMaps: "",
+      enableQQ: true,
+      path: window.location.pathname,
+    });
+    if ('nick,mail') { valine.config.requiredFields= 'nick,mail'.split(',') }
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else $.getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js', initValine)
+}
+
+if ('Valine' === 'Valine' || !true) {
+  if (true) loadComment(document.querySelector('#vcomment'),loadValine)
+  else setTimeout(() => loadValine(), 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script></div><div class="app-refresh" id="app-refresh"><div class="app-refresh-wrap"><label>✨ 網站已更新最新版本 👉</label> <a href="javascript:void(0)" onclick="location.reload()">點擊刷新</a></div></div><script>function showNotification(){if(GLOBAL_CONFIG.Snackbar){var t="light"===document.documentElement.getAttribute("data-theme")?GLOBAL_CONFIG.Snackbar.bgLight:GLOBAL_CONFIG.Snackbar.bgDark,e=GLOBAL_CONFIG.Snackbar.position;Snackbar.show({text:"网站更新啦ヾ(•ω•`)o",backgroundColor:t,duration:5e5,pos:e,actionText:"点击加载",actionTextColor:"#fff",onActionClick:function(t){location.reload()}})}else{var o=`top: 0; background: ${"light"===document.documentElement.getAttribute("data-theme")?"#49b1f5":"#1f1f1f"};`;document.getElementById("app-refresh").style.cssText=o}}"serviceWorker"in navigator&&(navigator.serviceWorker.controller&&navigator.serviceWorker.addEventListener("controllerchange",function(){showNotification()}),window.addEventListener("load",function(){navigator.serviceWorker.register("/sw.js")}));</script><div class="aplayer no-destroy" data-id="2621353166" data-server="netease" data-type="playlist" data-fixed="true" data-mini="true" data-listfolded="true" data-order="random" data-preload="none" data-autoplay="false" muted></div><script src="https://cdn.jsdelivr.net/npm/prismjs/prism.min.js"></script><script src="https://cdn.jsdelivr.net/npm/prismjs/plugins/autoloader/prism-autoloader.min.js"></script><script src="https://cdn.jsdelivr.net/npm/prismjs/plugins/line-numbers/prism-line-numbers.min.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/gh/SerokSSR/cdn/meting.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = [
+  'title',
+  'meta[name=description]',
+  '#config_change',
+  '#body-wrap',
+  '#rightside-config-hide',
+  '#rightside-config-show',
+  '.js-pjax'
+]
+
+if (false) {
+  pjaxSelectors.unshift('meta[property="og:image"]', 'meta[property="og:title"]', 'meta[property="og:url"]')
+}
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:complete', function () {
+  refreshFn()
+
+  $('script[data-pjax]').each(function () {
+    $(this).parent().append($(this).remove())
+  })
+
+  GLOBAL_CONFIG.islazyload && lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  if (typeof gtag === 'function') {
+    gtag('config', '', {'page_path': window.location.pathname});
+  }
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // Analytics
+  if (false) {
+    MtaH5.pgv()
+  }
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+
+document.addEventListener('pjax:send', function () {
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  $(window).off('scroll')
+
+  //reset readmode
+  $('body').hasClass('read-mode') && $('body').removeClass('read-mode')
+
+})</script></div></body></html>

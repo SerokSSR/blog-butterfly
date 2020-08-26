@@ -1,0 +1,360 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>从 DFS 到 DP：区间、状压与树上 | Serok's Blog</title><meta name="description" content="区间、状压与树上 DP"><meta name="keywords" content="算法,DP,记忆化搜索,图论,树,DFS"><meta name="author" content="Serok.,3091742436@qq.com"><meta name="copyright" content="Serok."><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/SerokSSR/img/favicon.ico"><link rel="canonical" href="https://snow.js.org/dp-noip-tg/"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><link rel="preconnect" href="//cdn.jsdelivr.net"><link rel="preconnect" href="//hm.baidu.com"><link rel="preconnect" href="//zz.bdstatic.com"><meta name="baidu-site-verification" content="WVhN9yb1qI"><meta property="og:type" content="article"><meta property="og:title" content="从 DFS 到 DP：区间、状压与树上"><meta property="og:url" content="https://snow.js.org/dp-noip-tg/"><meta property="og:site_name" content="Serok's Blog"><meta property="og:description" content="区间、状压与树上 DP"><meta property="og:image" content="https://cdn.jsdelivr.net/gh/SerokSSR/cdn/8qv7.jpg"><meta property="article:published_time" content="2020-07-28T16:00:00.000Z"><meta property="article:modified_time" content="2020-08-20T05:29:54.446Z"><meta name="twitter:card" content="summary"><link rel="manifest" href="/manifest.json"><meta name="theme-color" content="#fff"><meta name="msapplication-TileColor" content="#fff"><link rel="apple-touch-icon" sizes="180x180" href="/image/pwa/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/image/pwa/32.ico"><link rel="icon" type="image/png" sizes="16x16" href="/image/pwa/32.ico"><link rel="mask-icon" href="/image/pwa/safari-pinned-tab.svg" color="#5bbad5"><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css"><script>var _hmt=_hmt||[];!function(){var e=document.createElement("script");e.src="https://hm.baidu.com/hm.js?361beab41b2890d7429784b5d0071979";var t=document.getElementsByTagName("script")[0];t.parentNode.insertBefore(e,t)}()</script><link rel="stylesheet" href="https://fonts.dogedoge.com/css2?family=Open+Sans:wght@300;400;600&amp;display=swap"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  hexoversion: '5.1.1',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"prismjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  bookmark: {
+    message_prev: '按',
+    message_next: '键将本页加入书签'
+  },
+  runtime: '天',
+  last_push_date: {"zeroDay":"今天","suffix":"天前"},
+  copyright: undefined,
+  ClickShowText: undefined,
+  medium_zoom: false,
+  fancybox: true,
+  Snackbar: {"bookmark":{"message_prev":"按","message_next":"键将本页加入书签"},"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#121212","position":"top-center"},
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  baiduPush: true,
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+      const now = new Date()
+      const expiryDay = ttl * 86400000
+      const item = {
+        value: value,
+        expiry: now.getTime() + expiryDay,
+      }
+      localStorage.setItem(key, JSON.stringify(item))
+    },
+  
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE={isPost:!0,isHome:!1,isHighlightShrink:!0,isSidebar:!1,postUpdate:"2020-08-20 13:29:54"}</script><noscript><style>#nav{opacity:1}.justified-gallery img{opacity:1}</style></noscript><link href="https://fonts.dogedoge.com/css2?family=Noto+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet"><link rel="preload" href="https://cdn.jsdelivr.net/gh/SerokSSR/cdn/optimize.css" as="style" onload='this.onload=null,this.rel="stylesheet"'><noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SerokSSR/cdn/optimize.css"></noscript><link rel="preload" href="https://cdn.jsdelivr.net/gh/SerokSSR/img/plugin.min.css" as="style" onload='this.onload=null,this.rel="stylesheet"'><noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SerokSSR/img/plugin.min.css"></noscript><style>.app-refresh{position:fixed;top:-2.2rem;left:0;right:0;z-index:99999;padding:0 1rem;font-size:18px;height:2.2rem;transition:all .3s ease}.app-refresh-wrap{display:flex;color:#fff;height:100%;align-items:center;justify-content:center}.app-refresh-wrap a{color:#fff;text-decoration:underline;cursor:pointer}</style><style>::-webkit-scrollbar{width:8px;height:8px}::-webkit-scrollbar-track{background-color:rgba(73,177,245,.2);border-radius:2em}::-webkit-scrollbar-thumb{background-color:#49b1f5;background-image:-webkit-linear-gradient(45deg,rgba(255,255,255,.4) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.4) 50%,rgba(255,255,255,.4) 75%,transparent 75%,transparent);border-radius:2em}::-webkit-scrollbar-corner{background-color:transparent}::-moz-selection{color:#fff;background-color:#49b1f5}</style><style>#pagination .page-number{border-radius:20px}#aside_content .card-info .author-info__name{font-weight:600}#rightside>div>a,#rightside>div>button{width:32px;height:32px;border-radius:20px}h1,h2,h3,h4,h5,h6{color:#2f353c}h1{font-size:2em}h2{font-size:1.6em}h3{font-size:1.35em}h4{font-size:1.2em}h5{font-size:1em}h6{font-size:1em;color:#777}code{font-size:14px}</style><style>.aplayer.aplayer-fixed.aplayer-narrow .aplayer-body{left:-66px!important}.aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover{left:0!important}</style><meta name="generator" content="Hexo 5.1.1"></head><body><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="avatar-img" data-lazy-src="https://q1.qlogo.cn/g?b=qq&amp;nk=1656071287&amp;s=640" onerror='onerror=null,src="https://cdn.jsdelivr.net/gh/SerokSSR/img/friend_404.gif"' alt="avatar"></div><div class="mobile_post_data"><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">27</div></a></div></div><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">34</div></a></div></div><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">6</div></a></div></div></div><hr><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i> <span>Home</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-book-open"></i> <span>Index</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i> <span>Archives</span></a></li><li><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i> <span>Tags</span></a></li><li><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i> <span>Categories</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/friends/"><i class="fa-fw fas fa-link"></i> <span>Friends</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fas fa-comment-dots"></i> <span>Messageboard</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i> <span>About</span></a></div></div></div></div><div id="body-wrap"><header class="post-bg" id="page-header" style="background-image:url(https://cdn.jsdelivr.net/gh/SerokSSR/cdn/8qv7.jpg)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Serok's Blog</a></span><span class="menus"><div id="search_button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i> <span>搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i> <span>Home</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-book-open"></i> <span>Index</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i> <span>Archives</span></a></li><li><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i> <span>Tags</span></a></li><li><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i> <span>Categories</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/friends/"><i class="fa-fw fas fa-link"></i> <span>Friends</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fas fa-comment-dots"></i> <span>Messageboard</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i> <span>About</span></a></div></div><span class="toggle-menu close"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><div id="post-title"><div class="posttitle">从 DFS 到 DP：区间、状压与树上</div></div><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2020-07-28T16:00:00.000Z" title="发表于 2020-07-29 00:00:00">2020-07-29</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2020-08-20T05:29:54.446Z" title="更新于 2020-08-20 13:29:54">2020-08-20</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%AE%97%E6%B3%95/">算法</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.4k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>6分钟</span></span></div></div></div></header><main class="layout_post" id="content-inner"><article id="post"><div class="post-content" id="article-container"><h1 id="区间-DP"><a href="#区间-DP" class="headerlink" title="区间 DP"></a>区间 DP</h1><h3 id="P1880-NOI1995-石子合并"><a href="#P1880-NOI1995-石子合并" class="headerlink" title="P1880 [NOI1995]石子合并"></a>P1880 [NOI1995]石子合并</h3><pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#include &lt;iostream&gt;
+using namespace std;
+
+const int N &#x3D; 220;
+
+int ans, dp[N][N], n, a[N], s[N];
+
+int main() &#123;
+    
+    scanf(&quot;%d&quot;, &amp;n);
+    for(int i&#x3D;1; i&lt;&#x3D;n; ++i) &#123;
+        scanf(&quot;%d&quot;, a+i);
+        s[i] &#x3D; s[i-1] + a[i];
+    &#125;
+    for(int i&#x3D;1; i&lt;&#x3D;n; ++i) &#123;
+        s[i+n] &#x3D; s[i+n-1] + a[i];
+    &#125;
+    memset(dp, 0x3f, sizeof dp);
+    for(int i&#x3D;1; i&lt;&#x3D;2*n; ++i) dp[i][i] &#x3D; 0;
+    for(int l&#x3D;2; l&lt;&#x3D;n; ++l) &#123;
+        for(int i&#x3D;1, j&#x3D;l; j&lt;&#x3D;2*n; ++i, ++j) &#123;
+            for(int k&#x3D;i; k&lt;j; ++k) &#123;
+                dp[i][j] &#x3D; min(dp[i][j], dp[i][k] + dp[k+1][j] + s[j] - s[i-1]);
+            &#125;
+        &#125;
+    &#125;
+    ans &#x3D; 0x3f3f3f3f;
+    for(int i&#x3D;1; i&lt;&#x3D;n; ++i) &#123;
+        &#x2F;&#x2F;printf(&quot;%d &quot;, dp[i][i+n-1]);
+        ans &#x3D; min(ans, dp[i][i+n-1]);
+    &#125;
+    printf(&quot;%d\n&quot;, ans);
+    
+    memset(dp, 0, sizeof dp);
+    for(int i&#x3D;1; i&lt;&#x3D;2*n; ++i) dp[i][i] &#x3D; 0;
+    for(int l&#x3D;2; l&lt;&#x3D;n; ++l) &#123;
+        for(int i&#x3D;1, j&#x3D;l; j&lt;&#x3D;2*n; ++i, ++j) &#123;
+            for(int k&#x3D;i; k&lt;j; ++k) &#123;
+                dp[i][j] &#x3D; max(dp[i][j], dp[i][k] + dp[k+1][j] + s[j] - s[i-1]);
+            &#125;
+        &#125;
+    &#125;
+    ans &#x3D; 0;
+    for(int i&#x3D;1; i&lt;&#x3D;n; ++i) &#123;
+        ans &#x3D; max(ans, dp[i][i+n-1]);
+    &#125;
+    printf(&quot;%d\n&quot;, ans);
+    return 0;
+&#125;</code></pre><h1 id="状压-DP"><a href="#状压-DP" class="headerlink" title="状压 DP"></a>状压 DP</h1><h2 id="DFS"><a href="#DFS" class="headerlink" title="DFS"></a>DFS</h2><p>几乎所有的状压DP都可以转化为搜索。当想不出正解时，DFS也是骗分的好手段。</p><p>主要的搜索手段有：</p><ol><li>DFS/BFS爆搜</li><li>双向BFS</li><li>启发式搜索（又称A*）</li><li>迭代加深搜索</li><li>IDA*（迭代加深+启发式）</li><li>记忆化搜索</li><li>剪枝</li></ol><p>重要程度：1,7,6 - 4,3 - 5,2。</p><h3 id="P3959-NOIp2017提高-宝藏"><a href="#P3959-NOIp2017提高-宝藏" class="headerlink" title="P3959 [NOIp2017提高]宝藏"></a>P3959 [NOIp2017提高]宝藏</h3><p><del>去年做的时候就连70分做法都不会。一年过去了，还是不会，呜呜呜</del></p><p>（下面为自己开脱）</p><p>这道题的部分分思想其实还挺重要的。</p><p>我们知道，一般的DFS就是在找出很多单条路径的过程中，获得最优答案。形式也很固定，一般形如：</p><pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">void&#x2F;int dfs(int u, int sum, int cnt, ...)</code></pre><p><b>而这道题不然。</b></p><p>从样例二就可以看出，最终合法方案呈<b>树形</b>，而不是单条<b>路径</b>。初步想到生成树，但是假掉了。、</p><h4 id="反例："><a href="#反例：" class="headerlink" title="反例："></a>反例：</h4><p><img src="https://cdn.jsdelivr.net/gh/SerokSSR/img/loading.gif" data-lazy-src="https://cdn.jsdelivr.net/gh/a2396837/CDN@latest/images/2020/08/10/d6de2d2b502ed79d81abe9ebb16d40d1.png"></p><p>这张图从1号点开始的Prim便是错的。</p><p>如果跑Prim，从1号点开始的话，我们会先访问2，（此时花费为1），然后我们会访问3，此时花费为3 * 2，然后由于只有4号点未访问，这时3号的访问顺序为3，访问4号的代价是3 * 100 = 300，显然这种做法不是最优的，正确的答案应该是211（从1号点开始的最小花费为211）。</p><p>虽然直接跑Prim是错的，但是Prim的思想仍然重要，这一思想也在最短路等很多算法中有应用：用更新过的点去更新其他点。</p><p>我们设计一个<b>不基于点</b>的dfs函数，参数只需传递代价，每次迭代，先枚举访问过的点，再枚举一个未访问且未开通路径的点，进行松弛，将代价持续传递下去。计算代价需要记录点的深度，也要通过父节点传递下去。</p><p>代码不长，也不难写，说是白给70分，其实思路并不好想（虽然比正解 $O(n \times 3^n)$ 状压好写多了）。毕竟是紫题嘛，像我这种菜鸡也不打算AC，能骗多少是多少。</p><p>总的来说，这道题的关键还是在于生成树，需要认真看题，熟练运用普及算法（</p><h4 id="Code"><a href="#Code" class="headerlink" title="Code:"></a>Code:</h4><pre class="line-numbers language-C++" data-language="C++"><code class="language-C++">#include &lt;cstdio&gt;
+#include &lt;cstring&gt;
+const int INF &#x3D; 0x7f7f7f7f;
+
+int min(int a, int b) &#123; return a &lt; b ? a : b; &#125;
+
+int map[20][20];
+int dep[20], best, n, m, num;
+bool vis[20];
+
+void dfs(int x) &#123;
+    if(x &gt;&#x3D; best) return;
+    if(num &#x3D;&#x3D; 0) &#123;
+        best &#x3D; x;
+        return;
+    &#125;
+    for(int i&#x3D;1; i&lt;&#x3D;n; ++i) &#123;
+        if(vis[i]) &#123;
+            for(int j&#x3D;1; j&lt;&#x3D;n; ++j) &#123;
+                if(!vis[j] and map[i][j] &lt; INF) &#123;
+                    vis[j] &#x3D; true; --num;
+                    dep[j] &#x3D; dep[i] + 1;
+                    dfs(x + map[i][j] * dep[j]);
+                    vis[j] &#x3D; false; ++num;
+                &#125;
+            &#125;
+        &#125;
+    &#125;
+&#125;
+
+int main() &#123;
+    memset(map, 0x7f, sizeof map);
+    
+    scanf(&quot;%d%d&quot;, &amp;n, &amp;m);
+    
+    for(int i&#x3D;1; i&lt;&#x3D;m; ++i) &#123;
+        int x, y, v;
+        scanf(&quot;%d%d%d&quot;, &amp;x, &amp;y, &amp;v);
+        map[x][y] &#x3D; map[y][x] &#x3D; min(map[x][y], v);
+    &#125;
+    
+    best &#x3D; INF; num &#x3D; n;
+    for(int i&#x3D;1; i&lt;&#x3D;n; ++i) &#123;
+        vis[i] &#x3D; true; --num;
+        dep[i] &#x3D; 0;
+        dfs(0);
+        vis[i] &#x3D; false; ++num;
+    &#125;
+    
+    printf(&quot;%d\n&quot;, best);
+    
+    return 0;
+&#125;</code></pre><h2 id="常用操作"><a href="#常用操作" class="headerlink" title="常用操作"></a>常用操作</h2><p>设全集为 $x$</p><ul><li><code>for(int y = x; y; y = (y-1) &amp; x)</code>：枚举 x 的每个子集</li><li><code>x^y</code>：x 集合中刨去 y</li><li><code>x&amp;y == y</code>：y 是 x 的子集</li></ul><h3 id="P3052-USACO12MAR-Cows-in-a-Skyscraper-G"><a href="#P3052-USACO12MAR-Cows-in-a-Skyscraper-G" class="headerlink" title="P3052 [USACO12MAR]Cows in a Skyscraper G"></a>P3052 [USACO12MAR]Cows in a Skyscraper G</h3><h1 id="树形-DP"><a href="#树形-DP" class="headerlink" title="树形 DP"></a>树形 DP</h1><h3 id="P1352-没有上司的舞会"><a href="#P1352-没有上司的舞会" class="headerlink" title="P1352 没有上司的舞会"></a>P1352 没有上司的舞会</h3><pre class="line-numbers language-C++" data-language="C++"><code class="language-C++">#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+using namespace std;
+
+typedef vector&lt;int&gt;::iterator IT;
+const int N &#x3D; 6e3 + 10;
+
+int fa[N]; vector&lt;int&gt; g[N];
+int n, r[N];
+inline int fin() &#123;
+    for(int i&#x3D;1; i&lt;&#x3D;n; ++i) if(!fa[i]) return i;
+&#125;
+
+int f[N][2];&#x2F;&#x2F; 0&#x2F;1
+void dfs(int u) &#123;
+    f[u][0] &#x3D; 0;
+    f[u][1] &#x3D; r[u];
+    for(IT it &#x3D; g[u].begin(); it !&#x3D; g[u].end(); ++it) &#123;
+        dfs(*it);
+        f[u][0] +&#x3D; max(f[*it][0], f[*it][1]);
+        f[u][1] +&#x3D; f[*it][0];
+    &#125;
+&#125;
+int main() &#123;
+    
+    scanf(&quot;%d&quot;, &amp;n);
+    for(int i&#x3D;1; i&lt;&#x3D;n; ++i) scanf(&quot;%d&quot;, r+i);
+    for(int i&#x3D;1; i&lt;n; ++i) &#123; int l, k;
+        scanf(&quot;%d%d&quot;, &amp;l, &amp;k); fa[l] &#x3D; k;
+        g[k].push_back(l);
+    &#125;
+    int rt &#x3D; fin();
+    dfs(rt);
+    printf(&quot;%d&quot;, max(f[rt][0], f[rt][1]));
+    return 0;
+&#125;</code></pre></div><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者:</span> <span class="post-copyright-info"><a href="mailto:3091742436@qq.com">Serok.</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接:</span> <span class="post-copyright-info"><a href="https://snow.js.org/dp-noip-tg/">https://snow.js.org/dp-noip-tg/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明:</span> <span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh" target="_blank">CC BY-NC-ND 4.0</a> 许可协议。转载请注明来自 <a href="https://snow.js.org" target="_blank">Serok's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%AE%97%E6%B3%95/">算法</a><a class="post-meta__tags" href="/tags/DP/">DP</a><a class="post-meta__tags" href="/tags/%E8%AE%B0%E5%BF%86%E5%8C%96%E6%90%9C%E7%B4%A2/">记忆化搜索</a><a class="post-meta__tags" href="/tags/%E5%9B%BE%E8%AE%BA/">图论</a><a class="post-meta__tags" href="/tags/%E6%A0%91/">树</a><a class="post-meta__tags" href="/tags/DFS/">DFS</a></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/gh/SerokSSR/cdn/8qv7.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/graph-theory/"><img class="prev-cover" data-lazy-src="https://cdn.jsdelivr.net/gh/SerokSSR/cdn/47kp.jpg" onerror='onerror=null,src="/null"'><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">图论</div></div></a></div><div class="next-post pull-right"><a href="/hexo-ssh-deploy/"><img class="next-cover" data-lazy-src="https://cdn.jsdelivr.net/gh/a2396837/CDN@latest/images/2020/08/14/7006b3e22ef66342d8a2fe4b44c5be90.png" onerror='onerror=null,src="/null"'><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Hexo：配置 SSH 公钥部署</div></div></a></div></nav><div class="relatedPosts"><div class="relatedPosts_headline"><i class="fas fa-thumbs-up fa-fw"></i> <span>相关推荐</span></div><div class="relatedPosts_list"><div class="relatedPosts_item"><a href="/dp-knapsack/" title="动态规划：0-1、完全与多重背包"><img class="relatedPosts_cover" data-lazy-src="https://cdn.jsdelivr.net/gh/SerokSSR/img/pix1.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2020-05-18</div><div class="relatedPosts_title">动态规划：0-1、完全与多重背包</div></div></a></div><div class="relatedPosts_item"><a href="/graph-theory/" title="图论"><img class="relatedPosts_cover" data-lazy-src="https://cdn.jsdelivr.net/gh/SerokSSR/cdn/47kp.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2020-07-31</div><div class="relatedPosts_title">图论</div></div></a></div><div class="relatedPosts_item"><a href="/stl-set/" title="C++ STL：SET & MULTISET"><img class="relatedPosts_cover" data-lazy-src="https://cdn.jsdelivr.net/gh/SerokSSR/cdn/4dre.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2020-08-12</div><div class="relatedPosts_title">C++ STL：SET & MULTISET</div></div></a></div><div class="relatedPosts_item"><a href="/about-codestyle/" title="About CODESTYLE"><img class="relatedPosts_cover" data-lazy-src="https://cdn.jsdelivr.net/gh/SerokSSR/img/codecat.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2020-01-21</div><div class="relatedPosts_title">About CODESTYLE</div></div></a></div><div class="relatedPosts_item"><a href="/cf387d/" title="CF387D"><img class="relatedPosts_cover" data-lazy-src="https://cdn.jsdelivr.net/gh/SerokSSR/img/starwar.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2020-04-25</div><div class="relatedPosts_title">CF387D</div></div></a></div><div class="relatedPosts_item"><a href="/match-template/" title="匹配：模板"><img class="relatedPosts_cover" data-lazy-src="https://cdn.jsdelivr.net/gh/SerokSSR/img/fjch753.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2020-04-19</div><div class="relatedPosts_title">匹配：模板</div></div></a></div></div></div><hr><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i> <span>评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></article></main><footer id="footer" data-type="color"><div id="footer-wrap"><div class="footer_custom_text">&copy;2020 SerokSSR.<br>Framework <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a> | Theme <a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a><br>相信辰星 在無邊的曠野</div></div></footer></div><section id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></section><div class="search-dialog" id="local-search"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"></div></div></div><hr><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>由</span> <a target="_blank" rel="noopener" href="https://github.com/wzpan/hexo-generator-search" style="color:#49b1f5">hexo-generator-search</a> <span>提供支持</span></div></div></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module" defer></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js" async></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.spacingElementById('content-inner')
+  else {
+    $.getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js', () => {
+      pangu.spacingElementById('content-inner')
+    })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguFn)</script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    loader: {
+      source: {
+        '[tex]/amsCd': '[tex]/amscd'
+      }
+    },
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        addClass: [200,() => {
+          document.querySelectorAll('mjx-container:not([display=\'true\']').forEach( node => {
+            const target = node.parentNode
+            if (!target.classList.contains('has-jax')) {
+              target.classList.add('mathjax-overflow')
+            }
+          })
+        }, '', false]
+      }
+    }
+  }
+  
+  var script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script>function loadValine () {
+  function initValine () {
+    window.valine = new Valine({
+      el: '#vcomment',
+      appId: '7CcIFFTvT9i2zL1qNJSLEPNb-MdYXbMMI',
+      appKey: 'HY117mqITU3yVTTCAdwfCmMh',
+      placeholder: 'Please leave your footprints',
+      avatar: 'monsterid',
+      meta: 'nick,mail,link'.split(','),
+      pageSize: '10',
+      lang: 'en',
+      recordIP: false,
+      serverURLs: '',
+      emojiCDN: '',
+      emojiMaps: "",
+      enableQQ: true,
+      path: window.location.pathname,
+    });
+    if ('nick,mail') { valine.config.requiredFields= 'nick,mail'.split(',') }
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else $.getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js', initValine)
+}
+
+if ('Valine' === 'Valine' || !true) {
+  if (true) loadComment(document.querySelector('#vcomment'),loadValine)
+  else setTimeout(() => loadValine(), 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script></div><div class="app-refresh" id="app-refresh"><div class="app-refresh-wrap"><label>✨ 網站已更新最新版本 👉</label> <a href="javascript:void(0)" onclick="location.reload()">點擊刷新</a></div></div><script>function showNotification(){if(GLOBAL_CONFIG.Snackbar){var t="light"===document.documentElement.getAttribute("data-theme")?GLOBAL_CONFIG.Snackbar.bgLight:GLOBAL_CONFIG.Snackbar.bgDark,e=GLOBAL_CONFIG.Snackbar.position;Snackbar.show({text:"网站更新啦ヾ(•ω•`)o",backgroundColor:t,duration:5e5,pos:e,actionText:"点击加载",actionTextColor:"#fff",onActionClick:function(t){location.reload()}})}else{var o=`top: 0; background: ${"light"===document.documentElement.getAttribute("data-theme")?"#49b1f5":"#1f1f1f"};`;document.getElementById("app-refresh").style.cssText=o}}"serviceWorker"in navigator&&(navigator.serviceWorker.controller&&navigator.serviceWorker.addEventListener("controllerchange",function(){showNotification()}),window.addEventListener("load",function(){navigator.serviceWorker.register("/sw.js")}));</script><div class="aplayer no-destroy" data-id="2621353166" data-server="netease" data-type="playlist" data-fixed="true" data-mini="true" data-listfolded="true" data-order="random" data-preload="none" data-autoplay="false" muted></div><script src="https://cdn.jsdelivr.net/npm/prismjs/prism.min.js"></script><script src="https://cdn.jsdelivr.net/npm/prismjs/plugins/autoloader/prism-autoloader.min.js"></script><script src="https://cdn.jsdelivr.net/npm/prismjs/plugins/line-numbers/prism-line-numbers.min.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/gh/SerokSSR/cdn/meting.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = [
+  'title',
+  'meta[name=description]',
+  '#config_change',
+  '#body-wrap',
+  '#rightside-config-hide',
+  '#rightside-config-show',
+  '.js-pjax'
+]
+
+if (false) {
+  pjaxSelectors.unshift('meta[property="og:image"]', 'meta[property="og:title"]', 'meta[property="og:url"]')
+}
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:complete', function () {
+  refreshFn()
+
+  $('script[data-pjax]').each(function () {
+    $(this).parent().append($(this).remove())
+  })
+
+  GLOBAL_CONFIG.islazyload && lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  if (typeof gtag === 'function') {
+    gtag('config', '', {'page_path': window.location.pathname});
+  }
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // Analytics
+  if (false) {
+    MtaH5.pgv()
+  }
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+
+document.addEventListener('pjax:send', function () {
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  $(window).off('scroll')
+
+  //reset readmode
+  $('body').hasClass('read-mode') && $('body').removeClass('read-mode')
+
+})</script></div></body></html>

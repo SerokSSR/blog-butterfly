@@ -1,0 +1,299 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>浅谈 Splay（一） | Serok's Blog</title><meta name="description" content="Splay 的旋转操作。"><meta name="keywords" content="数据结构，平衡树, 算法"><meta name="author" content="Serok.,3091742436@qq.com"><meta name="copyright" content="Serok."><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/SerokSSR/img/favicon.ico"><link rel="canonical" href="https://snow.js.org/about-splay/"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><link rel="preconnect" href="//cdn.jsdelivr.net"><link rel="preconnect" href="//hm.baidu.com"><link rel="preconnect" href="//zz.bdstatic.com"><meta name="baidu-site-verification" content="WVhN9yb1qI"><meta property="og:type" content="article"><meta property="og:title" content="浅谈 Splay（一）"><meta property="og:url" content="https://snow.js.org/about-splay/"><meta property="og:site_name" content="Serok's Blog"><meta property="og:description" content="Splay 的旋转操作。"><meta property="og:image" content="https://cdn.jsdelivr.net/gh/SerokSSR/img/splayboat.jpg"><meta property="article:published_time" content="2019-07-26T16:00:00.000Z"><meta property="article:modified_time" content="2020-08-19T09:09:55.003Z"><meta name="twitter:card" content="summary"><link rel="manifest" href="/manifest.json"><meta name="theme-color" content="#fff"><meta name="msapplication-TileColor" content="#fff"><link rel="apple-touch-icon" sizes="180x180" href="/image/pwa/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/image/pwa/32.ico"><link rel="icon" type="image/png" sizes="16x16" href="/image/pwa/32.ico"><link rel="mask-icon" href="/image/pwa/safari-pinned-tab.svg" color="#5bbad5"><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css"><script>var _hmt=_hmt||[];!function(){var e=document.createElement("script");e.src="https://hm.baidu.com/hm.js?361beab41b2890d7429784b5d0071979";var t=document.getElementsByTagName("script")[0];t.parentNode.insertBefore(e,t)}()</script><link rel="stylesheet" href="https://fonts.dogedoge.com/css2?family=Open+Sans:wght@300;400;600&amp;display=swap"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  hexoversion: '5.1.1',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"prismjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  bookmark: {
+    message_prev: '按',
+    message_next: '键将本页加入书签'
+  },
+  runtime: '天',
+  last_push_date: {"zeroDay":"今天","suffix":"天前"},
+  copyright: undefined,
+  ClickShowText: undefined,
+  medium_zoom: false,
+  fancybox: true,
+  Snackbar: {"bookmark":{"message_prev":"按","message_next":"键将本页加入书签"},"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#121212","position":"top-center"},
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  baiduPush: true,
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+      const now = new Date()
+      const expiryDay = ttl * 86400000
+      const item = {
+        value: value,
+        expiry: now.getTime() + expiryDay,
+      }
+      localStorage.setItem(key, JSON.stringify(item))
+    },
+  
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE={isPost:!0,isHome:!1,isHighlightShrink:!0,isSidebar:!1,postUpdate:"2020-08-19 17:09:55"}</script><noscript><style>#nav{opacity:1}.justified-gallery img{opacity:1}</style></noscript><link href="https://fonts.dogedoge.com/css2?family=Noto+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet"><link rel="preload" href="https://cdn.jsdelivr.net/gh/SerokSSR/cdn/optimize.css" as="style" onload='this.onload=null,this.rel="stylesheet"'><noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SerokSSR/cdn/optimize.css"></noscript><link rel="preload" href="https://cdn.jsdelivr.net/gh/SerokSSR/img/plugin.min.css" as="style" onload='this.onload=null,this.rel="stylesheet"'><noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SerokSSR/img/plugin.min.css"></noscript><style>.app-refresh{position:fixed;top:-2.2rem;left:0;right:0;z-index:99999;padding:0 1rem;font-size:18px;height:2.2rem;transition:all .3s ease}.app-refresh-wrap{display:flex;color:#fff;height:100%;align-items:center;justify-content:center}.app-refresh-wrap a{color:#fff;text-decoration:underline;cursor:pointer}</style><style>::-webkit-scrollbar{width:8px;height:8px}::-webkit-scrollbar-track{background-color:rgba(73,177,245,.2);border-radius:2em}::-webkit-scrollbar-thumb{background-color:#49b1f5;background-image:-webkit-linear-gradient(45deg,rgba(255,255,255,.4) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.4) 50%,rgba(255,255,255,.4) 75%,transparent 75%,transparent);border-radius:2em}::-webkit-scrollbar-corner{background-color:transparent}::-moz-selection{color:#fff;background-color:#49b1f5}</style><style>#pagination .page-number{border-radius:20px}#aside_content .card-info .author-info__name{font-weight:600}#rightside>div>a,#rightside>div>button{width:32px;height:32px;border-radius:20px}h1,h2,h3,h4,h5,h6{color:#2f353c}h1{font-size:2em}h2{font-size:1.6em}h3{font-size:1.35em}h4{font-size:1.2em}h5{font-size:1em}h6{font-size:1em;color:#777}code{font-size:14px}</style><style>.aplayer.aplayer-fixed.aplayer-narrow .aplayer-body{left:-66px!important}.aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover{left:0!important}</style><meta name="generator" content="Hexo 5.1.1"></head><body><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="avatar-img" data-lazy-src="https://q1.qlogo.cn/g?b=qq&amp;nk=1656071287&amp;s=640" onerror='onerror=null,src="https://cdn.jsdelivr.net/gh/SerokSSR/img/friend_404.gif"' alt="avatar"></div><div class="mobile_post_data"><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">27</div></a></div></div><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">34</div></a></div></div><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">6</div></a></div></div></div><hr><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i> <span>Home</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-book-open"></i> <span>Index</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i> <span>Archives</span></a></li><li><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i> <span>Tags</span></a></li><li><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i> <span>Categories</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/friends/"><i class="fa-fw fas fa-link"></i> <span>Friends</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fas fa-comment-dots"></i> <span>Messageboard</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i> <span>About</span></a></div></div></div></div><div id="body-wrap"><header class="post-bg" id="page-header" style="background-image:url(https://cdn.jsdelivr.net/gh/SerokSSR/img/splayboat.jpg)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Serok's Blog</a></span><span class="menus"><div id="search_button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i> <span>搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i> <span>Home</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-book-open"></i> <span>Index</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i> <span>Archives</span></a></li><li><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i> <span>Tags</span></a></li><li><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i> <span>Categories</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/friends/"><i class="fa-fw fas fa-link"></i> <span>Friends</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fas fa-comment-dots"></i> <span>Messageboard</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i> <span>About</span></a></div></div><span class="toggle-menu close"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><div id="post-title"><div class="posttitle">浅谈 Splay（一）</div></div><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2019-07-26T16:00:00.000Z" title="发表于 2019-07-27 00:00:00">2019-07-27</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2020-08-19T09:09:55.003Z" title="更新于 2020-08-19 17:09:55">2020-08-19</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%AE%97%E6%B3%95/">算法</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.1k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>4分钟</span></span></div></div></div></header><main class="layout_post" id="content-inner"><article id="post"><div class="post-content" id="article-container"><h1 id="一、旋转（Zig-Zag）"><a href="#一、旋转（Zig-Zag）" class="headerlink" title="一、旋转（Zig - Zag）"></a>一、旋转（Zig - Zag）</h1><h2 id="1-右旋（Right-Rotation）"><a href="#1-右旋（Right-Rotation）" class="headerlink" title="1. 右旋（Right Rotation）"></a>1. 右旋（Right Rotation）</h2><p>观察每个节点的变化，其中每个节点都有指向其父节点的指针没有画出。</p><p><img src="https://cdn.jsdelivr.net/gh/SerokSSR/img/loading.gif" data-lazy-src="https://cdn.jsdelivr.net/gh/SerokSSR/img/splay1.png" alt="1.png"></p><p><strong>①②③</strong>处节点连接有变化。</p><h3 id="（1）-Q-的左子树修改为-P-的右子树的内容"><a href="#（1）-Q-的左子树修改为-P-的右子树的内容" class="headerlink" title="（1）$Q$ 的左子树修改为 $P$ 的右子树的内容"></a>（1）$Q$ 的左子树修改为 $P$ 的右子树的内容</h3><p>即 $B$ 成为 $Q$ 的左子树， $B$ 的父节点是 $Q$ 。</p><pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">q-&gt;left &#x3D; p-&gt;right; 
+p-&gt;right-&gt;father &#x3D; q; </code></pre><p><strong>注意 P​ 可能没有右子树（即不存在 <code>P-&gt;right</code> 节点）。</strong></p><p>修改如下：</p><pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">q-&gt;left &#x3D; p-&gt;right; 
+if(p-&gt;right !&#x3D; NULL) p-&gt;right-&gt;father &#x3D; q;</code></pre><h3 id="（2）-P-的右子树修改为-Q-，且同时-Q-的父节点修改为-P-。"><a href="#（2）-P-的右子树修改为-Q-，且同时-Q-的父节点修改为-P-。" class="headerlink" title="（2）$P$ 的右子树修改为 $Q$ ，且同时 $Q$ 的父节点修改为 $P$ 。"></a>（2）$P$ 的右子树修改为 $Q$ ，且同时 $Q$ 的父节点修改为 $P$ 。</h3><pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">p-&gt;right &#x3D; q; 
+q-&gt;father &#x3D; p;</code></pre><p><strong>注意 Q 和 P 的左右子树有变化，所以 Q,P 的信息需要重新维护。</strong></p><pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">update(q); update(p); &#x2F;&#x2F;先Q后P</code></pre><h3 id="（3）-R-的子树应该修改为-P"><a href="#（3）-R-的子树应该修改为-P" class="headerlink" title="（3）$R$ 的子树应该修改为 $P$"></a>（3）$R$ 的子树应该修改为 $P$</h3><p>需要判断 $Q$ 是 $R$ 的哪种子树，左子树则 $P$ 给 $R$ 的左子树，否则给右子树。</p><p>全局变量 $root$ 记录树根。</p><p><strong>特判 $Q$ 有可能就是树根（即 $R$ 不存在）；</strong></p><pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">if(r &#x3D;&#x3D; NULL) &#123;
+   p-&gt;father &#x3D; NULL; root &#x3D; p; return;
+&#125;
+if(q &#x3D;&#x3D; r-&gt;left) &#123;
+   r-&gt;left &#x3D; p; p-&gt;father &#x3D; r;
+&#125; else &#123;
+   r-&gt;right &#x3D; p; p-&gt;father &#x3D; r;
+&#125;</code></pre><p>整理一下，<strong>不管 Q​ 有无父节点，P 的父节点均修改为 Q 的父节点</strong>。</p><pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">p-&gt;father &#x3D; r;
+&#x2F;&#x2F;记录树根
+if(r &#x3D;&#x3D; NULL) &#123; root &#x3D; p; return; &#125;
+&#x2F;&#x2F;判断P连到R的那颗子树
+if(q &#x3D;&#x3D; r-&gt;left) r-&gt;left &#x3D; p; 
+else r-&gt;right &#x3D; p; </code></pre><p><strong>Code :</strong></p><pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">void right_rotate(node *p) &#123;
+
+    node *q &#x3D; p-&gt;father;     &#x2F;&#x2F;记录p的父节点
+    node *r &#x3D; q-&gt;father;     &#x2F;&#x2F;记录p的父节点的父节点
+
+    &#x2F;&#x2F;操作1
+    q-&gt;left &#x3D; p-&gt;right; 
+    if(p-&gt;right !&#x3D; NULL) p-&gt;right-&gt;father &#x3D; q;
+
+    &#x2F;&#x2F;操作2
+    p-&gt;right &#x3D; q; q-&gt;father &#x3D; p;
+
+    &#x2F;&#x2F;维护节点信息（注意此处可暂不维护P）
+    update(q); &#x2F;&#x2F;update(p);
+
+    &#x2F;&#x2F;操作3
+    p-&gt;father &#x3D; r;
+    if(r &#x3D;&#x3D; NULL) &#123; root &#x3D; p; return; &#125;
+    
+    if(q &#x3D;&#x3D; r-&gt;left) r-&gt;left &#x3D; p; 
+    else r-&gt;right &#x3D; p;
+&#125;</code></pre><h2 id="2、左旋（Left-Rotation）"><a href="#2、左旋（Left-Rotation）" class="headerlink" title="2、左旋（Left Rotation）"></a>2、左旋（Left Rotation）</h2><p>同理右旋，只是<strong>①②</strong>不同。</p><p><strong>Code :</strong></p><pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">void left_rotate(node *p) &#123;
+
+    node *q &#x3D; p-&gt;father;     &#x2F;&#x2F;记录p的父节点
+    node *r &#x3D; q-&gt;father;     &#x2F;&#x2F;记录p的父节点的父节点
+
+    &#x2F;&#x2F;操作1
+    q-&gt;right &#x3D; p-&gt;left; 
+    if(p-&gt;left !&#x3D; NULL) p-&gt;left-&gt;father &#x3D; q; 
+
+    &#x2F;&#x2F;操作2
+    p-&gt;left &#x3D; q; q-&gt;father &#x3D; p;
+
+    &#x2F;&#x2F;维护节点信息
+    update(q); &#x2F;&#x2F;update(p);
+
+    &#x2F;&#x2F;操作3
+    p-&gt;father &#x3D; r;
+    if(r &#x3D;&#x3D; NULL)&#123; root &#x3D; p; return; &#125;
+    
+    if(q &#x3D;&#x3D; r-&gt;left) r-&gt;left &#x3D; p; 
+    else r-&gt;right &#x3D; p;
+&#125;</code></pre><h2 id="3、双旋"><a href="#3、双旋" class="headerlink" title="3、双旋"></a>3、双旋</h2><p><strong>不断旋转 $X$ 节点，为了保证复杂度，需要连续旋转两次且旋转的次序不同。</strong></p><p>定义 $X$ 的父节点为 $Y$，$Y$ 的父节点为 $Z$。</p><h3 id="（1）-X-和-Y-同时是其父节点的左子树或者同时是各自父节点的右子树（即同侧）。"><a href="#（1）-X-和-Y-同时是其父节点的左子树或者同时是各自父节点的右子树（即同侧）。" class="headerlink" title="（1）$X$ 和 $Y$ 同时是其父节点的左子树或者同时是各自父节点的右子树（即同侧）。"></a>（1）$X$ 和 $Y$ 同时是其父节点的左子树或者同时是各自父节点的右子树（即同侧）。</h3><p>这时我们要进行两次旋转，**先旋转 $Y$，再旋转 $X$**。</p><p><img src="https://cdn.jsdelivr.net/gh/SerokSSR/img/loading.gif" data-lazy-src="https://i.loli.net/2020/02/14/ftNOzGvPhIg4HrT.png" alt="2.png"></p><p><strong>同左旋转演示图如下：</strong></p><p><img src="https://cdn.jsdelivr.net/gh/SerokSSR/img/loading.gif" data-lazy-src="https://i.loli.net/2020/02/14/xpoeDuh3tVzCYy1.png" alt="3.png"></p><p><strong>同右旋转演示图如下：</strong></p><p><img src="https://cdn.jsdelivr.net/gh/SerokSSR/img/loading.gif" data-lazy-src="https://i.loli.net/2020/02/14/keNpErmPRzwSufY.png" alt="4.png"></p><h3 id="（2）-X-和-Y-是其父节点的左、右子树，不同侧（即一左一右或一右一左）。"><a href="#（2）-X-和-Y-是其父节点的左、右子树，不同侧（即一左一右或一右一左）。" class="headerlink" title="（2）$X$ 和 $Y$ 是其父节点的左、右子树，不同侧（即一左一右或一右一左）。"></a>（2）$X$ 和 $Y$ 是其父节点的左、右子树，不同侧（即一左一右或一右一左）。</h3><p>这时我们只要 <strong>旋转两次 X​</strong> 即可。</p><p><img src="https://cdn.jsdelivr.net/gh/SerokSSR/img/loading.gif" data-lazy-src="https://i.loli.net/2020/02/14/uqCdzUHN56bEPXI.png" alt="5.png"></p><h3 id="（3）判断-X-节点如何旋转。"><a href="#（3）判断-X-节点如何旋转。" class="headerlink" title="（3）判断 $X$ 节点如何旋转。"></a>（3）判断 $X$ 节点如何旋转。</h3><p><strong>$X$ 是其父节点的左子树则右旋，否则左旋。</strong></p><p>$X$ 若是它父节点左子树返回 <code>true</code>，否则返回 <code>false</code>：</p><pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">bool getlr(node *p) &#123;
+    return (p-&gt;father-&gt;left &#x3D;&#x3D; p);
+&#125;
+  
+&#x2F;&#x2F;选择合适的旋转方式
+void rotate(node *p) &#123;
+    if(getlr(p)) right_rotate(p); 
+    else left_rotate(p);
+&#125;</code></pre><h1 id="二、旋转到根"><a href="#二、旋转到根" class="headerlink" title="二、旋转到根"></a>二、旋转到根</h1><p>将 $X$ 旋转到根是 <code>splay</code> 的关键，为了保证复杂度，<b>只要对 $X$ 节点操作，操作后就要将其旋转到根。</b></p><p><em>如何旋转到根：</em></p><ul><li><p>一步旋转就可以到根，进行单旋；</p></li><li><p>两步或两步以上，可以不断使用双旋。</p></li></ul><p>设计函数 <code>splay(p,q)</code> <strong>将 $P$ 旋转到 $Q$ 下方</strong>。</p><ul><li><code>q == NULL</code> 表示 $P$ 旋转到了根；</li><li>while $P$ 至少两次旋转才能到达：双旋；</li><li>if $P$ 还差一步满足条件：单旋。</li></ul><p><strong>Code :</strong></p><pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">void splay(node *p, node *tar) &#123;
+
+      while(p-&gt;father !&#x3D; tar and p-&gt;father-&gt;father !&#x3D; tar) &#123;
+          if(getlr(p) &#x3D;&#x3D; getlr(p-&gt;father)) &#123;
+              rotate(p-&gt;father); rotate(p);
+          &#125; else &#123;
+              rotate(p); rotate(p);
+          &#125;
+      &#125;
+
+      if(p-&gt;father !&#x3D; tar) rotate(p);
+      
+      update(p);  &#x2F;&#x2F;优化（避免重复维护）
+&#125;</code></pre></div><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者:</span> <span class="post-copyright-info"><a href="mailto:3091742436@qq.com">Serok.</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接:</span> <span class="post-copyright-info"><a href="https://snow.js.org/about-splay/">https://snow.js.org/about-splay/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明:</span> <span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh" target="_blank">CC BY-NC-ND 4.0</a> 许可协议。转载请注明来自 <a href="https://snow.js.org" target="_blank">Serok's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a><a class="post-meta__tags" href="/tags/%E7%AE%97%E6%B3%95/">算法</a><a class="post-meta__tags" href="/tags/%E5%B9%B3%E8%A1%A1%E6%A0%91/">平衡树</a></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/gh/SerokSSR/img/splayboat.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/terminal-extra/"><img class="prev-cover" data-lazy-src="https://cdn.jsdelivr.net/gh/SerokSSR/img/linered.png" onerror='onerror=null,src="/null"'><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Terminal · 番外</div></div></a></div><div class="next-post pull-right"><a href="/future/"><img class="next-cover" data-lazy-src="https://cdn.jsdelivr.net/gh/SerokSSR/img/cboat.jpg" onerror='onerror=null,src="/null"'><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">未来</div></div></a></div></nav><div class="relatedPosts"><div class="relatedPosts_headline"><i class="fas fa-thumbs-up fa-fw"></i> <span>相关推荐</span></div><div class="relatedPosts_list"><div class="relatedPosts_item"><a href="/stl-set/" title="C++ STL：SET & MULTISET"><img class="relatedPosts_cover" data-lazy-src="https://cdn.jsdelivr.net/gh/SerokSSR/cdn/4dre.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2020-08-12</div><div class="relatedPosts_title">C++ STL：SET & MULTISET</div></div></a></div><div class="relatedPosts_item"><a href="/about-codestyle/" title="About CODESTYLE"><img class="relatedPosts_cover" data-lazy-src="https://cdn.jsdelivr.net/gh/SerokSSR/img/codecat.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2020-01-21</div><div class="relatedPosts_title">About CODESTYLE</div></div></a></div><div class="relatedPosts_item"><a href="/cf387d/" title="CF387D"><img class="relatedPosts_cover" data-lazy-src="https://cdn.jsdelivr.net/gh/SerokSSR/img/starwar.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2020-04-25</div><div class="relatedPosts_title">CF387D</div></div></a></div><div class="relatedPosts_item"><a href="/dp-knapsack/" title="动态规划：0-1、完全与多重背包"><img class="relatedPosts_cover" data-lazy-src="https://cdn.jsdelivr.net/gh/SerokSSR/img/pix1.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2020-05-18</div><div class="relatedPosts_title">动态规划：0-1、完全与多重背包</div></div></a></div><div class="relatedPosts_item"><a href="/dp-noip-tg/" title="从 DFS 到 DP：区间、状压与树上"><img class="relatedPosts_cover" data-lazy-src="https://cdn.jsdelivr.net/gh/SerokSSR/cdn/8qv7.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2020-07-29</div><div class="relatedPosts_title">从 DFS 到 DP：区间、状压与树上</div></div></a></div><div class="relatedPosts_item"><a href="/match-template/" title="匹配：模板"><img class="relatedPosts_cover" data-lazy-src="https://cdn.jsdelivr.net/gh/SerokSSR/img/fjch753.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2020-04-19</div><div class="relatedPosts_title">匹配：模板</div></div></a></div></div></div><hr><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i> <span>评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></article></main><footer id="footer" data-type="color"><div id="footer-wrap"><div class="footer_custom_text">&copy;2020 SerokSSR.<br>Framework <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a> | Theme <a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a><br>相信辰星 在無邊的曠野</div></div></footer></div><section id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></section><div class="search-dialog" id="local-search"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"></div></div></div><hr><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>由</span> <a target="_blank" rel="noopener" href="https://github.com/wzpan/hexo-generator-search" style="color:#49b1f5">hexo-generator-search</a> <span>提供支持</span></div></div></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module" defer></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js" async></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.spacingElementById('content-inner')
+  else {
+    $.getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js', () => {
+      pangu.spacingElementById('content-inner')
+    })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguFn)</script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    loader: {
+      source: {
+        '[tex]/amsCd': '[tex]/amscd'
+      }
+    },
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        addClass: [200,() => {
+          document.querySelectorAll('mjx-container:not([display=\'true\']').forEach( node => {
+            const target = node.parentNode
+            if (!target.classList.contains('has-jax')) {
+              target.classList.add('mathjax-overflow')
+            }
+          })
+        }, '', false]
+      }
+    }
+  }
+  
+  var script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script>function loadValine () {
+  function initValine () {
+    window.valine = new Valine({
+      el: '#vcomment',
+      appId: '7CcIFFTvT9i2zL1qNJSLEPNb-MdYXbMMI',
+      appKey: 'HY117mqITU3yVTTCAdwfCmMh',
+      placeholder: 'Please leave your footprints',
+      avatar: 'monsterid',
+      meta: 'nick,mail,link'.split(','),
+      pageSize: '10',
+      lang: 'en',
+      recordIP: false,
+      serverURLs: '',
+      emojiCDN: '',
+      emojiMaps: "",
+      enableQQ: true,
+      path: window.location.pathname,
+    });
+    if ('nick,mail') { valine.config.requiredFields= 'nick,mail'.split(',') }
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else $.getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js', initValine)
+}
+
+if ('Valine' === 'Valine' || !true) {
+  if (true) loadComment(document.querySelector('#vcomment'),loadValine)
+  else setTimeout(() => loadValine(), 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script></div><div class="app-refresh" id="app-refresh"><div class="app-refresh-wrap"><label>✨ 網站已更新最新版本 👉</label> <a href="javascript:void(0)" onclick="location.reload()">點擊刷新</a></div></div><script>function showNotification(){if(GLOBAL_CONFIG.Snackbar){var t="light"===document.documentElement.getAttribute("data-theme")?GLOBAL_CONFIG.Snackbar.bgLight:GLOBAL_CONFIG.Snackbar.bgDark,e=GLOBAL_CONFIG.Snackbar.position;Snackbar.show({text:"网站更新啦ヾ(•ω•`)o",backgroundColor:t,duration:5e5,pos:e,actionText:"点击加载",actionTextColor:"#fff",onActionClick:function(t){location.reload()}})}else{var o=`top: 0; background: ${"light"===document.documentElement.getAttribute("data-theme")?"#49b1f5":"#1f1f1f"};`;document.getElementById("app-refresh").style.cssText=o}}"serviceWorker"in navigator&&(navigator.serviceWorker.controller&&navigator.serviceWorker.addEventListener("controllerchange",function(){showNotification()}),window.addEventListener("load",function(){navigator.serviceWorker.register("/sw.js")}));</script><div class="aplayer no-destroy" data-id="2621353166" data-server="netease" data-type="playlist" data-fixed="true" data-mini="true" data-listfolded="true" data-order="random" data-preload="none" data-autoplay="false" muted></div><script src="https://cdn.jsdelivr.net/npm/prismjs/prism.min.js"></script><script src="https://cdn.jsdelivr.net/npm/prismjs/plugins/autoloader/prism-autoloader.min.js"></script><script src="https://cdn.jsdelivr.net/npm/prismjs/plugins/line-numbers/prism-line-numbers.min.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/gh/SerokSSR/cdn/meting.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = [
+  'title',
+  'meta[name=description]',
+  '#config_change',
+  '#body-wrap',
+  '#rightside-config-hide',
+  '#rightside-config-show',
+  '.js-pjax'
+]
+
+if (false) {
+  pjaxSelectors.unshift('meta[property="og:image"]', 'meta[property="og:title"]', 'meta[property="og:url"]')
+}
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:complete', function () {
+  refreshFn()
+
+  $('script[data-pjax]').each(function () {
+    $(this).parent().append($(this).remove())
+  })
+
+  GLOBAL_CONFIG.islazyload && lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  if (typeof gtag === 'function') {
+    gtag('config', '', {'page_path': window.location.pathname});
+  }
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // Analytics
+  if (false) {
+    MtaH5.pgv()
+  }
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+
+document.addEventListener('pjax:send', function () {
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  $(window).off('scroll')
+
+  //reset readmode
+  $('body').hasClass('read-mode') && $('body').removeClass('read-mode')
+
+})</script></div></body></html>

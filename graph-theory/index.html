@@ -1,0 +1,555 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>图论 | Serok's Blog</title><meta name="description" content="图论图论算法一般都是揉在一起的，很难单独把算法拆开讲，所以直接上题目吧。分类是大致分的，其实有很多是交叉的。 最短路 &amp; 生成树算法复杂度 多源最短路Floyd：严格 $O(n^3)$ 单源最短路Dijkstra：  朴素：严格 $O(n^2)$    优先队列优化：均摊 $O((e+n) \log n)$   Bellman−Ford：  最多松弛 $n-1$ 次    严格 $O(ne"><meta name="keywords" content="算法,图论,最短路"><meta name="author" content="Serok.,3091742436@qq.com"><meta name="copyright" content="Serok."><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/SerokSSR/img/favicon.ico"><link rel="canonical" href="https://snow.js.org/graph-theory/"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><link rel="preconnect" href="//cdn.jsdelivr.net"><link rel="preconnect" href="//hm.baidu.com"><link rel="preconnect" href="//zz.bdstatic.com"><meta name="baidu-site-verification" content="WVhN9yb1qI"><meta property="og:type" content="article"><meta property="og:title" content="图论"><meta property="og:url" content="https://snow.js.org/graph-theory/"><meta property="og:site_name" content="Serok's Blog"><meta property="og:description" content="图论图论算法一般都是揉在一起的，很难单独把算法拆开讲，所以直接上题目吧。分类是大致分的，其实有很多是交叉的。 最短路 &amp; 生成树算法复杂度 多源最短路Floyd：严格 $O(n^3)$ 单源最短路Dijkstra：  朴素：严格 $O(n^2)$    优先队列优化：均摊 $O((e+n) \log n)$   Bellman−Ford：  最多松弛 $n-1$ 次    严格 $O(ne"><meta property="og:image" content="https://cdn.jsdelivr.net/gh/SerokSSR/cdn/47kp.jpg"><meta property="article:published_time" content="2020-07-30T16:00:00.000Z"><meta property="article:modified_time" content="2020-08-25T04:03:05.728Z"><meta name="twitter:card" content="summary"><link rel="manifest" href="/manifest.json"><meta name="theme-color" content="#fff"><meta name="msapplication-TileColor" content="#fff"><link rel="apple-touch-icon" sizes="180x180" href="/image/pwa/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/image/pwa/32.ico"><link rel="icon" type="image/png" sizes="16x16" href="/image/pwa/32.ico"><link rel="mask-icon" href="/image/pwa/safari-pinned-tab.svg" color="#5bbad5"><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css"><script>var _hmt=_hmt||[];!function(){var e=document.createElement("script");e.src="https://hm.baidu.com/hm.js?361beab41b2890d7429784b5d0071979";var t=document.getElementsByTagName("script")[0];t.parentNode.insertBefore(e,t)}()</script><link rel="stylesheet" href="https://fonts.dogedoge.com/css2?family=Open+Sans:wght@300;400;600&amp;display=swap"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  hexoversion: '5.1.1',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"prismjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  bookmark: {
+    message_prev: '按',
+    message_next: '键将本页加入书签'
+  },
+  runtime: '天',
+  last_push_date: {"zeroDay":"今天","suffix":"天前"},
+  copyright: undefined,
+  ClickShowText: undefined,
+  medium_zoom: false,
+  fancybox: true,
+  Snackbar: {"bookmark":{"message_prev":"按","message_next":"键将本页加入书签"},"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#121212","position":"top-center"},
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  baiduPush: true,
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+      const now = new Date()
+      const expiryDay = ttl * 86400000
+      const item = {
+        value: value,
+        expiry: now.getTime() + expiryDay,
+      }
+      localStorage.setItem(key, JSON.stringify(item))
+    },
+  
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE={isPost:!0,isHome:!1,isHighlightShrink:!0,isSidebar:!1,postUpdate:"2020-08-25 12:03:05"}</script><noscript><style>#nav{opacity:1}.justified-gallery img{opacity:1}</style></noscript><link href="https://fonts.dogedoge.com/css2?family=Noto+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet"><link rel="preload" href="https://cdn.jsdelivr.net/gh/SerokSSR/cdn/optimize.css" as="style" onload='this.onload=null,this.rel="stylesheet"'><noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SerokSSR/cdn/optimize.css"></noscript><link rel="preload" href="https://cdn.jsdelivr.net/gh/SerokSSR/img/plugin.min.css" as="style" onload='this.onload=null,this.rel="stylesheet"'><noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SerokSSR/img/plugin.min.css"></noscript><style>.app-refresh{position:fixed;top:-2.2rem;left:0;right:0;z-index:99999;padding:0 1rem;font-size:18px;height:2.2rem;transition:all .3s ease}.app-refresh-wrap{display:flex;color:#fff;height:100%;align-items:center;justify-content:center}.app-refresh-wrap a{color:#fff;text-decoration:underline;cursor:pointer}</style><style>::-webkit-scrollbar{width:8px;height:8px}::-webkit-scrollbar-track{background-color:rgba(73,177,245,.2);border-radius:2em}::-webkit-scrollbar-thumb{background-color:#49b1f5;background-image:-webkit-linear-gradient(45deg,rgba(255,255,255,.4) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.4) 50%,rgba(255,255,255,.4) 75%,transparent 75%,transparent);border-radius:2em}::-webkit-scrollbar-corner{background-color:transparent}::-moz-selection{color:#fff;background-color:#49b1f5}</style><style>#pagination .page-number{border-radius:20px}#aside_content .card-info .author-info__name{font-weight:600}#rightside>div>a,#rightside>div>button{width:32px;height:32px;border-radius:20px}h1,h2,h3,h4,h5,h6{color:#2f353c}h1{font-size:2em}h2{font-size:1.6em}h3{font-size:1.35em}h4{font-size:1.2em}h5{font-size:1em}h6{font-size:1em;color:#777}code{font-size:14px}</style><style>.aplayer.aplayer-fixed.aplayer-narrow .aplayer-body{left:-66px!important}.aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover{left:0!important}</style><meta name="generator" content="Hexo 5.1.1"></head><body><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="avatar-img" data-lazy-src="https://q1.qlogo.cn/g?b=qq&amp;nk=1656071287&amp;s=640" onerror='onerror=null,src="https://cdn.jsdelivr.net/gh/SerokSSR/img/friend_404.gif"' alt="avatar"></div><div class="mobile_post_data"><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">27</div></a></div></div><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">34</div></a></div></div><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">6</div></a></div></div></div><hr><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i> <span>Home</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-book-open"></i> <span>Index</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i> <span>Archives</span></a></li><li><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i> <span>Tags</span></a></li><li><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i> <span>Categories</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/friends/"><i class="fa-fw fas fa-link"></i> <span>Friends</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fas fa-comment-dots"></i> <span>Messageboard</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i> <span>About</span></a></div></div></div></div><div id="body-wrap"><header class="post-bg" id="page-header" style="background-image:url(https://cdn.jsdelivr.net/gh/SerokSSR/cdn/47kp.jpg)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Serok's Blog</a></span><span class="menus"><div id="search_button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i> <span>搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i> <span>Home</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-book-open"></i> <span>Index</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i> <span>Archives</span></a></li><li><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i> <span>Tags</span></a></li><li><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i> <span>Categories</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/friends/"><i class="fa-fw fas fa-link"></i> <span>Friends</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fas fa-comment-dots"></i> <span>Messageboard</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i> <span>About</span></a></div></div><span class="toggle-menu close"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><div id="post-title"><div class="posttitle">图论</div></div><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2020-07-30T16:00:00.000Z" title="发表于 2020-07-31 00:00:00">2020-07-31</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2020-08-25T04:03:05.728Z" title="更新于 2020-08-25 12:03:05">2020-08-25</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%AE%97%E6%B3%95/">算法</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">2.6k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>14分钟</span></span></div></div></div></header><main class="layout_post" id="content-inner"><article id="post"><div class="post-content" id="article-container"><h1 id="图论"><a href="#图论" class="headerlink" title="图论"></a>图论</h1><p>图论算法一般都是揉在一起的，很难单独把算法拆开讲，所以直接上题目吧。分类是大致分的，其实有很多是交叉的。</p><h2 id="最短路-amp-生成树"><a href="#最短路-amp-生成树" class="headerlink" title="最短路 &amp; 生成树"></a>最短路 &amp; 生成树</h2><h3 id="算法复杂度"><a href="#算法复杂度" class="headerlink" title="算法复杂度"></a>算法复杂度</h3><ul><li>多源最短路Floyd：严格 $O(n^3)$</li><li>单源最短路Dijkstra：</li><li><ul><li>朴素：严格 $O(n^2)$</li></ul></li><li><ul><li>优先队列优化：均摊 $O((e+n) \log n)$</li></ul></li><li>Bellman−Ford：</li><li><ul><li><b>最多松弛 $n-1$ 次</b></li></ul></li><li><ul><li>严格 $O(ne)$</li></ul></li><li>SPFA：</li><li><ul><li>即队列优化Bellman−Ford</li></ul></li><li><ul><li>最坏 $O(ne)$，最好 $O(1)$</li></ul></li></ul><h3 id="板子"><a href="#板子" class="headerlink" title="板子"></a>板子</h3><p>咕咕咕</p><h3 id="如何卡掉-SPFA"><a href="#如何卡掉-SPFA" class="headerlink" title="如何卡掉 SPFA"></a>如何卡掉 SPFA</h3><p>见 <a target="_blank" rel="noopener" href="https://www.zhihu.com/question/292283275/answer/484871888">https://www.zhihu.com/question/292283275/answer/484871888</a></p><h3 id="P1967-货车运输"><a href="#P1967-货车运输" class="headerlink" title="P1967 货车运输"></a>P1967 货车运输</h3><p>最大生成树，然后跑LCA</p><pre class="line-numbers language-C++" data-language="C++"><code class="language-C++">#include &lt;cstdio&gt;
+#include &lt;cstring&gt;
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+const int N &#x3D; 1e4+10, M &#x3D; 1e5+10, INF &#x3D; 0x3f3f3f3f;
+
+struct node &#123;
+    int id, u, v, w, next;
+&#125; e[M], e1[M];
+int h[N], tot &#x3D; 0, tot1 &#x3D; 0, n, m;
+
+int fa[N][15], dep[N], dis[N][15];
+int vis[N];
+bool edg[M];
+
+void add(int u, int v, int w) &#123;
+    e1[tot1] &#x3D; e[tot] &#x3D; &#123;tot, u, v, w, h[u]&#125;; h[u] &#x3D; tot++; tot1++;
+    e[tot] &#x3D; &#123;tot, v, u, w, h[v]&#125;; h[v] &#x3D; tot++;
+&#125;
+
+int bc[N];
+int root(int u) &#123;
+    return bc[u] &#x3D;&#x3D; u ? u : bc[u] &#x3D; root(bc[u]);
+&#125;
+
+bool cmp(node a, node b) &#123;
+    return a.w &gt; b.w;
+&#125;
+void dfs(int u, int f, int vi) &#123;
+    vis[u] &#x3D; vi;
+    for(int i &#x3D; h[u]; i !&#x3D; -1; i &#x3D; e[i].next) &#123;
+        int v &#x3D; e[i].v;
+        if(v &#x3D;&#x3D; f) continue;
+        if(edg[i] or edg[i^1]) &#123;
+            dep[v] &#x3D; dep[u] + 1;
+            fa[v][0] &#x3D; u;
+            dis[v][0] &#x3D; e[i].w;
+            dfs(v, u, vi);
+        &#125;
+    &#125;
+&#125;
+
+void lca(int x, int y) &#123;
+    if(dep[x] &lt; dep[y]) swap(x, y);
+    int ans &#x3D; INF;
+    int t &#x3D; dep[x] - dep[y];
+    for(int i&#x3D;14; i&gt;&#x3D;0; --i) &#123;
+        if(t &gt;&#x3D; (1&lt;&lt;i)) &#123;
+            ans &#x3D; min(ans, dis[x][i]);
+            x &#x3D; fa[x][i];
+            t -&#x3D; (1&lt;&lt;i);
+        &#125;
+    &#125;
+    if(x &#x3D;&#x3D; y) &#123;
+        printf(&quot;%d\n&quot;, ans);
+        return;
+    &#125;
+    for(int i&#x3D;14; i&gt;&#x3D;0; --i) &#123;
+        if(fa[x][i] !&#x3D; fa[y][i]) &#123;
+            ans &#x3D; min(ans, dis[x][i]);
+            ans &#x3D; min(ans, dis[y][i]);
+            x &#x3D; fa[x][i]; y &#x3D; fa[y][i];
+        &#125;
+    &#125;
+    &#x2F;&#x2F;printf(&quot;lca:%d\n&quot;, fa[x][0]);
+    printf(&quot;%d\n&quot;, min(ans, min(dis[x][0], dis[y][0])));
+&#125;
+int main() &#123;
+    
+    scanf(&quot;%d%d&quot;, &amp;n, &amp;m);
+    memset(h, -1, sizeof h);
+    for(int i&#x3D;1; i&lt;&#x3D;m; ++i) &#123;
+        int u, v, w;
+        scanf(&quot;%d%d%d&quot;, &amp;u, &amp;v, &amp;w);
+        add(u, v, w);
+    &#125;
+    
+    sort(e1, e1+tot1, cmp);
+    for(int i&#x3D;1; i&lt;&#x3D;n; ++i) bc[i] &#x3D; i;
+    for(int i&#x3D;0; i&lt;tot1; ++i) &#123;
+    	int u &#x3D; e1[i].u, v &#x3D; e1[i].v;
+    	int u1 &#x3D; root(u), v1 &#x3D; root(v);
+    	if(u1 !&#x3D; v1) &#123;
+    		edg[e1[i].id] &#x3D; true;
+    		bc[v1] &#x3D; u1;
+        &#125;
+    &#125;
+    
+    for(int i&#x3D;1; i&lt;&#x3D;n; ++i) &#123;
+        if(bc[i] &#x3D;&#x3D; i) &#123;
+            dfs(i, 0, i);
+            for(int j&#x3D;0; j&lt;&#x3D;14; ++j) &#123;
+                fa[i][j] &#x3D; i;
+                dis[i][j] &#x3D; INF;
+            &#125;
+        &#125;
+    &#125;
+    
+    for(int i&#x3D;1; i&lt;&#x3D;14; ++i) &#123;
+        for(int j&#x3D;1; j&lt;&#x3D;n; ++j) &#123;
+            fa[j][i] &#x3D; fa[fa[j][i-1]][i-1];
+            dis[j][i] &#x3D; min(dis[j][i-1], dis[fa[j][i-1]][i-1]);
+        &#125;
+    &#125;
+    
+    int query; scanf(&quot;%d&quot;, &amp;query);
+    for(int i&#x3D;1; i&lt;&#x3D;query; ++i) &#123; 
+        int x, y; scanf(&quot;%d%d&quot;, &amp;x, &amp;y);
+        if(vis[x] !&#x3D; vis[y]) &#123; printf(&quot;-1\n&quot;); continue; &#125;
+        lca(x, y);
+    &#125;
+    
+    return 0;
+&#125; </code></pre><h3 id="P1073-最优贸易"><a href="#P1073-最优贸易" class="headerlink" title="P1073 最优贸易"></a>P1073 最优贸易</h3><p>分层图，最短路</p><pre class="line-numbers language-C++" data-language="C++"><code class="language-C++">#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#include &lt;limits.h&gt;
+#include &lt;iostream&gt;
+#include &lt;queue&gt;
+#include &lt;map&gt;
+using namespace std;
+
+const int N &#x3D; 330000, M &#x3D; 1650000;
+struct node &#123;
+    int u, v, w, next;
+    node() &#123;&#125;
+    node(int _u, int _v, int _w, int _next): u(_u), v(_v), w(_w), next(_next) &#123;&#125;
+&#125; e[M &lt;&lt; 1];
+int h[N], tot &#x3D; 0;
+
+inline void add(int u, int v, int w &#x3D; 0) &#123;
+    e[tot] &#x3D; node(u, v, w, h[u]);
+    h[u] &#x3D; tot++;
+&#125;
+
+int n, m, w[N]; bool vis[N]; int dis[N];
+int main() &#123;
+    
+    #ifdef DEBUG
+    freopen(&quot;p1073_1.in&quot;, &quot;r&quot;, stdin);
+    #endif
+
+    scanf(&quot;%d%d&quot;, &amp;n, &amp;m);
+    for(int i&#x3D;1; i&lt;&#x3D;n; ++i) &#123;
+        scanf(&quot;%d&quot;, &amp;w[i]);
+    &#125;
+    memset(h, -1, sizeof h);
+    for(int i&#x3D;1, x, y, z; i&lt;&#x3D;m; ++i) &#123;
+        scanf(&quot;%d%d%d&quot;, &amp;x, &amp;y, &amp;z);
+        if(z &#x3D;&#x3D; 1) add(x, y), add(x+n, y+n), add(x+2*n, y+2*n);
+        else &#123;
+            add(x, y), add(x+n, y+n), add(x+2*n, y+2*n);
+            swap(x, y);
+            add(x, y), add(x+n, y+n), add(x+2*n, y+2*n);
+        &#125;
+    &#125;
+    
+    for(int i&#x3D;1; i&lt;&#x3D;n; ++i) &#123;
+        add(i+n, i, w[i]);
+        add(i, i+2*n, -w[i]);
+    &#125;
+    
+    queue&lt;int&gt; q;
+    
+    memset(dis, 0x3f, sizeof dis);
+    q.push(n+1); vis[n+1] &#x3D; true; dis[n+1] &#x3D; 0;
+    while(!q.empty()) &#123;
+        int u &#x3D; q.front();
+        q.pop(); vis[u] &#x3D; false;
+        for(int i&#x3D;h[u]; i!&#x3D;-1; i&#x3D;e[i].next) &#123;
+            int v&#x3D;e[i].v;
+            if(dis[v] &gt; dis[u] + e[i].w) &#123;
+                dis[v] &#x3D; dis[u] + e[i].w;
+                if(!vis[v]) &#123;
+                    q.push(v);
+                    vis[v] &#x3D; true;
+                &#125;
+            &#125;
+        &#125; 
+    &#125;
+    
+    printf(&quot;%d\n&quot;, -dis[n*3]);
+    
+    return 0;
+&#125;</code></pre><h2 id="P1119-灾后重建"><a href="#P1119-灾后重建" class="headerlink" title="P1119 灾后重建"></a>P1119 灾后重建</h2><p><b>很重要的题目，考察了 Floyd的本质。</b></p><h3 id="Floyd"><a href="#Floyd" class="headerlink" title="Floyd"></a>Floyd</h3><p>用 $dis[k][i][j]$ 表示 i 和 j 之间可以通过编号为 $1\dots k$ 的节点的最短路径，显然，$dis[0][i][j]$ 就是原始邻接矩阵数据。</p><p>状态转移方程：</p><p>$$<br>dis[k][i][j]=min(dis[k-1][i][j],dis[k-1][i][k]+dis[k-1][k][j])<br>$$</p><p>$$<br>dis[k][i][j]=min(dis[k−1][i][j],dis[k−1][i][k]+dis[k−1][k][j])<br>$$</p><p>Floyd 的本质其实就是DP，只不过我们通常做题时利用了数据只会使用一次性的原理，把 dis 变成滚动数组，减少了一维，节省空间。</p><pre class="line-numbers language-C++" data-language="C++"><code class="language-C++">&#x2F;&#x2F;提前将邻接矩阵存在 dis 数组里，其他不连通的地方初始化成无穷大
+for(int k&#x3D;1; k&lt;&#x3D;n; ++k) &#x2F;&#x2F;枚举中间点
+    for(int i&#x3D;1; i&lt;&#x3D;n; ++i) &#x2F;&#x2F;枚举起点
+        if(i !&#x3D; k) &#x2F;&#x2F;节省时间，如果一样就不往下走
+            for(int j&#x3D;1; j&lt;&#x3D;n; ++j) &#x2F;&#x2F;枚举终点
+                if(i !&#x3D; j and j !&#x3D; k) &#x2F;&#x2F;继续判断，如果有一样的就不往下走
+                    dis[i][j] &#x3D; min(dis[i][j], dis[i][k] + dis[k][j]); &#x2F;&#x2F;状态转移方程，也就是所谓的松弛操作</code></pre><p><b>只要我们能够利用 DP 特性，就能解决许多问题</b></p><p>再回来看这道题，文中说每个村子是不同时间修好的，而每个节点都按顺序给出，这不就是恰好相当于 Floyd的中间点吗？我们可以把 k轮 DP分开做，每输入一个点，就用这个点当中转站把最短距离更新一遍，也就是跑一遍 DP。</p><h3 id="Code"><a href="#Code" class="headerlink" title="Code:"></a>Code:</h3><pre class="line-numbers language-C++" data-language="C++"><code class="language-C++">#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+
+const int N &#x3D; 220;
+
+int t[N];
+
+struct query &#123;
+    int id, x, y, t;
+&#125; a[55000];
+
+int res[55000], n, m, dp[N][N];
+int main() &#123;
+    
+    &#x2F;&#x2F;freopen(&quot;P1119_2.in&quot;, &quot;r&quot;, stdin); 
+    
+    scanf(&quot;%d%d&quot;, &amp;n, &amp;m);
+    
+    for(int i&#x3D;1; i&lt;&#x3D;n; ++i) &#123;
+        scanf(&quot;%d&quot;, t+i);
+    &#125;
+    t[n+1] &#x3D; 0x3f3f3f3f;
+    
+    memset(dp, 0x3f, sizeof dp);
+    
+    for(int i&#x3D;1; i&lt;&#x3D;n; ++i) dp[i][i] &#x3D; 0;
+    for(int i&#x3D;1; i&lt;&#x3D;m; ++i) &#123; int u, v, w;
+        scanf(&quot;%d%d%d&quot;, &amp;u, &amp;v, &amp;w); ++u, ++v;
+        dp[u][v] &#x3D; dp[v][u] &#x3D; w;
+    &#125;
+    int q;
+    scanf(&quot;%d&quot;, &amp;q);
+    for(int i&#x3D;1; i&lt;&#x3D;q; ++i) &#123;
+        scanf(&quot;%d%d%d&quot;, &amp;a[i].x, &amp;a[i].y, &amp;a[i].t);
+        a[i].id &#x3D; i; ++a[i].x, ++a[i].y; 
+    &#125;
+    
+    int cnt &#x3D; 1;
+    for(; a[cnt].t &lt; t[1]; ++cnt) &#123;
+        res[a[cnt].id] &#x3D; -1; 
+    &#125;
+    
+    for(int T&#x3D;1; T&lt;&#x3D;n; ++T) &#123;
+        
+        for(int i&#x3D;1; i&lt;&#x3D;n; ++i) &#123;
+            for(int j&#x3D;1; j&lt;&#x3D;n; ++j) &#123;
+                dp[i][j] &#x3D; min(dp[i][j], dp[i][T] + dp[T][j]);
+            &#125;
+        &#125;
+            
+        while(1) &#123;
+            if(cnt &gt; q) break;
+            if(a[cnt].t &gt;&#x3D; t[T] and a[cnt].t &lt; t[T+1]); else break;
+            if(a[cnt].x &gt; T or a[cnt].y &gt; T or dp[a[cnt].x][a[cnt].y] &#x3D;&#x3D; 0x3f3f3f3f) &#123;
+                res[a[cnt].id] &#x3D; -1;
+            &#125; else &#123;
+                res[a[cnt].id] &#x3D; dp[a[cnt].x][a[cnt].y];
+            &#125;
+            ++cnt;
+        &#125;
+    &#125;
+    
+    for(int i&#x3D;1; i&lt;&#x3D;q; ++i) printf(&quot;%d\n&quot;, res[i]);
+    return 0;
+&#125;</code></pre><h2 id="判负环"><a href="#判负环" class="headerlink" title="判负环"></a>判负环</h2><p>转自 @SingerCoder，%lgh</p><div class="note default"><p>注意一定要判入队次数而不是松弛次数。</p><p>hack原理很简单：如果存在重边导致了多次松弛，那么对松弛次数的判断就会产生影响。解决方式就是判入队次数，虽然略慢，但是更稳。</p><p>Update[2020.7.26]：在写差分约束的时候想用spfa判无解，然后经过一系列的思考就有了下面这组新的hack数据：</p><pre class="line-numbers language-none"><code class="language-none">input:
+1
+4 6
+1 2 -3
+1 3 -2
+1 4 -1
+2 3 -6
+2 4 -5
+3 4 -4
+output:
+NO</code></pre><p><img src="https://cdn.jsdelivr.net/gh/SerokSSR/img/loading.gif" data-lazy-src="https://cdn.jsdelivr.net/gh/SerokSSR/cdn2/g21s.png"></p><p>注意这组hack只对用链式前向星（而非vector）存边且判的是松弛次数（而非入队次数）的有效，而且该数据无重边无自环，比discuss里面的那个数据更有说服力。</p><p>首先hack原理就是对n号节点进行n-1轮松弛，每轮都有 $x( x \in [1,n-1])$ 次松弛，这样就能产生 $n^2$ 级别的松弛次数。</p><p>但是判入队次数就hack不掉了，每轮的第一次松弛会让n节点入队，但n节点只有在下一轮才会出队；因此本轮的其余所有松弛全部无法导致入队。</p></div><h3 id="P3385-模板-负环"><a href="#P3385-模板-负环" class="headerlink" title="P3385 [模板]负环"></a>P3385 [模板]负环</h3><pre class="line-numbers language-C++" data-language="C++"><code class="language-C++">#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#include &lt;iostream&gt;
+#include &lt;queue&gt;
+using namespace std;
+
+const int N &#x3D; 2e3 + 10, M &#x3D; 6e3 + 10;
+struct node &#123;
+    int u, v, w, next;
+&#125; e[M];
+int h[N], tot &#x3D; 0;
+int T, n, m;
+inline void add(int u, int v, int w) &#123;
+    e[++tot] &#x3D; &#123;u, v, w, h[u]&#125;; h[u] &#x3D; tot;
+&#125; 
+
+int dis[N], vis[N];
+bool inq[N];
+
+inline void spfa() &#123;
+    
+    queue&lt;int&gt; q;
+    memset(dis, 0x3f, sizeof dis);
+    memset(vis, 0, sizeof vis);
+    memset(inq, false, sizeof inq);
+    
+    dis[1] &#x3D; 0; q.push(1); inq[1] &#x3D; true; ++vis[1];
+    while(!q.empty()) &#123;
+        
+        int u &#x3D; q.front(); q.pop(); inq[u] &#x3D; false;&#x2F;&#x2F;printf(&quot;%d\n&quot;, u);
+        for(int i &#x3D; h[u]; i ; i &#x3D; e[i].next) &#123;
+            int v &#x3D; e[i].v;
+            if(dis[v] &gt; dis[u] + e[i].w) &#123;
+                dis[v] &#x3D; dis[u] + e[i].w;
+                if(!inq[v]) &#123;
+                    inq[v] &#x3D; true;
+                    ++vis[v];
+                    if(vis[v] &gt; n-1) &#123;
+                        printf(&quot;YES\n&quot;);
+                        return;
+                    &#125;
+                    q.push(v);
+                &#125;
+            &#125;
+        &#125;
+    &#125;
+    printf(&quot;NO\n&quot;);
+&#125;
+int main() &#123;
+    
+    &#x2F;&#x2F;freopen(&quot;P3385_2.in&quot;, &quot;r&quot;, stdin);
+    
+    scanf(&quot;%d&quot;, &amp;T);
+    while(T--) &#123;
+        scanf(&quot;%d%d&quot;, &amp;n, &amp;m);
+        memset(h, 0, sizeof h); tot &#x3D; 0;
+        for(int i&#x3D;1; i&lt;&#x3D;m; ++i) &#123;
+            int u, v, w; scanf(&quot;%d%d%d&quot;, &amp;u, &amp;v, &amp;w);
+            if(w &gt;&#x3D; 0) &#123;
+                add(u, v, w);
+                add(v, u, w);
+            &#125; else add(u, v, w);
+            &#x2F;&#x2F;printf(&quot;%d &quot;, i);
+        &#125;
+        spfa();
+    &#125;
+    return 0;
+&#125;</code></pre></div><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者:</span> <span class="post-copyright-info"><a href="mailto:3091742436@qq.com">Serok.</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接:</span> <span class="post-copyright-info"><a href="https://snow.js.org/graph-theory/">https://snow.js.org/graph-theory/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明:</span> <span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh" target="_blank">CC BY-NC-ND 4.0</a> 许可协议。转载请注明来自 <a href="https://snow.js.org" target="_blank">Serok's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%AE%97%E6%B3%95/">算法</a><a class="post-meta__tags" href="/tags/%E5%9B%BE%E8%AE%BA/">图论</a><a class="post-meta__tags" href="/tags/%E6%9C%80%E7%9F%AD%E8%B7%AF/">最短路</a></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/gh/SerokSSR/cdn/47kp.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/hexo-gulp-pwa/"><img class="prev-cover" data-lazy-src="https://cdn.jsdelivr.net/gh/SerokSSR/img/pwa.svg" onerror='onerror=null,src="/null"'><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Hexo：为你的博客配置 PWA</div></div></a></div><div class="next-post pull-right"><a href="/dp-noip-tg/"><img class="next-cover" data-lazy-src="https://cdn.jsdelivr.net/gh/SerokSSR/cdn/8qv7.jpg" onerror='onerror=null,src="/null"'><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">从 DFS 到 DP：区间、状压与树上</div></div></a></div></nav><div class="relatedPosts"><div class="relatedPosts_headline"><i class="fas fa-thumbs-up fa-fw"></i> <span>相关推荐</span></div><div class="relatedPosts_list"><div class="relatedPosts_item"><a href="/dp-noip-tg/" title="从 DFS 到 DP：区间、状压与树上"><img class="relatedPosts_cover" data-lazy-src="https://cdn.jsdelivr.net/gh/SerokSSR/cdn/8qv7.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2020-07-29</div><div class="relatedPosts_title">从 DFS 到 DP：区间、状压与树上</div></div></a></div><div class="relatedPosts_item"><a href="/network-flow-dijkstra/" title="网络流：Dijkstra 求费用流"><img class="relatedPosts_cover" data-lazy-src="https://cdn.jsdelivr.net/gh/SerokSSR/img/path.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2020-02-29</div><div class="relatedPosts_title">网络流：Dijkstra 求费用流</div></div></a></div><div class="relatedPosts_item"><a href="/network-flow-template/" title="网络流：模板"><img class="relatedPosts_cover" data-lazy-src="https://cdn.jsdelivr.net/gh/SerokSSR/img/qxpath.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2020-04-05</div><div class="relatedPosts_title">网络流：模板</div></div></a></div><div class="relatedPosts_item"><a href="/network-flow-deloop/" title="网络流：消圈算法"><img class="relatedPosts_cover" data-lazy-src="https://cdn.jsdelivr.net/gh/SerokSSR/img/dra.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2020-02-29</div><div class="relatedPosts_title">网络流：消圈算法</div></div></a></div><div class="relatedPosts_item"><a href="/stl-set/" title="C++ STL：SET & MULTISET"><img class="relatedPosts_cover" data-lazy-src="https://cdn.jsdelivr.net/gh/SerokSSR/cdn/4dre.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2020-08-12</div><div class="relatedPosts_title">C++ STL：SET & MULTISET</div></div></a></div><div class="relatedPosts_item"><a href="/about-codestyle/" title="About CODESTYLE"><img class="relatedPosts_cover" data-lazy-src="https://cdn.jsdelivr.net/gh/SerokSSR/img/codecat.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2020-01-21</div><div class="relatedPosts_title">About CODESTYLE</div></div></a></div></div></div><hr><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i> <span>评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></article></main><footer id="footer" data-type="color"><div id="footer-wrap"><div class="footer_custom_text">&copy;2020 SerokSSR.<br>Framework <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a> | Theme <a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a><br>相信辰星 在無邊的曠野</div></div></footer></div><section id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></section><div class="search-dialog" id="local-search"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"></div></div></div><hr><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>由</span> <a target="_blank" rel="noopener" href="https://github.com/wzpan/hexo-generator-search" style="color:#49b1f5">hexo-generator-search</a> <span>提供支持</span></div></div></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module" defer></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js" async></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.spacingElementById('content-inner')
+  else {
+    $.getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js', () => {
+      pangu.spacingElementById('content-inner')
+    })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguFn)</script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    loader: {
+      source: {
+        '[tex]/amsCd': '[tex]/amscd'
+      }
+    },
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        addClass: [200,() => {
+          document.querySelectorAll('mjx-container:not([display=\'true\']').forEach( node => {
+            const target = node.parentNode
+            if (!target.classList.contains('has-jax')) {
+              target.classList.add('mathjax-overflow')
+            }
+          })
+        }, '', false]
+      }
+    }
+  }
+  
+  var script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script>function loadValine () {
+  function initValine () {
+    window.valine = new Valine({
+      el: '#vcomment',
+      appId: '7CcIFFTvT9i2zL1qNJSLEPNb-MdYXbMMI',
+      appKey: 'HY117mqITU3yVTTCAdwfCmMh',
+      placeholder: 'Please leave your footprints',
+      avatar: 'monsterid',
+      meta: 'nick,mail,link'.split(','),
+      pageSize: '10',
+      lang: 'en',
+      recordIP: false,
+      serverURLs: '',
+      emojiCDN: '',
+      emojiMaps: "",
+      enableQQ: true,
+      path: window.location.pathname,
+    });
+    if ('nick,mail') { valine.config.requiredFields= 'nick,mail'.split(',') }
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else $.getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js', initValine)
+}
+
+if ('Valine' === 'Valine' || !true) {
+  if (true) loadComment(document.querySelector('#vcomment'),loadValine)
+  else setTimeout(() => loadValine(), 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script></div><div class="app-refresh" id="app-refresh"><div class="app-refresh-wrap"><label>✨ 網站已更新最新版本 👉</label> <a href="javascript:void(0)" onclick="location.reload()">點擊刷新</a></div></div><script>function showNotification(){if(GLOBAL_CONFIG.Snackbar){var t="light"===document.documentElement.getAttribute("data-theme")?GLOBAL_CONFIG.Snackbar.bgLight:GLOBAL_CONFIG.Snackbar.bgDark,e=GLOBAL_CONFIG.Snackbar.position;Snackbar.show({text:"网站更新啦ヾ(•ω•`)o",backgroundColor:t,duration:5e5,pos:e,actionText:"点击加载",actionTextColor:"#fff",onActionClick:function(t){location.reload()}})}else{var o=`top: 0; background: ${"light"===document.documentElement.getAttribute("data-theme")?"#49b1f5":"#1f1f1f"};`;document.getElementById("app-refresh").style.cssText=o}}"serviceWorker"in navigator&&(navigator.serviceWorker.controller&&navigator.serviceWorker.addEventListener("controllerchange",function(){showNotification()}),window.addEventListener("load",function(){navigator.serviceWorker.register("/sw.js")}));</script><div class="aplayer no-destroy" data-id="2621353166" data-server="netease" data-type="playlist" data-fixed="true" data-mini="true" data-listfolded="true" data-order="random" data-preload="none" data-autoplay="false" muted></div><script src="https://cdn.jsdelivr.net/npm/prismjs/prism.min.js"></script><script src="https://cdn.jsdelivr.net/npm/prismjs/plugins/autoloader/prism-autoloader.min.js"></script><script src="https://cdn.jsdelivr.net/npm/prismjs/plugins/line-numbers/prism-line-numbers.min.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/gh/SerokSSR/cdn/meting.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = [
+  'title',
+  'meta[name=description]',
+  '#config_change',
+  '#body-wrap',
+  '#rightside-config-hide',
+  '#rightside-config-show',
+  '.js-pjax'
+]
+
+if (false) {
+  pjaxSelectors.unshift('meta[property="og:image"]', 'meta[property="og:title"]', 'meta[property="og:url"]')
+}
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:complete', function () {
+  refreshFn()
+
+  $('script[data-pjax]').each(function () {
+    $(this).parent().append($(this).remove())
+  })
+
+  GLOBAL_CONFIG.islazyload && lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  if (typeof gtag === 'function') {
+    gtag('config', '', {'page_path': window.location.pathname});
+  }
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // Analytics
+  if (false) {
+    MtaH5.pgv()
+  }
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+
+document.addEventListener('pjax:send', function () {
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  $(window).off('scroll')
+
+  //reset readmode
+  $('body').hasClass('read-mode') && $('body').removeClass('read-mode')
+
+})</script></div></body></html>

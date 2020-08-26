@@ -1,0 +1,452 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Hexo：为你的博客配置 PWA | Serok's Blog</title><meta name="description" content="渐进式网络应用程式（PWA）是一种普通网页或网站架构起来的网络应用程序，可以将浏览器与移动 APP 的体验优势相结合。"><meta name="keywords" content="Hexo,部署,博客,Gulp,PWA,应用程序"><meta name="author" content="Serok.,3091742436@qq.com"><meta name="copyright" content="Serok."><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/SerokSSR/img/favicon.ico"><link rel="canonical" href="https://snow.js.org/hexo-gulp-pwa/"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><link rel="preconnect" href="//cdn.jsdelivr.net"><link rel="preconnect" href="//hm.baidu.com"><link rel="preconnect" href="//zz.bdstatic.com"><meta name="baidu-site-verification" content="WVhN9yb1qI"><meta property="og:type" content="article"><meta property="og:title" content="Hexo：为你的博客配置 PWA"><meta property="og:url" content="https://snow.js.org/hexo-gulp-pwa/"><meta property="og:site_name" content="Serok's Blog"><meta property="og:description" content="渐进式网络应用程式（PWA）是一种普通网页或网站架构起来的网络应用程序，可以将浏览器与移动 APP 的体验优势相结合。"><meta property="og:image" content="https://cdn.jsdelivr.net/gh/SerokSSR/img/pwa.svg"><meta property="article:published_time" content="2020-08-03T16:00:00.000Z"><meta property="article:modified_time" content="2020-08-09T10:16:54.528Z"><meta name="twitter:card" content="summary"><link rel="manifest" href="/manifest.json"><meta name="theme-color" content="#fff"><meta name="msapplication-TileColor" content="#fff"><link rel="apple-touch-icon" sizes="180x180" href="/image/pwa/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/image/pwa/32.ico"><link rel="icon" type="image/png" sizes="16x16" href="/image/pwa/32.ico"><link rel="mask-icon" href="/image/pwa/safari-pinned-tab.svg" color="#5bbad5"><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css"><script>var _hmt=_hmt||[];!function(){var e=document.createElement("script");e.src="https://hm.baidu.com/hm.js?361beab41b2890d7429784b5d0071979";var t=document.getElementsByTagName("script")[0];t.parentNode.insertBefore(e,t)}()</script><link rel="stylesheet" href="https://fonts.dogedoge.com/css2?family=Open+Sans:wght@300;400;600&amp;display=swap"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  hexoversion: '5.1.1',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"prismjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  bookmark: {
+    message_prev: '按',
+    message_next: '键将本页加入书签'
+  },
+  runtime: '天',
+  last_push_date: {"zeroDay":"今天","suffix":"天前"},
+  copyright: undefined,
+  ClickShowText: undefined,
+  medium_zoom: false,
+  fancybox: true,
+  Snackbar: {"bookmark":{"message_prev":"按","message_next":"键将本页加入书签"},"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#121212","position":"top-center"},
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  baiduPush: true,
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+      const now = new Date()
+      const expiryDay = ttl * 86400000
+      const item = {
+        value: value,
+        expiry: now.getTime() + expiryDay,
+      }
+      localStorage.setItem(key, JSON.stringify(item))
+    },
+  
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE={isPost:!0,isHome:!1,isHighlightShrink:!1,isSidebar:!1,postUpdate:"2020-08-09 18:16:54"}</script><noscript><style>#nav{opacity:1}.justified-gallery img{opacity:1}</style></noscript><link href="https://fonts.dogedoge.com/css2?family=Noto+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet"><link rel="preload" href="https://cdn.jsdelivr.net/gh/SerokSSR/cdn/optimize.css" as="style" onload='this.onload=null,this.rel="stylesheet"'><noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SerokSSR/cdn/optimize.css"></noscript><link rel="preload" href="https://cdn.jsdelivr.net/gh/SerokSSR/img/plugin.min.css" as="style" onload='this.onload=null,this.rel="stylesheet"'><noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SerokSSR/img/plugin.min.css"></noscript><style>.app-refresh{position:fixed;top:-2.2rem;left:0;right:0;z-index:99999;padding:0 1rem;font-size:18px;height:2.2rem;transition:all .3s ease}.app-refresh-wrap{display:flex;color:#fff;height:100%;align-items:center;justify-content:center}.app-refresh-wrap a{color:#fff;text-decoration:underline;cursor:pointer}</style><style>::-webkit-scrollbar{width:8px;height:8px}::-webkit-scrollbar-track{background-color:rgba(73,177,245,.2);border-radius:2em}::-webkit-scrollbar-thumb{background-color:#49b1f5;background-image:-webkit-linear-gradient(45deg,rgba(255,255,255,.4) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.4) 50%,rgba(255,255,255,.4) 75%,transparent 75%,transparent);border-radius:2em}::-webkit-scrollbar-corner{background-color:transparent}::-moz-selection{color:#fff;background-color:#49b1f5}</style><style>#pagination .page-number{border-radius:20px}#aside_content .card-info .author-info__name{font-weight:600}#rightside>div>a,#rightside>div>button{width:32px;height:32px;border-radius:20px}h1,h2,h3,h4,h5,h6{color:#2f353c}h1{font-size:2em}h2{font-size:1.6em}h3{font-size:1.35em}h4{font-size:1.2em}h5{font-size:1em}h6{font-size:1em;color:#777}code{font-size:14px}</style><style>.aplayer.aplayer-fixed.aplayer-narrow .aplayer-body{left:-66px!important}.aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover{left:0!important}</style><meta name="generator" content="Hexo 5.1.1"></head><body><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="avatar-img" data-lazy-src="https://q1.qlogo.cn/g?b=qq&amp;nk=1656071287&amp;s=640" onerror='onerror=null,src="https://cdn.jsdelivr.net/gh/SerokSSR/img/friend_404.gif"' alt="avatar"></div><div class="mobile_post_data"><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">27</div></a></div></div><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">34</div></a></div></div><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">6</div></a></div></div></div><hr><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i> <span>Home</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-book-open"></i> <span>Index</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i> <span>Archives</span></a></li><li><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i> <span>Tags</span></a></li><li><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i> <span>Categories</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/friends/"><i class="fa-fw fas fa-link"></i> <span>Friends</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fas fa-comment-dots"></i> <span>Messageboard</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i> <span>About</span></a></div></div></div></div><div id="body-wrap"><header class="post-bg" id="page-header" style="background-image:url(https://cdn.jsdelivr.net/gh/SerokSSR/img/pwa.svg)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Serok's Blog</a></span><span class="menus"><div id="search_button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i> <span>搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i> <span>Home</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-book-open"></i> <span>Index</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i> <span>Archives</span></a></li><li><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i> <span>Tags</span></a></li><li><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i> <span>Categories</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/friends/"><i class="fa-fw fas fa-link"></i> <span>Friends</span></a></div><div class="menus_item"><a class="site-page" href="/messageboard/"><i class="fa-fw fas fa-comment-dots"></i> <span>Messageboard</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i> <span>About</span></a></div></div><span class="toggle-menu close"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><div id="post-title"><div class="posttitle">Hexo：为你的博客配置 PWA</div></div><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2020-08-03T16:00:00.000Z" title="发表于 2020-08-04 00:00:00">2020-08-04</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2020-08-09T10:16:54.528Z" title="更新于 2020-08-09 18:16:54">2020-08-09</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Hexo/">Hexo</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">2.2k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>11分钟</span></span></div></div></div></header><main class="layout_post" id="content-inner"><article id="post"><div class="post-content" id="article-container"><h1 id="Hexo：使用-Gulp-为你的博客配置-PWA"><a href="#Hexo：使用-Gulp-为你的博客配置-PWA" class="headerlink" title="Hexo：使用 Gulp 为你的博客配置 PWA"></a>Hexo：使用 Gulp 为你的博客配置 PWA</h1><div class="note default"><p>使用这个方法之前，请先卸载掉其它的 PWA 插件，并安装 Gulp 和 WorkBox。</p></div><pre class="line-numbers language-Powershell" data-language="Powershell"><code class="language-Powershell">npm install gulp-cli -g
+npm install workbox-build gulp --save-dev</code></pre><p>本文参考<a target="_blank" rel="noopener" href="https://io-oi.me/tech/pwa-via-workbox/">利用 Workbox 实现博客的 PWA</a>和<a target="_blank" rel="noopener" href="https://demo.jerryc.me/posts/4073eda/">Butterfly进阶教程</a>。</p><h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>渐进式网络应用程式（英语：Progressive Web Apps，简称：PWA）是一种普通网页或网站架构起来的网络应用程式，但它可以以传统应用程式或原生移动应用程式形式展示给用户。这种应用程式形态视图将目前最为现代化的浏览器提供的功能与行动装置的体验优势相结合。</p><p>当你的网站实现了 PWA，那就代表了</p><ul><li>用户可以添加你的博客到电脑/手机的桌面，以原生应用般的方式浏览你的博客</li><li>用户本地可以自动生成缓存，二次访问速度大大加快</li><li>用户可以离线浏览你的博客</li></ul><p>下面的 PWA实现方法借助了 Gulp插件，在站点有内容更新时，可以弹窗提醒用户刷新页面。</p><h2 id="开启主题相关设置"><a href="#开启主题相关设置" class="headerlink" title="开启主题相关设置"></a>开启主题相关设置</h2><p>以 Butterfly 主题为例，在 <code>butterfly.yml</code> 中开启 PWA 选项</p><p>实例：</p><pre class="line-numbers language-Yaml" data-language="Yaml"><code class="language-Yaml">pwa:
+  enable: true
+  manifest: &#x2F;manifest.json # 清单文件，下文将介绍如何生成
+  theme_color: &quot;#fff&quot; # 应用程序顶栏的背景色
+  apple_touch_icon: &#x2F;img&#x2F;pwa&#x2F;apple-touch-icon.png # 添加至苹果移动设备的主屏幕后显示的图标，尽量使用 png 格式
+  favicon_32_32: &#x2F;img&#x2F;pwa&#x2F;32.png # 32 * 32 像素，网页图标
+  favicon_16_16: &#x2F;img&#x2F;pwa&#x2F;16.png # 16 * 16 像素，网页图标
+  mask_icon: &#x2F;img&#x2F;pwa&#x2F;safari-pinned-tab.svg # 苹果电脑 Touch Bar 区域显示的收藏栏封面图，须使用 svg 格式</code></pre><p><strong>图片尺寸要求：</strong></p><ul><li>apple_touch_icon：192 * 192 像素</li><li>mask_icon：viewBox的值必须是 0 0 16 16</li></ul><p>如果你的主题没有内置PWA，下面附有Butterfly主题的PWA部分，可以根据你所用的主题调整下面的Pug模板，编译后插入到html生成模板的head处。</p><pre class="line-numbers language-Html" data-language="Html"><code class="language-Html">link(rel&#x3D;&quot;manifest&quot; href&#x3D;url_for(theme.pwa.manifest))
+if(theme.pwa.theme_color) 
+  meta(name&#x3D;&quot;theme-color&quot; content&#x3D;theme.pwa.theme_color)
+if(theme.pwa.theme_color) 
+  meta(name&#x3D;&quot;msapplication-TileColor&quot; content&#x3D;theme.pwa.theme_color)
+if(theme.pwa.apple_touch_icon) 
+  link(rel&#x3D;&quot;apple-touch-icon&quot; sizes&#x3D;&quot;180x180&quot; href&#x3D;url_for(theme.pwa.apple_touch_icon))
+if(theme.pwa.favicon_32_32) 
+  link(rel&#x3D;&quot;icon&quot; type&#x3D;&quot;image&#x2F;png&quot; sizes&#x3D;&quot;32x32&quot; href&#x3D;url_for(theme.pwa.favicon_32_32))
+if(theme.pwa.favicon_16_16)
+  link(rel&#x3D;&quot;icon&quot; type&#x3D;&quot;image&#x2F;png&quot; sizes&#x3D;&quot;16x16&quot; href&#x3D;url_for(theme.pwa.favicon_16_16))
+if(theme.pwa.mask_icon)
+  link(rel&#x3D;&quot;mask-icon&quot; href&#x3D;url_for(theme.pwa.mask_icon) color&#x3D;&quot;#5bbad5&quot;)</code></pre><h2 id="配置-manifest-json"><a href="#配置-manifest-json" class="headerlink" title="配置 manifest.json"></a>配置 <code>manifest.json</code></h2><p>创建 <code>manifest.json</code>，路径应与配置文件中所填路径相同。</p><p><b>实例及配置说明：</b></p><pre class="line-numbers language-Json" data-language="Json"><code class="language-Json">&#123;
+  &quot;name&quot;: &quot;Serok&#39;s Blog&quot;, &#x2F;&#x2F; 应用全称
+  &quot;short_name&quot;: &quot;Seeker&quot;, &#x2F;&#x2F; 应用简称
+  &quot;theme_color&quot;: &quot;#49b1f5&quot;, &#x2F;&#x2F; 应用主题色
+  &quot;background_color&quot;: &quot;#49b1f5&quot;, &#x2F;&#x2F; 加载应用时的背景色
+  &quot;display&quot;: &quot;minimal-ui&quot;, &#x2F;&#x2F; 首選顯示模式
+  &#x2F;&#x2F;更多顯示模式：&quot;fullscreen&quot;, &quot;standalone&quot;, &quot;browser&quot;
+  &quot;scope&quot;: &quot;&#x2F;&quot;,
+  &quot;start_url&quot;: &quot;&#x2F;&quot;,
+  &quot;icons&quot;: [ 
+    &#x2F;&#x2F; 指定 icons 參數，用來適配不同設備
+    &#x2F;&#x2F; 需為 png 格式，至少包含一个 192 * 192 像素的圖標
+    &#123; 
+      &quot;src&quot;: &quot;https:&#x2F;&#x2F;snow.js.org&#x2F;image&#x2F;pwaicons&#x2F;192.png&quot;, &#x2F;&#x2F; 建议采用绝对路径
+      &quot;sizes&quot;: &quot;192x192&quot;,
+      &quot;type&quot;: &quot;image&#x2F;png&quot;
+    &#125;
+  ],
+  &quot;splash_pages&quot;: null &#x2F;&#x2F; 自定義启动动画
+&#125;</code></pre><div class="note default"><p>Hexo采用的是严格 Json规范，因此 <code>manifest.json</code> 文件配置好后，需删除文件中的所有注释。</p></div><h2 id="安装插件"><a href="#安装插件" class="headerlink" title="安装插件"></a>安装插件</h2><p>在命令行中输入</p><pre class="line-numbers language-Powershell" data-language="Powershell"><code class="language-Powershell">npm install workbox-build gulp --save-dev</code></pre><h2 id="创建-gulpfile-js-文件"><a href="#创建-gulpfile-js-文件" class="headerlink" title="创建 gulpfile.js 文件"></a>创建 <code>gulpfile.js</code> 文件</h2><p>在博客的根目录下，创建一个 <code>gulpfile.js</code> 文件</p><pre class="line-numbers language-JavaScript" data-language="JavaScript"><code class="language-JavaScript">const gulp &#x3D; require(&quot;gulp&quot;);
+const workbox &#x3D; require(&quot;workbox-build&quot;);
+
+gulp.task(&#39;generate-service-worker&#39;, () &#x3D;&gt; &#123;
+    return workbox.injectManifest(&#123;
+        swSrc: &#39;.&#x2F;sw-template.js&#39;,
+        swDest: &#39;.&#x2F;public&#x2F;sw.js&#39;,
+        globDirectory: &#39;.&#x2F;public&#39;,
+        globPatterns: [
+            &quot;**&#x2F;*.&#123;html,css,js,json,woff2&#125;&quot;
+        ],
+        modifyURLPrefix: &#123;
+            &quot;&quot;: &quot;.&#x2F;&quot;
+        &#125;
+    &#125;);
+&#125;);
+
+gulp.task(&quot;build&quot;, gulp.series(&quot;generate-service-worker&quot;));</code></pre><h2 id="创建-sw-template-js-文件"><a href="#创建-sw-template-js-文件" class="headerlink" title="创建 sw-template.js 文件"></a>创建 <code>sw-template.js</code> 文件</h2><p>在博客的根目录下，创建一个 <code>sw-template.js</code> 文件</p><pre class="line-numbers language-JavaScript" data-language="JavaScript"><code class="language-JavaScript">const workboxVersion &#x3D; &#39;5.1.3&#39;;
+
+importScripts(&#96;https:&#x2F;&#x2F;storage.googleapis.com&#x2F;workbox-cdn&#x2F;releases&#x2F;$&#123;workboxVersion&#125;&#x2F;workbox-sw.js&#96;);
+
+workbox.core.setCacheNameDetails(&#123;
+    prefix: &quot;Serok&#39;s Blog&quot;
+&#125;);
+
+workbox.core.skipWaiting();
+
+workbox.core.clientsClaim();
+
+workbox.precaching.precacheAndRoute(self.__WB_MANIFEST,&#123;
+    directoryIndex: null
+&#125;);
+
+workbox.precaching.cleanupOutdatedCaches();
+
+&#x2F;&#x2F; Images
+workbox.routing.registerRoute(
+    &#x2F;\.(?:png|jpg|jpeg|gif|bmp|webp|svg|ico)$&#x2F;,
+    new workbox.strategies.CacheFirst(&#123;
+        cacheName: &quot;images&quot;,
+        plugins: [
+            new workbox.expiration.ExpirationPlugin(&#123;
+                maxEntries: 1000,
+                maxAgeSeconds: 60 * 60 * 24 * 30
+            &#125;),
+            new workbox.cacheableResponse.CacheableResponsePlugin(&#123;
+                statuses: [0, 200]
+            &#125;)
+        ]
+    &#125;)
+);
+
+&#x2F;&#x2F; Fonts
+workbox.routing.registerRoute(
+    &#x2F;\.(?:eot|ttf|woff|woff2)$&#x2F;,
+    new workbox.strategies.CacheFirst(&#123;
+        cacheName: &quot;fonts&quot;,
+        plugins: [
+            new workbox.expiration.ExpirationPlugin(&#123;
+                maxEntries: 1000,
+                maxAgeSeconds: 60 * 60 * 24 * 30
+            &#125;),
+            new workbox.cacheableResponse.CacheableResponsePlugin(&#123;
+                statuses: [0, 200]
+            &#125;)
+        ]
+    &#125;)
+);
+
+&#x2F;&#x2F; Google Fonts
+workbox.routing.registerRoute(
+    &#x2F;^https:\&#x2F;\&#x2F;fonts\.googleapis\.com&#x2F;,
+    new workbox.strategies.StaleWhileRevalidate(&#123;
+        cacheName: &quot;google-fonts-stylesheets&quot;
+    &#125;)
+);
+workbox.routing.registerRoute(
+    &#x2F;^https:\&#x2F;\&#x2F;fonts\.gstatic\.com&#x2F;,
+    new workbox.strategies.CacheFirst(&#123;
+        cacheName: &#39;google-fonts-webfonts&#39;,
+        plugins: [
+            new workbox.expiration.ExpirationPlugin(&#123;
+                maxEntries: 1000,
+                maxAgeSeconds: 60 * 60 * 24 * 30
+            &#125;),
+            new workbox.cacheableResponse.CacheableResponsePlugin(&#123;
+                statuses: [0, 200]
+            &#125;)
+        ]
+    &#125;)
+);
+
+&#x2F;&#x2F; Static Libraries
+workbox.routing.registerRoute(
+    &#x2F;^https:\&#x2F;\&#x2F;cdn\.jsdelivr\.net&#x2F;,
+    new workbox.strategies.CacheFirst(&#123;
+        cacheName: &quot;static-libs&quot;,
+        plugins: [
+            new workbox.expiration.ExpirationPlugin(&#123;
+                maxEntries: 1000,
+                maxAgeSeconds: 60 * 60 * 24 * 30
+            &#125;),
+            new workbox.cacheableResponse.CacheableResponsePlugin(&#123;
+                statuses: [0, 200]
+            &#125;)
+        ]
+    &#125;)
+);
+
+workbox.googleAnalytics.initialize();</code></pre><p><b>注意：把 prefix 修改为你博客的名字（最好用英文）。</b></p><p>上面的文件涵盖了大多数资源的缓存策略。如果你想缓存其他类型的资源（例如一些国内的镜像 CDN 库），或者想使用其他的缓存方式，请自行<a target="_blank" rel="noopener" href="https://developers.google.com/web/tools/workbox/modules/workbox-strategies">查看相关文档</a>并添加。</p><h2 id="添加-js-进主题"><a href="#添加-js-进主题" class="headerlink" title="添加 js 进主题"></a>添加 js 进主题</h2><p>配置 <code>butterfly.yml</code>, 添加需要的 css 和 js</p><pre class="line-numbers language-Yaml" data-language="Yaml"><code class="language-Yaml">inject:
+  head:
+    - &#39;&lt;style type&#x3D;&quot;text&#x2F;css&quot;&gt;.app-refresh&#123;position:fixed;top:-2.2rem;left:0;right:0;z-index:99999;padding:0 1rem;font-size:15px;height:2.2rem;transition:all .3s ease&#125;.app-refresh-wrap&#123;display:flex;color:#fff;height:100%;align-items:center;justify-content:center&#125;.app-refresh-wrap a&#123;color:#fff;text-decoration:underline;cursor:pointer&#125;&lt;&#x2F;style&gt;&#39;
+  bottom:
+    - &#39;&lt;div class&#x3D;&quot;app-refresh&quot; id&#x3D;&quot;app-refresh&quot;&gt; &lt;div class&#x3D;&quot;app-refresh-wrap&quot;&gt; &lt;label&gt;✨ 网站已更新最新版本 👉&lt;&#x2F;label&gt; &lt;a href&#x3D;&quot;javascript:void(0)&quot; onclick&#x3D;&quot;location.reload()&quot;&gt;点击刷新&lt;&#x2F;a&gt; &lt;&#x2F;div&gt;&lt;&#x2F;div&gt;&lt;script&gt;function showNotification()&#123;if(GLOBAL_CONFIG.Snackbar)&#123;var t&#x3D;&quot;light&quot;&#x3D;&#x3D;&#x3D;document.documentElement.getAttribute(&quot;data-theme&quot;)?GLOBAL_CONFIG.Snackbar.bgLight:GLOBAL_CONFIG.Snackbar.bgDark,e&#x3D;GLOBAL_CONFIG.Snackbar.position;Snackbar.show(&#123;text:&quot;已更新最新版本&quot;,backgroundColor:t,duration:5e5,pos:e,actionText:&quot;点击刷新&quot;,actionTextColor:&quot;#fff&quot;,onActionClick:function(t)&#123;location.reload()&#125;&#125;)&#125;else&#123;var o&#x3D;&#96;top: 0; background: $&#123;&quot;light&quot;&#x3D;&#x3D;&#x3D;document.documentElement.getAttribute(&quot;data-theme&quot;)?&quot;#49b1f5&quot;:&quot;#1f1f1f&quot;&#125;;&#96;;document.getElementById(&quot;app-refresh&quot;).style.cssText&#x3D;o&#125;&#125;&quot;serviceWorker&quot;in navigator&amp;&amp;(navigator.serviceWorker.controller&amp;&amp;navigator.serviceWorker.addEventListener(&quot;controllerchange&quot;,function()&#123;showNotification()&#125;),window.addEventListener(&quot;load&quot;,function()&#123;navigator.serviceWorker.register(&quot;&#x2F;sw.js&quot;)&#125;));&lt;&#x2F;script&gt;&#39;</code></pre><p>同样，如果你使用的不是Butterfly主题，可以在所示代码的基础上修改以适配你的主题。以下是展开后的代码，便于修改调试。</p><h3 id="以下代码请插入到头部-lt-head-gt-之前："><a href="#以下代码请插入到头部-lt-head-gt-之前：" class="headerlink" title="以下代码请插入到头部 &lt;/head&gt; 之前："></a>以下代码请插入到头部 <code>&lt;/head&gt;</code> 之前：</h3><pre class="line-numbers language-Html" data-language="Html"><code class="language-Html">&lt;style type&#x3D;&quot;text&#x2F;css&quot;&gt;
+  .app-refresh &#123;
+    position: fixed;
+    top: -2.2rem;
+    left: 0;
+    right: 0;
+    z-index: 99999;
+    padding: 0 1rem;
+    font-size: 15px;
+    height: 2.2rem;
+    transition: all 0.3s ease;
+  &#125;
+  .app-refresh-wrap &#123;
+    display: flex;
+    color: #fff;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+  &#125;
+
+  .app-refresh-wrap span &#123;
+    color: #fff;
+    text-decoration: underline;
+    cursor: pointer;
+  &#125;
+&lt;&#x2F;style&gt;</code></pre><h3 id="以下代码请插入到底部-lt-body-gt-之前："><a href="#以下代码请插入到底部-lt-body-gt-之前：" class="headerlink" title="以下代码请插入到底部 &lt;/body&gt; 之前："></a>以下代码请插入到底部 <code>&lt;/body&gt;</code> 之前：</h3><pre class="line-numbers language-Html" data-language="Html"><code class="language-Html">&lt;div class&#x3D;&quot;app-refresh&quot; id&#x3D;&quot;app-refresh&quot;&gt;
+  &lt;div class&#x3D;&quot;app-refresh-wrap&quot;&gt;
+    &lt;label&gt;✨ 网站已更新最新版本 👉&lt;&#x2F;label&gt;
+    &lt;a href&#x3D;&quot;javascript:void(0)&quot; onclick&#x3D;&quot;location.reload()&quot;&gt;点击刷新&lt;&#x2F;a&gt;
+  &lt;&#x2F;div&gt;
+&lt;&#x2F;div&gt;
+&lt;script&gt;
+  if (&#39;serviceWorker&#39; in navigator) &#123;
+    if (navigator.serviceWorker.controller) &#123;
+      navigator.serviceWorker.addEventListener(&#39;controllerchange&#39;, function () &#123;
+        showNotification()
+      &#125;)
+    &#125;
+
+    window.addEventListener(&#39;load&#39;, function () &#123;
+      navigator.serviceWorker.register(&#39;&#x2F;sw.js&#39;)
+    &#125;)
+  &#125;
+
+  function showNotification() &#123;
+    if (GLOBAL_CONFIG.Snackbar) &#123;
+      var snackbarBg &#x3D;
+        document.documentElement.getAttribute(&#39;data-theme&#39;) &#x3D;&#x3D;&#x3D; &#39;light&#39;
+          ? GLOBAL_CONFIG.Snackbar.bgLight
+          : GLOBAL_CONFIG.Snackbar.bgDark
+      var snackbarPos &#x3D; GLOBAL_CONFIG.Snackbar.position
+      Snackbar.show(&#123;
+        text: &#39;已更新最新版本&#39;,
+        backgroundColor: snackbarBg,
+        duration: 500000,
+        pos: snackbarPos,
+        actionText: &#39;点击刷新&#39;,
+        actionTextColor: &#39;#fff&#39;,
+        onActionClick: function (e) &#123;
+          location.reload()
+        &#125;,
+      &#125;)
+    &#125; else &#123;
+      var showBg &#x3D;
+        document.documentElement.getAttribute(&#39;data-theme&#39;) &#x3D;&#x3D;&#x3D; &#39;light&#39;
+          ? &#39;#49b1f5&#39;
+          : &#39;#1f1f1f&#39;
+      var cssText &#x3D; &#96;top: 0; background: $&#123;showBg&#125;;&#96;
+      document.getElementById(&#39;app-refresh&#39;).style.cssText &#x3D; cssText
+    &#125;
+  &#125;
+&lt;&#x2F;script&gt;</code></pre><h2 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h2><p>为了方便每次部署，可以在你的博客根目录下新建 <code>deploy.sh</code>，添加以下内容：</p><pre class="line-numbers language-Bash" data-language="Bash"><code class="language-Bash">#!&#x2F;bin&#x2F;bash
+echo &quot;Start&quot;
+hexo clean
+hexo generate
+gulp
+hexo deploy
+echo &quot;Finish&quot;
+echo 按任意键继续
+read -n 1</code></pre><p>然后每次部署就可以直接运行这个脚本了。</p></div><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者:</span> <span class="post-copyright-info"><a href="mailto:3091742436@qq.com">Serok.</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接:</span> <span class="post-copyright-info"><a href="https://snow.js.org/hexo-gulp-pwa/">https://snow.js.org/hexo-gulp-pwa/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明:</span> <span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh" target="_blank">CC BY-NC-ND 4.0</a> 许可协议。转载请注明来自 <a href="https://snow.js.org" target="_blank">Serok's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Hexo/">Hexo</a><a class="post-meta__tags" href="/tags/%E9%83%A8%E7%BD%B2/">部署</a><a class="post-meta__tags" href="/tags/%E5%8D%9A%E5%AE%A2/">博客</a><a class="post-meta__tags" href="/tags/Gulp/">Gulp</a><a class="post-meta__tags" href="/tags/PWA/">PWA</a><a class="post-meta__tags" href="/tags/%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F/">应用程序</a></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/gh/SerokSSR/img/pwa.svg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/hexo-vercel/"><img class="prev-cover" data-lazy-src="https://cdn.jsdelivr.net/gh/SerokSSR/cdn/agd.jpg" onerror='onerror=null,src="/null"'><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Hexo：将你的博客部署到 Vercel</div></div></a></div><div class="next-post pull-right"><a href="/graph-theory/"><img class="next-cover" data-lazy-src="https://cdn.jsdelivr.net/gh/SerokSSR/cdn/47kp.jpg" onerror='onerror=null,src="/null"'><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">图论</div></div></a></div></nav><div class="relatedPosts"><div class="relatedPosts_headline"><i class="fas fa-thumbs-up fa-fw"></i> <span>相关推荐</span></div><div class="relatedPosts_list"><div class="relatedPosts_item"><a href="/hexo-vercel/" title="Hexo：将你的博客部署到 Vercel"><img class="relatedPosts_cover" data-lazy-src="https://cdn.jsdelivr.net/gh/SerokSSR/cdn/agd.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2020-08-09</div><div class="relatedPosts_title">Hexo：将你的博客部署到 Vercel</div></div></a></div><div class="relatedPosts_item"><a href="/hexo-ssh-deploy/" title="Hexo：配置 SSH 公钥部署"><img class="relatedPosts_cover" data-lazy-src="https://cdn.jsdelivr.net/gh/a2396837/CDN@latest/images/2020/08/14/7006b3e22ef66342d8a2fe4b44c5be90.png"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2020-07-23</div><div class="relatedPosts_title">Hexo：配置 SSH 公钥部署</div></div></a></div><div class="relatedPosts_item"><a href="/butterfly-aplayer/" title="Butterfly：添加全局吸底 Aplayer 播放器"><img class="relatedPosts_cover" data-lazy-src="https://cdn.jsdelivr.net/gh/SerokSSR/cdn/4asn.jpg"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="far fa-calendar-alt fa-fw"></i> 2020-08-22</div><div class="relatedPosts_title">Butterfly：添加全局吸底 Aplayer 播放器</div></div></a></div></div></div><hr><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i> <span>评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></article></main><footer id="footer" data-type="color"><div id="footer-wrap"><div class="footer_custom_text">&copy;2020 SerokSSR.<br>Framework <a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a> | Theme <a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a><br>相信辰星 在無邊的曠野</div></div></footer></div><section id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></section><div class="search-dialog" id="local-search"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"></div></div></div><hr><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>由</span> <a target="_blank" rel="noopener" href="https://github.com/wzpan/hexo-generator-search" style="color:#49b1f5">hexo-generator-search</a> <span>提供支持</span></div></div></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module" defer></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js" async></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.spacingElementById('content-inner')
+  else {
+    $.getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js', () => {
+      pangu.spacingElementById('content-inner')
+    })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguFn)</script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    loader: {
+      source: {
+        '[tex]/amsCd': '[tex]/amscd'
+      }
+    },
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        addClass: [200,() => {
+          document.querySelectorAll('mjx-container:not([display=\'true\']').forEach( node => {
+            const target = node.parentNode
+            if (!target.classList.contains('has-jax')) {
+              target.classList.add('mathjax-overflow')
+            }
+          })
+        }, '', false]
+      }
+    }
+  }
+  
+  var script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script>function loadValine () {
+  function initValine () {
+    window.valine = new Valine({
+      el: '#vcomment',
+      appId: '7CcIFFTvT9i2zL1qNJSLEPNb-MdYXbMMI',
+      appKey: 'HY117mqITU3yVTTCAdwfCmMh',
+      placeholder: 'Please leave your footprints',
+      avatar: 'monsterid',
+      meta: 'nick,mail,link'.split(','),
+      pageSize: '10',
+      lang: 'en',
+      recordIP: false,
+      serverURLs: '',
+      emojiCDN: '',
+      emojiMaps: "",
+      enableQQ: true,
+      path: window.location.pathname,
+    });
+    if ('nick,mail') { valine.config.requiredFields= 'nick,mail'.split(',') }
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else $.getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js', initValine)
+}
+
+if ('Valine' === 'Valine' || !true) {
+  if (true) loadComment(document.querySelector('#vcomment'),loadValine)
+  else setTimeout(() => loadValine(), 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script></div><div class="app-refresh" id="app-refresh"><div class="app-refresh-wrap"><label>✨ 網站已更新最新版本 👉</label> <a href="javascript:void(0)" onclick="location.reload()">點擊刷新</a></div></div><script>function showNotification(){if(GLOBAL_CONFIG.Snackbar){var t="light"===document.documentElement.getAttribute("data-theme")?GLOBAL_CONFIG.Snackbar.bgLight:GLOBAL_CONFIG.Snackbar.bgDark,e=GLOBAL_CONFIG.Snackbar.position;Snackbar.show({text:"网站更新啦ヾ(•ω•`)o",backgroundColor:t,duration:5e5,pos:e,actionText:"点击加载",actionTextColor:"#fff",onActionClick:function(t){location.reload()}})}else{var o=`top: 0; background: ${"light"===document.documentElement.getAttribute("data-theme")?"#49b1f5":"#1f1f1f"};`;document.getElementById("app-refresh").style.cssText=o}}"serviceWorker"in navigator&&(navigator.serviceWorker.controller&&navigator.serviceWorker.addEventListener("controllerchange",function(){showNotification()}),window.addEventListener("load",function(){navigator.serviceWorker.register("/sw.js")}));</script><div class="aplayer no-destroy" data-id="2621353166" data-server="netease" data-type="playlist" data-fixed="true" data-mini="true" data-listfolded="true" data-order="random" data-preload="none" data-autoplay="false" muted></div><script src="https://cdn.jsdelivr.net/npm/prismjs/prism.min.js"></script><script src="https://cdn.jsdelivr.net/npm/prismjs/plugins/autoloader/prism-autoloader.min.js"></script><script src="https://cdn.jsdelivr.net/npm/prismjs/plugins/line-numbers/prism-line-numbers.min.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/gh/SerokSSR/cdn/meting.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = [
+  'title',
+  'meta[name=description]',
+  '#config_change',
+  '#body-wrap',
+  '#rightside-config-hide',
+  '#rightside-config-show',
+  '.js-pjax'
+]
+
+if (false) {
+  pjaxSelectors.unshift('meta[property="og:image"]', 'meta[property="og:title"]', 'meta[property="og:url"]')
+}
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:complete', function () {
+  refreshFn()
+
+  $('script[data-pjax]').each(function () {
+    $(this).parent().append($(this).remove())
+  })
+
+  GLOBAL_CONFIG.islazyload && lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  if (typeof gtag === 'function') {
+    gtag('config', '', {'page_path': window.location.pathname});
+  }
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // Analytics
+  if (false) {
+    MtaH5.pgv()
+  }
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+
+document.addEventListener('pjax:send', function () {
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  $(window).off('scroll')
+
+  //reset readmode
+  $('body').hasClass('read-mode') && $('body').removeClass('read-mode')
+
+})</script></div></body></html>
