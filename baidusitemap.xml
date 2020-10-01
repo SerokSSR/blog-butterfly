@@ -1,12 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://snow.js.org/snow/</loc>
-    <lastmod>2020-08-26</lastmod>
+    <loc>https://snow.js.org/dp-noip-tg/</loc>
+    <lastmod>2020-10-01</lastmod>
+  </url>
+  <url>
+    <loc>https://snow.js.org/num-theory/</loc>
+    <lastmod>2020-09-13</lastmod>
+  </url>
+  <url>
+    <loc>https://snow.js.org/dp-knapsack/</loc>
+    <lastmod>2020-09-05</lastmod>
+  </url>
+  <url>
+    <loc>https://snow.js.org/still-using-stl-sort/</loc>
+    <lastmod>2020-09-05</lastmod>
   </url>
   <url>
     <loc>https://snow.js.org/graph-theory/</loc>
-    <lastmod>2020-08-25</lastmod>
+    <lastmod>2020-08-30</lastmod>
+  </url>
+  <url>
+    <loc>https://snow.js.org/butterfly-aplayer/</loc>
+    <lastmod>2020-08-30</lastmod>
+  </url>
+  <url>
+    <loc>https://snow.js.org/hexo-gulp-pwa/</loc>
+    <lastmod>2020-08-27</lastmod>
+  </url>
+  <url>
+    <loc>https://snow.js.org/maximum-flow/</loc>
+    <lastmod>2020-08-27</lastmod>
+  </url>
+  <url>
+    <loc>https://snow.js.org/snow/</loc>
+    <lastmod>2020-08-26</lastmod>
   </url>
   <url>
     <loc>https://snow.js.org/hexo-vercel/</loc>
@@ -17,15 +45,7 @@
     <lastmod>2020-08-23</lastmod>
   </url>
   <url>
-    <loc>https://snow.js.org/butterfly-aplayer/</loc>
-    <lastmod>2020-08-22</lastmod>
-  </url>
-  <url>
     <loc>https://snow.js.org/she-jiang/</loc>
-    <lastmod>2020-08-20</lastmod>
-  </url>
-  <url>
-    <loc>https://snow.js.org/dp-noip-tg/</loc>
     <lastmod>2020-08-20</lastmod>
   </url>
   <url>
@@ -45,16 +65,8 @@
     <lastmod>2020-08-14</lastmod>
   </url>
   <url>
-    <loc>https://snow.js.org/hexo-gulp-pwa/</loc>
-    <lastmod>2020-08-09</lastmod>
-  </url>
-  <url>
     <loc>https://snow.js.org/minimum-cut/</loc>
     <lastmod>2020-08-09</lastmod>
-  </url>
-  <url>
-    <loc>https://snow.js.org/dp-knapsack/</loc>
-    <lastmod>2020-08-06</lastmod>
   </url>
   <url>
     <loc>https://snow.js.org/mo-shang/</loc>
@@ -85,10 +97,6 @@
     <lastmod>2020-07-18</lastmod>
   </url>
   <url>
-    <loc>https://snow.js.org/maximum-flow/</loc>
-    <lastmod>2020-07-18</lastmod>
-  </url>
-  <url>
     <loc>https://snow.js.org/terminal-extra/</loc>
     <lastmod>2020-07-18</lastmod>
   </url>
@@ -103,9 +111,5 @@
   <url>
     <loc>https://snow.js.org/star/</loc>
     <lastmod>2020-06-29</lastmod>
-  </url>
-  <url>
-    <loc>https://snow.js.org/still-using-stl-sort/</loc>
-    <lastmod>2020-06-27</lastmod>
   </url>
 </urlset> 
