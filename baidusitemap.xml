@@ -1,16 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://snow.js.org/dp-noip-tg/</loc>
-    <lastmod>2020-10-01</lastmod>
+    <loc>https://snow.js.org/hexo-ssh-deploy/</loc>
+    <lastmod>2020-10-03</lastmod>
+  </url>
+  <url>
+    <loc>https://snow.js.org/dp-knapsack/</loc>
+    <lastmod>2020-10-03</lastmod>
+  </url>
+  <url>
+    <loc>https://snow.js.org/graph-dp/</loc>
+    <lastmod>2020-10-03</lastmod>
+  </url>
+  <url>
+    <loc>https://snow.js.org/dp-senior/</loc>
+    <lastmod>2020-10-03</lastmod>
   </url>
   <url>
     <loc>https://snow.js.org/num-theory/</loc>
     <lastmod>2020-09-13</lastmod>
-  </url>
-  <url>
-    <loc>https://snow.js.org/dp-knapsack/</loc>
-    <lastmod>2020-09-05</lastmod>
   </url>
   <url>
     <loc>https://snow.js.org/still-using-stl-sort/</loc>
@@ -59,10 +67,6 @@
   <url>
     <loc>https://snow.js.org/ruler-method/</loc>
     <lastmod>2020-08-19</lastmod>
-  </url>
-  <url>
-    <loc>https://snow.js.org/hexo-ssh-deploy/</loc>
-    <lastmod>2020-08-14</lastmod>
   </url>
   <url>
     <loc>https://snow.js.org/minimum-cut/</loc>
