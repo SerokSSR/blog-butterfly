@@ -1,19 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://snow.js.org/dp-graph/</loc>
+    <lastmod>2020-10-08</lastmod>
+  </url>
+  <url>
+    <loc>https://snow.js.org/dp-series/</loc>
+    <lastmod>2020-10-08</lastmod>
+  </url>
+  <url>
     <loc>https://snow.js.org/hexo-ssh-deploy/</loc>
-    <lastmod>2020-10-03</lastmod>
-  </url>
-  <url>
-    <loc>https://snow.js.org/dp-knapsack/</loc>
-    <lastmod>2020-10-03</lastmod>
-  </url>
-  <url>
-    <loc>https://snow.js.org/graph-dp/</loc>
-    <lastmod>2020-10-03</lastmod>
-  </url>
-  <url>
-    <loc>https://snow.js.org/dp-senior/</loc>
     <lastmod>2020-10-03</lastmod>
   </url>
   <url>
