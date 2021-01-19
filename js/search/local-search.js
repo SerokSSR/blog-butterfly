@@ -1,1 +1,146 @@
-"use strict";$(function(){var t=!1,e=function(){var e;$("body").css({width:"100%",overflow:"hidden"}),$("#local-search").css("display","block"),$("#local-search-input input").focus(),$("#search-mask").fadeIn(),t||(e=GLOBAL_CONFIG.localSearch.path,$.ajax({url:GLOBAL_CONFIG.root+e,dataType:"xml",success:function(e){var t=$("entry",e).map(function(){return{title:$("title",this).text(),content:$("content",this).text(),url:$("url",this).text()}}).get(),a=$("#local-search-input input")[0],s=$("#local-hits")[0];a.addEventListener("input",function(){var d='<div class="search-result-list">',p=this.value.trim().toLowerCase().split(/[\s]+/);if(s.innerHTML="",this.value.trim().length<=0)$(".local-search-stats__hr").hide();else{var f=0;t.forEach(function(e){var a=!0;e.title&&""!==e.title.trim()||(e.title="Untitled");var s=e.title.trim().toLowerCase(),c=e.content.trim().replace(/<[^>]+>/g,"").toLowerCase(),t=e.url.startsWith("/")?e.url:GLOBAL_CONFIG.root+e.url,i=-1,r=-1,n=-1;if(""!==s||""!==c?p.forEach(function(e,t){i=s.indexOf(e),r=c.indexOf(e),i<0&&r<0?a=!1:(r<0&&(r=0),0===t&&(n=r))}):a=!1,a){var l=e.content.trim().replace(/<[^>]+>/g,"");if(0<=n){var o=n-30,h=n+100;o<0&&(o=0),0===o&&(h=100),h>l.length&&(h=l.length);var u=l.substring(o,h);p.forEach(function(e){var t=new RegExp(e,"gi");u=u.replace(t,'<span class="search-keyword">'+e+"</span>"),s=s.replace(t,'<span class="search-keyword">'+e+"</span>")}),d+='<div class="local-search__hit-item"><a href="'+t+'" class="search-result-title">'+s+"</a>",f+=1,$(".local-search-stats__hr").show(),""!==c&&(d+='<p class="search-result">'+u+"...</p>")}d+="</div>"}}),0===f&&(d+='<div id="local-search__hits-empty">'+GLOBAL_CONFIG.localSearch.languages.hits_empty.replace(/\$\{query}/,this.value.trim())+"</div>"),d+="</div>",s.innerHTML=d,window.pjax&&window.pjax.refresh(s)}})}}),t=!0),document.addEventListener("keydown",function e(t){"Escape"===t.code&&(a(),document.removeEventListener("keydown",e))})},a=function(){$("body").css({width:"",overflow:""}),$("#local-search").css({animation:"search_close .5s"}),setTimeout(function(){$("#local-search").css({animation:"",display:"none"})},500),$("#search-mask").fadeOut()},s=function(){$("a.social-icon.search").on("click",e),$("#search-mask, .search-close-button").on("click",a)};s(),window.addEventListener("pjax:success",function(){$("#local-search").is(":visible")&&a(),s()})});
+window.addEventListener('load', () => {
+  let loadFlag = false
+  const openSearch = function () {
+    document.body.style.cssText = 'width: 100%;overflow: hidden'
+    document.querySelector('#local-search .search-dialog').style.display = 'block'
+    document.querySelector('#local-search-input input').focus()
+    btf.fadeIn(document.getElementById('search-mask'), 0.5)
+    if (!loadFlag) {
+      search(GLOBAL_CONFIG.localSearch.path)
+      loadFlag = true
+    }
+    // shortcut: ESC
+    document.addEventListener('keydown', function f (event) {
+      if (event.code === 'Escape') {
+        closeSearch()
+        document.removeEventListener('keydown', f)
+      }
+    })
+  }
+
+  const closeSearch = function () {
+    document.body.style.cssText = "width: '';overflow: ''"
+    const $searchDialog = document.querySelector('#local-search .search-dialog')
+    $searchDialog.style.animation = 'search_close .5s'
+    setTimeout(() => { $searchDialog.style.cssText = "display: none; animation: ''" }, 500)
+    btf.fadeOut(document.getElementById('search-mask'), 0.5)
+  }
+
+  // click function
+  const searchClickFn = () => {
+    document.querySelector('#search-button > .search').addEventListener('click', openSearch)
+    document.getElementById('search-mask').addEventListener('click', closeSearch)
+    document.querySelector('#local-search .search-close-button').addEventListener('click', closeSearch)
+  }
+
+  searchClickFn()
+
+  // pjax
+  window.addEventListener('pjax:complete', function () {
+    getComputedStyle(document.querySelector('#local-search .search-dialog')).display === 'block' && closeSearch()
+    searchClickFn()
+  })
+
+  function search (path) {
+    fetch(GLOBAL_CONFIG.root + path)
+      .then(response => response.text())
+      .then(str => new window.DOMParser().parseFromString(str, 'text/xml'))
+      .then(data => {
+        const datas = [...data.querySelectorAll('entry')].map(function (item) {
+          return {
+            title: item.querySelector('title').textContent,
+            content: item.querySelector('content').textContent,
+            url: item.querySelector('url').textContent
+          }
+        })
+
+        const $input = document.querySelector('#local-search-input input')
+        const $resultContent = document.getElementById('local-search-results')
+        $input.addEventListener('input', function () {
+          let str = '<div class="search-result-list">'
+          const keywords = this.value.trim().toLowerCase().split(/[\s]+/)
+          $resultContent.innerHTML = ''
+          if (this.value.trim().length <= 0) return
+          let count = 0
+          // perform local searching
+          datas.forEach(function (data) {
+            let isMatch = true
+            if (!data.title || data.title.trim() === '') {
+              data.title = 'Untitled'
+            }
+            let dataTitle = data.title.trim().toLowerCase()
+            const dataContent = data.content.trim().replace(/<[^>]+>/g, '').toLowerCase()
+            const dataUrl = data.url.startsWith('/') ? data.url : GLOBAL_CONFIG.root + data.url
+            let indexTitle = -1
+            let indexContent = -1
+            let firstOccur = -1
+            // only match artiles with not empty titles and contents
+            if (dataTitle !== '' || dataContent !== '') {
+              keywords.forEach(function (keyword, i) {
+                indexTitle = dataTitle.indexOf(keyword)
+                indexContent = dataContent.indexOf(keyword)
+                if (indexTitle < 0 && indexContent < 0) {
+                  isMatch = false
+                } else {
+                  if (indexContent < 0) {
+                    indexContent = 0
+                  }
+                  if (i === 0) {
+                    firstOccur = indexContent
+                  }
+                }
+              })
+            } else {
+              isMatch = false
+            }
+
+            // show search results
+            if (isMatch) {
+              const content = data.content.trim().replace(/<[^>]+>/g, '')
+              if (firstOccur >= 0) {
+                // cut out 130 characters
+                let start = firstOccur - 30
+                let end = firstOccur + 100
+
+                if (start < 0) {
+                  start = 0
+                }
+
+                if (start === 0) {
+                  end = 100
+                }
+
+                if (end > content.length) {
+                  end = content.length
+                }
+
+                let matchContent = content.substring(start, end)
+
+                // highlight all keywords
+                keywords.forEach(function (keyword) {
+                  const regS = new RegExp(keyword, 'gi')
+                  matchContent = matchContent.replace(regS, '<span class="search-keyword">' + keyword + '</span>')
+                  dataTitle = dataTitle.replace(regS, '<span class="search-keyword">' + keyword + '</span>')
+                })
+
+                str += '<div class="local-search__hit-item"><a href="' + dataUrl + '" class="search-result-title">' + dataTitle + '</a>'
+                count += 1
+
+                if (dataContent !== '') {
+                  str += '<p class="search-result">' + matchContent + '...</p>'
+                }
+              }
+              str += '</div>'
+            }
+          })
+          if (count === 0) {
+            str += '<div id="local-search__hits-empty">' + GLOBAL_CONFIG.localSearch.languages.hits_empty.replace(/\$\{query}/, this.value.trim()) +
+              '</div>'
+          }
+          str += '</div>'
+          $resultContent.innerHTML = str
+          window.pjax && window.pjax.refresh($resultContent)
+        })
+      })
+  }
+})

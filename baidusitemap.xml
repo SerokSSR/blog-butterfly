@@ -1,115 +1,111 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://snow.js.org/dp-graph/</loc>
-    <lastmod>2020-10-08</lastmod>
+    <loc>https://akioi.eu.org/mo-shang/</loc>
+    <lastmod>2020-11-09</lastmod>
   </url>
   <url>
-    <loc>https://snow.js.org/dp-series/</loc>
-    <lastmod>2020-10-08</lastmod>
+    <loc>https://akioi.eu.org/dp-graph/</loc>
+    <lastmod>2020-10-11</lastmod>
   </url>
   <url>
-    <loc>https://snow.js.org/hexo-ssh-deploy/</loc>
-    <lastmod>2020-10-03</lastmod>
+    <loc>https://akioi.eu.org/dp-series/</loc>
+    <lastmod>2020-10-11</lastmod>
   </url>
   <url>
-    <loc>https://snow.js.org/num-theory/</loc>
+    <loc>https://akioi.eu.org/num-theory/</loc>
     <lastmod>2020-09-13</lastmod>
   </url>
   <url>
-    <loc>https://snow.js.org/still-using-stl-sort/</loc>
+    <loc>https://akioi.eu.org/still-using-stl-sort/</loc>
     <lastmod>2020-09-05</lastmod>
   </url>
   <url>
-    <loc>https://snow.js.org/graph-theory/</loc>
+    <loc>https://akioi.eu.org/graph-theory/</loc>
     <lastmod>2020-08-30</lastmod>
   </url>
   <url>
-    <loc>https://snow.js.org/butterfly-aplayer/</loc>
+    <loc>https://akioi.eu.org/butterfly-aplayer/</loc>
     <lastmod>2020-08-30</lastmod>
   </url>
   <url>
-    <loc>https://snow.js.org/hexo-gulp-pwa/</loc>
+    <loc>https://akioi.eu.org/hexo-gulp-pwa/</loc>
     <lastmod>2020-08-27</lastmod>
   </url>
   <url>
-    <loc>https://snow.js.org/maximum-flow/</loc>
+    <loc>https://akioi.eu.org/maximum-flow/</loc>
     <lastmod>2020-08-27</lastmod>
   </url>
   <url>
-    <loc>https://snow.js.org/snow/</loc>
+    <loc>https://akioi.eu.org/snow/</loc>
     <lastmod>2020-08-26</lastmod>
   </url>
   <url>
-    <loc>https://snow.js.org/hexo-vercel/</loc>
+    <loc>https://akioi.eu.org/hexo-vercel/</loc>
     <lastmod>2020-08-24</lastmod>
   </url>
   <url>
-    <loc>https://snow.js.org/about-codestyle/</loc>
+    <loc>https://akioi.eu.org/about-codestyle/</loc>
     <lastmod>2020-08-23</lastmod>
   </url>
   <url>
-    <loc>https://snow.js.org/she-jiang/</loc>
+    <loc>https://akioi.eu.org/she-jiang/</loc>
     <lastmod>2020-08-20</lastmod>
   </url>
   <url>
-    <loc>https://snow.js.org/stl-set/</loc>
+    <loc>https://akioi.eu.org/stl-set/</loc>
     <lastmod>2020-08-20</lastmod>
   </url>
   <url>
-    <loc>https://snow.js.org/about-splay/</loc>
+    <loc>https://akioi.eu.org/about-splay/</loc>
     <lastmod>2020-08-19</lastmod>
   </url>
   <url>
-    <loc>https://snow.js.org/ruler-method/</loc>
+    <loc>https://akioi.eu.org/ruler-method/</loc>
     <lastmod>2020-08-19</lastmod>
   </url>
   <url>
-    <loc>https://snow.js.org/minimum-cut/</loc>
+    <loc>https://akioi.eu.org/minimum-cut/</loc>
     <lastmod>2020-08-09</lastmod>
   </url>
   <url>
-    <loc>https://snow.js.org/mo-shang/</loc>
-    <lastmod>2020-08-02</lastmod>
-  </url>
-  <url>
-    <loc>https://snow.js.org/network-flow-deloop/</loc>
+    <loc>https://akioi.eu.org/network-flow-deloop/</loc>
     <lastmod>2020-07-18</lastmod>
   </url>
   <url>
-    <loc>https://snow.js.org/network-flow-template/</loc>
+    <loc>https://akioi.eu.org/network-flow-template/</loc>
     <lastmod>2020-07-18</lastmod>
   </url>
   <url>
-    <loc>https://snow.js.org/match-template/</loc>
+    <loc>https://akioi.eu.org/match-template/</loc>
     <lastmod>2020-07-18</lastmod>
   </url>
   <url>
-    <loc>https://snow.js.org/future/</loc>
+    <loc>https://akioi.eu.org/future/</loc>
     <lastmod>2020-07-18</lastmod>
   </url>
   <url>
-    <loc>https://snow.js.org/numa/</loc>
+    <loc>https://akioi.eu.org/numa/</loc>
     <lastmod>2020-07-18</lastmod>
   </url>
   <url>
-    <loc>https://snow.js.org/network-flow-dijkstra/</loc>
+    <loc>https://akioi.eu.org/network-flow-dijkstra/</loc>
     <lastmod>2020-07-18</lastmod>
   </url>
   <url>
-    <loc>https://snow.js.org/terminal-extra/</loc>
+    <loc>https://akioi.eu.org/terminal-extra/</loc>
     <lastmod>2020-07-18</lastmod>
   </url>
   <url>
-    <loc>https://snow.js.org/cf387d/</loc>
+    <loc>https://akioi.eu.org/cf387d/</loc>
     <lastmod>2020-07-18</lastmod>
   </url>
   <url>
-    <loc>https://snow.js.org/monotonous-queue/</loc>
+    <loc>https://akioi.eu.org/monotonous-queue/</loc>
     <lastmod>2020-07-07</lastmod>
   </url>
   <url>
-    <loc>https://snow.js.org/star/</loc>
+    <loc>https://akioi.eu.org/star/</loc>
     <lastmod>2020-06-29</lastmod>
   </url>
 </urlset> 
