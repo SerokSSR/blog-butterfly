@@ -1,3 +1,4 @@
+https://akioi.eu.org/snow/
 https://akioi.eu.org/mo-shang/
 https://akioi.eu.org/dp-graph/
 https://akioi.eu.org/dp-series/
@@ -7,7 +8,6 @@ https://akioi.eu.org/graph-theory/
 https://akioi.eu.org/butterfly-aplayer/
 https://akioi.eu.org/hexo-gulp-pwa/
 https://akioi.eu.org/maximum-flow/
-https://akioi.eu.org/snow/
 https://akioi.eu.org/hexo-vercel/
 https://akioi.eu.org/about-codestyle/
 https://akioi.eu.org/she-jiang/
